@@ -6,8 +6,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.navigation.USER_GRAPH_ROUTE
+import org.sbma_shakeit.screens.FriendListScreen
 import org.sbma_shakeit.screens.LoginScreen
 import org.sbma_shakeit.screens.RegisterScreen
+import org.sbma_shakeit.screens.UserProfileScreen
 
 fun NavGraphBuilder.userNavGraph(
     navController: NavController
@@ -20,14 +22,14 @@ fun NavGraphBuilder.userNavGraph(
         composable(
             route = Screen.UserProfile.route
         ){
-            LoginScreen(navController = navController)
+            UserProfileScreen(navController = navController)
         }
         
         // Friend List
         composable(
             route = Screen.FriendList.route
         ){
-            RegisterScreen(navController = navController)
+            FriendListScreen(navController = navController)
         }
     }
 }
