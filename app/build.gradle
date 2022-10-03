@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -63,4 +64,8 @@ dependencies {
     // Navigation
     var nav_version = "2.5.2"
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }

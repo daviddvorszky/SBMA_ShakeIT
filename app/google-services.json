@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "609993329316",
+    "project_id": "shake-it-34723",
+    "storage_bucket": "shake-it-34723.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609993329316:android:adc372090fb289ebc7f431",
+        "android_client_info": {
+          "package_name": "org.sbma_shakeit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609993329316-gndtdre6dbbeft5cpt3kfet0do99pkhv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmnXxWjylQ_jN-8ZsW5w4ClgoKzXXhwBw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609993329316-gndtdre6dbbeft5cpt3kfet0do99pkhv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
