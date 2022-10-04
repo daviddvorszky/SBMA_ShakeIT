@@ -4,25 +4,29 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import org.sbma_shakeit.navigation.AUTH_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.NEW_SHAKE_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.ROOT_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.screens.SettingsScreen
+import org.sbma_shakeit.viewmodels.AuthViewModel
 
 @Composable
 fun SetupNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    authViewModel: AuthViewModel
 ) {
     NavHost(
         navController = navController,
-        startDestination = NEW_SHAKE_GRAPH_ROUTE,
+        startDestination = AUTH_GRAPH_ROUTE,
         route = ROOT_GRAPH_ROUTE
     ){
         newShakeNavGraph(navController = navController)
         historyNavGraph(navController = navController)
         scoreboardNavGraph(navController = navController)
         userNavGraph(navController = navController)
-        authNavGraph(navController = navController)
+        authNavGraph(navController = navController,
+            authViewModel = authViewModel)
 
         // Settings
         composable(

@@ -8,26 +8,30 @@ import org.sbma_shakeit.navigation.AUTH_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.screens.LoginScreen
 import org.sbma_shakeit.screens.RegisterScreen
+import org.sbma_shakeit.viewmodels.AuthViewModel
 
 fun NavGraphBuilder.authNavGraph(
-    navController: NavController
+    navController: NavController,
+    authViewModel: AuthViewModel
 ){
     navigation(
-        startDestination = Screen.Login.route,
+        startDestination = Screen.Register.route,
         route = AUTH_GRAPH_ROUTE
     ){
         // Login
         composable(
             route = Screen.Login.route
         ){
-            LoginScreen(navController = navController)
+            LoginScreen(navController = navController,
+                authViewModel = authViewModel)
         }
         
         // Register
         composable(
             route = Screen.Register.route
         ){
-            RegisterScreen(navController = navController)
+            RegisterScreen(navController = navController,
+                authViewModel = authViewModel)
         }
     }
 }

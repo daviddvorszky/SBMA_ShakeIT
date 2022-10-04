@@ -4,28 +4,29 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import org.sbma_shakeit.components.TopMenuBar
 import org.sbma_shakeit.navigation.nav_graph.SetupNavGraph
 import org.sbma_shakeit.ui.theme.SBMA_ShakeITTheme
+import org.sbma_shakeit.viewmodels.AuthViewModel
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        authViewModel = AuthViewModel()
+        authViewModel.auth.value = Firebase.auth
         setContent {
             SBMA_ShakeITTheme {
                 navController = rememberNavController()
@@ -37,7 +38,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)){
-                        SetupNavGraph(navController = navController)
+                        SetupNavGraph(navController = navController,
+                        authViewModel = authViewModel)
                     }
                 }
             }
