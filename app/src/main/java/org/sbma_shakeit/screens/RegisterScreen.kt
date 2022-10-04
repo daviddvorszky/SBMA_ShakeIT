@@ -11,6 +11,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 import org.sbma_shakeit.R
+import org.sbma_shakeit.data.User
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.viewmodels.AuthViewModel
 
@@ -22,6 +23,7 @@ fun RegisterScreen(
     val auth = authViewModel.auth.value
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
 
@@ -33,6 +35,10 @@ fun RegisterScreen(
             label = { Text("Email") },
             value = email,
             onValueChange = { email = it })
+        TextField(
+            label = { Text("Username") },
+            value = username,
+            onValueChange = { username = it })
 
         TextField(
             label = { Text("Password") },
@@ -60,13 +66,21 @@ fun RegisterScreen(
 
         Button(onClick = {
             auth ?: return@Button
+            val isUserNameTaken = authViewModel.isUsernameTaken(username)
+            Log.d("isUsernameTaken", "$isUserNameTaken")
+            if (isUserNameTaken) {
+                Toast.makeText(context, "Username taken", Toast.LENGTH_LONG).show()
+                return@Button
+            }
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
+                        authViewModel.createUser(User(username, email))
                         Log.d("REGISTER", "SUCCESS")
                         navController.navigate(Screen.NewShakeList.route)
                     } else {
-                        Toast.makeText(context, "Register failed", Toast.LENGTH_SHORT).show()
+                        val message = it.exception?.message ?: "Register failed"
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                         Log.d("REGISTER", "FAILED", it.exception)
                     }
                 }

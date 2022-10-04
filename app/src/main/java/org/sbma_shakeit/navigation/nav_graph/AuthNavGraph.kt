@@ -15,7 +15,7 @@ fun NavGraphBuilder.authNavGraph(
     authViewModel: AuthViewModel
 ){
     navigation(
-        startDestination = Screen.Register.route,
+        startDestination = Screen.Login.route,
         route = AUTH_GRAPH_ROUTE
     ){
         // Login
