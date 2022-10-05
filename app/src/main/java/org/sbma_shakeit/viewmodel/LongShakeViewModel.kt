@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import org.sbma_shakeit.sensors.MeasurableSensor
 import kotlin.math.sqrt
 
-class ShakeViewModel(
+class LongShakeViewModel(
     shakeSensor: MeasurableSensor
 ): ViewModel() {
     private val n = 20
