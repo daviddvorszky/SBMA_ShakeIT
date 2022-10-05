@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import org.sbma_shakeit.navigation.Screen
 
 var _title = mutableStateOf("asd")
@@ -112,7 +114,9 @@ fun TopMenuBarDropdown(navController: NavController) {
 
         DropdownMenuItem(onClick = {
             expanded.value = false
+            Firebase.auth.signOut()
             Toast.makeText(context, "Logout", Toast.LENGTH_SHORT).show()
+            navController.navigate(Screen.Register.route)
         }) {
             Text("Logout")
         }

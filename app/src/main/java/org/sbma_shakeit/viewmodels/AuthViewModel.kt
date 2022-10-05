@@ -3,23 +3,30 @@ package org.sbma_shakeit.viewmodels
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
+import org.sbma_shakeit.data.Collections
 import org.sbma_shakeit.data.User
+import org.sbma_shakeit.data.UserKeys
 
 class AuthViewModel : ViewModel() {
     val auth = MutableLiveData<FirebaseAuth>()
     private val db = Firebase.firestore
+    private val userCollection = db.collection(Collections.USERS)
     private var usernames =
         MutableLiveData<MutableList<String>>(mutableListOf())
 
     init {
-        getUserNames()
+        viewModelScope.launch {
+            getUserNames()
+        }
     }
 
     fun createUser(user: User) {
-        db.collection("users")
+        userCollection
             .add(user)
             .addOnSuccessListener {
                 Log.d("CREATE USER", "SUCCESS")
@@ -36,11 +43,11 @@ class AuthViewModel : ViewModel() {
     }
 
     private fun getUserNames() {
-        db.collection("users")
+        userCollection
             .get()
             .addOnSuccessListener { result ->
                 for (user in result) {
-                    val username = user.data["username"]
+                    val username = user.data[UserKeys.USERNAME]
                     usernames.value?.add(username.toString())
                 }
             }
