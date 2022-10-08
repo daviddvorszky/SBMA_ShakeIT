@@ -1,7 +1,9 @@
 package org.sbma_shakeit.viewmodels
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +18,9 @@ class UserViewModel : ViewModel() {
     private lateinit var userPath: String
     val user = MutableLiveData<User?>(null)
 
-    val allUsers = mutableStateListOf<User>()
+    private val _allUsers = mutableStateListOf<User>()
+    val allUsers : List<User> = _allUsers
+
     private val userEmail = Firebase.auth.currentUser?.email
     private val db = Firebase.firestore
 
@@ -36,12 +40,36 @@ class UserViewModel : ViewModel() {
             user.value = userProvider.getCurrentUser()
             friendsProvider.getFriendRequests(user.value!!.username, _friendRequests)
             getFriends()
+            userPath = userProvider.getUserPath(user.value!!.username)
 
         }
     }
 
+    fun orderUsersByLong() {
+        val orderedList = allUsers.sortedBy {
+            it.longShake.time
+        }.reversed()
+        _allUsers.clear()
+        _allUsers.addAll(orderedList)
+    }
+    fun orderUsersByViolent() {
+        val orderedList = allUsers.sortedBy {
+            it.violentShake.score
+        }.reversed()
+        _allUsers.clear()
+        _allUsers.addAll(orderedList)
+    }
+    fun orderUsersByQuick() {
+        val orderedList = allUsers.sortedBy {
+            it.quickShake.score
+        }.reversed()
+        _allUsers.clear()
+        _allUsers.addAll(orderedList)
+    }
+
     fun sendFriendRequest(receiver: String) {
         user.value?.let {
+            if (it.friends.contains(receiver)) return
             friendsProvider.sendFriendRequest(receiver, it.username)
         }
     }
@@ -59,25 +87,27 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    fun addToFriends(username: String) {
+    fun removeFromFriends(friend: String) {
         val currentFriends = user.value?.friends
-        val updatedFriends = currentFriends?.plus(listOf(username))
-        if (updatedFriends != null) {
-            updateFriends(updatedFriends)
+        val updatedFriends = currentFriends?.minus(listOf(friend).toSet())
+        user.value?.let {
+            removeFriendRequest(friend, it.username)
+        if (!updatedFriends.isNullOrEmpty()) {
+            viewModelScope.launch {
+                val _friend = userProvider.getUserByUsername(friend)
+                var friendsFriendList = _friend.friends
+                friendsFriendList = friendsFriendList.minus(it.username)
+                updateFriends(it.username,updatedFriends)
+                updateFriends(friend, friendsFriendList)
+            }
+        }
         }
     }
 
-    fun removeFromFriends(username: String) {
-        val currentFriends = user.value?.friends
-        val updatedFriends = currentFriends?.minus(listOf(username).toSet())
-        if (updatedFriends != null) {
-            updateFriends(updatedFriends)
-        }
-    }
-
-    private fun updateFriends(updatedFriends: List<String>) {
+    private suspend fun updateFriends(user2: String, updatedFriends: List<String>) {
+        val userPath2 = userProvider.getUserPath(user2)
         db.collection(Collections.USERS)
-            .document(userPath)
+            .document(userPath2)
             .update(UserKeys.FRIENDS, updatedFriends)
             .addOnSuccessListener {
                 viewModelScope.launch {
@@ -87,19 +117,27 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    fun isUserFriend(username: String): Boolean =
-        user.value?.friends?.any {
+    fun isRequestedForFriend(user: String, friend: String): State<Boolean> =
+        mutableStateOf(friendRequests.any() {
+            it.sender == user && it.receiver == friend
+        })
+
+
+    fun isUserFriend(username: String): State<Boolean> =
+        mutableStateOf(user.value?.friends?.any {
             it == username
-        } ?: false
+        } ?: false)
+
 
     private fun getUsers() {
+        Log.d("getUsers", "called")
         db.collection(Collections.USERS)
             .get()
             .addOnSuccessListener { result ->
-                allUsers.clear()
+                _allUsers.clear()
                 for (user in result) {
                     val userToAdd = user.toObject(User::class.java)
-                    allUsers.add(userToAdd)
+                    _allUsers.add(userToAdd)
                 }
             }
     }

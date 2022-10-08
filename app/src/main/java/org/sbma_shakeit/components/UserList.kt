@@ -8,9 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import org.sbma_shakeit.viewmodels.UserViewModel
 
@@ -20,31 +17,24 @@ fun UserList(viewModel: UserViewModel) {
     val allUsers = viewModel.allUsers
 
     LazyColumn {
-        items(allUsers) { user ->
+        item {
             Row(
                 Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
-                val isUser by remember {
-                    mutableStateOf(viewModel.isUserFriend(user.username))
+                Button(onClick = { viewModel.orderUsersByViolent() }) {
+                    Text("By violent")
                 }
-                Text(user.username)
-                if (user.username != viewModel.user.value?.username) {
-                    if (isUser) {
-                        Button(onClick = {
-                            viewModel.removeFromFriends(user.username)
-                        }) {
-                            Text("Remove from friends")
-                        }
-                    } else {
-                        Button(onClick = {
-                            viewModel.sendFriendRequest(user.username)
-                        }) {
-                            Text("Add to friends")
-                        }
-                    }
+                Button(onClick = { viewModel.orderUsersByQuick() }) {
+                    Text("By Quick")
+                }
+                Button(onClick = { viewModel.orderUsersByLong() }) {
+                    Text("By Long")
                 }
             }
+        }
+        items(allUsers) { user ->
+            UserListItem(itemUser = user, viewModel = viewModel)
         }
     }
 }
