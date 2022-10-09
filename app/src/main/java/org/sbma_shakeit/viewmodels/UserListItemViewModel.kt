@@ -26,7 +26,6 @@ class UserListItemViewModel(itemUser: String) : ViewModel() {
     private val friendRequests = mutableStateListOf<FriendRequest>()
 
     init {
-        Log.d("userListVm", "INIT")
         viewModelScope.launch {
             val cUser = userProvider.getCurrentUser()
             isCurrentUser.value = isCurrentUser(cUser, itemUser)

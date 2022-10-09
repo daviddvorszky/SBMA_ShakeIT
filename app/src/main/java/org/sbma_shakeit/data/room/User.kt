@@ -27,8 +27,11 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE username = :username")
     fun getUserByUsername(username: String): LiveData<User>
 
+    @Query("SELECT * FROM user WHERE email = :email")
+    fun getUserByEmail(email: String): LiveData<User>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(userEntityEntities: List<User>)
+    suspend fun insertAll(users: List<User>)
 
     @Query("DELETE FROM user")
     fun deleteAll()

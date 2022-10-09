@@ -35,7 +35,6 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-
         Text(itemUser.username)
         // TODO: Add users shake scores
         Column {

@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -53,9 +55,11 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     //---------------------------------------------------------------------------
     fun getAll(): LiveData<List<User>> =
         roomDb.userDao().getAll()
-//
-//    fun getAll(): LiveData<List<TestEntity>> =
-//        roomDb.testDao().getAll()
+
+    fun getCurrentUser(): LiveData<User> {
+        val userEmail = Firebase.auth.currentUser?.email
+        return roomDb.userDao().getUserByEmail(userEmail ?: "")
+    }
 
     private suspend fun updateUserList() {
         roomDb.userDao().insertAll(allUsers)

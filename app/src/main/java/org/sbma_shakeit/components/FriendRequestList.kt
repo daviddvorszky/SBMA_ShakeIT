@@ -25,9 +25,8 @@ fun FriendRequestList(vm: UserViewModel = viewModel()) {
 
     Column(Modifier.padding(10.dp)) {
         Text("Received friend requests (${requests.size})")
-
         LazyColumn {
-            items(requests/*, key = { it.sender }*/) { req ->
+            items(requests) { req ->
                 Row(
                     Modifier.border(BorderStroke(2.dp, Color.Black)),
                     verticalAlignment = Alignment.CenterVertically
@@ -48,7 +47,7 @@ fun FriendRequestList(vm: UserViewModel = viewModel()) {
                     }) {
                         Icon(
                             Icons.Filled.Close,
-                            contentDescription = "Accept friend request",
+                            contentDescription = "Deny friend request",
                             tint = Color.Red
                         )
                     }

@@ -15,7 +15,6 @@ fun FriendListScreen(
     navController: NavController,
     vm: UserViewModel = viewModel()
 ) {
-    val currentUser = vm.user.observeAsState()
     val friendList = vm.friends
     Column {
         Text("Friend List Screen")
