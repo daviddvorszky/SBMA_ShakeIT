@@ -1,5 +1,9 @@
 package org.sbma_shakeit.data.web
 
+data class FriendRequest(
+    val receiver: String = "",
+    val sender: String = ""
+)
 
 object UserKeys {
     const val USERNAME = "username"

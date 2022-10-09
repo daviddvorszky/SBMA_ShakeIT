@@ -1,14 +1,13 @@
 package org.sbma_shakeit.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.sbma_shakeit.data.FriendRequest
 import org.sbma_shakeit.data.room.User
+import org.sbma_shakeit.data.web.FriendRequest
 import org.sbma_shakeit.data.web.FriendsProvider
 import org.sbma_shakeit.data.web.UserProvider
 

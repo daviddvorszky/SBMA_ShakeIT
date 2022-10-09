@@ -15,6 +15,7 @@ fun FriendListScreen(
     navController: NavController,
     vm: UserViewModel = viewModel()
 ) {
+    // TODO: Get friends from room
     val friendList = vm.friends
     Column {
         Text("Friend List Screen")

@@ -47,7 +47,7 @@ fun LoginScreen(
             value = password,
             onValueChange = { password = it },
             visualTransformation = if (showPassword) VisualTransformation.None
-            else PasswordVisualTransformation(),
+                else PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(onClick = {
                     showPassword = !showPassword
@@ -55,7 +55,7 @@ fun LoginScreen(
                     if (showPassword)
                         Icon(
                             painterResource(R.drawable.visibility_off),
-                            contentDescription = "Show password"
+                            contentDescription = "Don't show password"
                         )
                     else
                         Icon(

@@ -3,7 +3,7 @@ package org.sbma_shakeit.data
 import com.google.firebase.firestore.GeoPoint
 import java.util.*
 
-
+// TODO: Delete or use these
 data class LongShake(
     val time: Long = 0,
     val created: Date = Date(),
@@ -20,7 +20,7 @@ data class ViolentShake(
     val location: GeoPoint = GeoPoint(0.0, 0.0)
 )
 
-data class FriendRequest(
-    val receiver: String = "",
-    val sender: String = ""
-)
+//data class FriendRequest(
+//    val receiver: String = "",
+//    val sender: String = ""
+//)
