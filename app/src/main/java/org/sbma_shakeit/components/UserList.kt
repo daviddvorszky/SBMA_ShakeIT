@@ -1,6 +1,5 @@
 package org.sbma_shakeit.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,14 +15,10 @@ import org.sbma_shakeit.viewmodels.UserViewModel
 @Composable
 fun UserList(viewModel: UserViewModel) {
 
-    val allUsers = viewModel.allUsers
-
-    val test = viewModel.getAll().observeAsState(listOf())
-    Log.d("TESTI----", test.value.toString())
+    val allUsers = viewModel.getAll().observeAsState(listOf())
 
     LazyColumn {
         item {
-            Text(test.value.size.toString())
             Row(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
@@ -39,7 +34,7 @@ fun UserList(viewModel: UserViewModel) {
                 }
             }
         }
-        items(/*allUsers*/test.value) { user ->
+        items(allUsers.value) { user ->
             UserListItem(itemUser = user, userViewModel = viewModel)
         }
     }

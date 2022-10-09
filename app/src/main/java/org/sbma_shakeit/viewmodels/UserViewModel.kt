@@ -23,8 +23,8 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     val user = MutableLiveData<User?>(null)
 
-    private val _allUsers = mutableStateListOf<User>()
-    val allUsers: List<User> = _allUsers
+//    private val _allUsers = mutableStateListOf<User>()
+//    val allUsers: List<User> = _allUsers
 
     private val _friendRequests = mutableStateListOf<FriendRequest>()
     val friendRequests: List<FriendRequest> = _friendRequests
@@ -36,19 +36,15 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     val friends: List<User> = _friends
 
     init {
-        Log.d("USER VM", "INIT")
+        Log.d("USER VIEWMODEL", "INIT")
         viewModelScope.launch {
-            userProvider.getAllUsers(_allUsers)
+            Log.d("ALL USERS", userProvider.getAllUsers().size.toString())
             user.value = userProvider.getCurrentUser()
             friendsProvider.getFriendRequests(user.value!!.username, _friendRequests)
             friendsProvider.getFriends(_friends)
-            delay(5000)
         }
         viewModelScope.launch(Dispatchers.IO) {
-            delay(2000)
             updateUserList()
-            delay(1000)
-            Log.d("getAll", getAll().value?.size.toString())
         }
     }
 
@@ -62,11 +58,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private suspend fun updateUserList() {
-        roomDb.userDao().insertAll(allUsers)
+        val users = userProvider.getAllUsers()
+        roomDb.userDao().insertAll(users)
     }
 
 //---------------------------------------------------------------------------
 
+// Functions for ordering shakes
 
 //    fun orderUsersByLong() {
 //        val orderedList = allUsers.sortedBy {
@@ -127,7 +125,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             friendsProvider.updateFriends(friendsName, friendsFriendList)
             delay(4000)
             user.value = userProvider.getCurrentUser()
-            userProvider.getAllUsers(_allUsers)
+            updateUserList()
         }
 
     }

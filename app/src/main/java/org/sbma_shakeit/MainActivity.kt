@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val authViewModel = AuthViewModel()
+        val authViewModel = AuthViewModel(application)
         authViewModel.auth.value = Firebase.auth
 
         setContent {

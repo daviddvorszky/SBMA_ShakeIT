@@ -17,16 +17,31 @@ open class UserProvider {
     /**
      * Add all users from firestore to the given list
      * */
-    fun getAllUsers(listToAdd: MutableList<User>) {
+//    fun getAllUsers(listToAdd: MutableList<User>) {
+//        userCollection
+//            .get()
+//            .addOnSuccessListener { result ->
+//                listToAdd.clear()
+//                for (user in result) {
+//                    val userToAdd = user.toObject(User::class.java)
+//                    listToAdd.add(userToAdd)
+//                }
+//            }
+//    }
+
+    suspend fun getAllUsers(): List<User> {
+        val def = CompletableDeferred<List<User>>()
         userCollection
             .get()
             .addOnSuccessListener { result ->
-                listToAdd.clear()
+                val list = mutableListOf<User>()
                 for (user in result) {
                     val userToAdd = user.toObject(User::class.java)
-                    listToAdd.add(userToAdd)
+                    list.add(userToAdd)
                 }
+                def.complete(list)
             }
+        return def.await()
     }
 
     /**
