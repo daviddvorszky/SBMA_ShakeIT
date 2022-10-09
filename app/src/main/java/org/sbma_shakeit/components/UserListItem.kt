@@ -11,47 +11,48 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import org.sbma_shakeit.R
-import org.sbma_shakeit.data.User
+import org.sbma_shakeit.data.room.User
 import org.sbma_shakeit.viewmodels.UserListItemViewModel
 import org.sbma_shakeit.viewmodels.UserViewModel
 
 @Composable
-fun UserListItem(itemUser: User, viewModel: UserViewModel) {
-    val currentUser = viewModel.user.observeAsState()
-    val vm = UserListItemViewModel(currentUser.value?.username ?: "", itemUser.username)
+fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
+
+    val vm = UserListItemViewModel(itemUser.username)
+    val isCurrentUser by remember { mutableStateOf(vm.isCurrentUser) }
+    val isUserFriend by remember { mutableStateOf(vm.isUserFriend) }
+    val isRequestSent by remember { mutableStateOf(vm.isSentFriendReq) }
+
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        val _isUserFriend = vm.isUserFriend.observeAsState()
 
-        val isRequestSent by remember {
-            mutableStateOf(vm.isSentFriendReq)
-        }
 
         Text(itemUser.username)
+        // TODO: Add users shake scores
         Column {
-            Text("Long ${itemUser.longShake.time}")
-            Text("Quick ${itemUser.quickShake.score}")
-            Text("Violent ${itemUser.violentShake.score}")
+//            Text("Long ${itemUser.longShake.time}")
+//            Text("Quick ${itemUser.quickShake.score}")
+//            Text("Violent ${itemUser.violentShake.score}")
         }
-        //------------------------------------------------------------
-//                val contains = viewModel.user.value?.friends?.contains(user.username)
-        var contains by remember {
-            mutableStateOf(viewModel.user.value?.friends?.contains(itemUser.username))
-        }
-        if (itemUser.username != viewModel.user.value?.username) {
-            if (contains == true ||_isUserFriend.value == true) {
+
+        if (isCurrentUser.value) {
+            Text("YOU")
+        } else {
+            if (isUserFriend.value) {
                 Log.d("HERE", "HERE")
                 Button(onClick = {
-                    viewModel.removeFromFriends(itemUser.username)
+                    userViewModel.removeFromFriends(itemUser.username)
 //                            vm.isUserFriend.value = false
-                    contains = false
+                    isUserFriend.value = false
                     isRequestSent.value = false
                 }) {
                     Row {
@@ -60,9 +61,9 @@ fun UserListItem(itemUser: User, viewModel: UserViewModel) {
                     }
                 }
             }
-            else if (isRequestSent.value /*|| aI.valueisU.value == true*/) {
+            else if (isRequestSent.value) {
                 Button(onClick = {
-                    viewModel.removeFromFriends(itemUser.username)
+                    userViewModel.removeFromFriends(itemUser.username)
                     isRequestSent.value = false
                 }) {
                     Row {
@@ -75,7 +76,7 @@ fun UserListItem(itemUser: User, viewModel: UserViewModel) {
             }
             else {
                 IconButton(onClick = {
-                    viewModel.sendFriendRequest(itemUser.username)
+                    userViewModel.sendFriendRequest(itemUser.username)
                     isRequestSent.value = true
                 }) {
                     Icon(
@@ -83,10 +84,6 @@ fun UserListItem(itemUser: User, viewModel: UserViewModel) {
                         contentDescription = "Send friend request")
                 }
             }
-        }
-        else
-        {
-            Text("YOU")
         }
     }
 }

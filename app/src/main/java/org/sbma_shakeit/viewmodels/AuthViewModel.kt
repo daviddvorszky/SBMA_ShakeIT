@@ -8,14 +8,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import org.sbma_shakeit.data.Collections
-import org.sbma_shakeit.data.User
-import org.sbma_shakeit.data.UserKeys
+import org.sbma_shakeit.data.room.User
+import org.sbma_shakeit.data.web.FirestoreCollections
+import org.sbma_shakeit.data.web.UserKeys
 
 class AuthViewModel : ViewModel() {
     val auth = MutableLiveData<FirebaseAuth>()
     private val db = Firebase.firestore
-    private val userCollection = db.collection(Collections.USERS)
+    private val userCollection = db.collection(FirestoreCollections.USERS)
     private var usernames =
         MutableLiveData<MutableList<String>>(mutableListOf())
 

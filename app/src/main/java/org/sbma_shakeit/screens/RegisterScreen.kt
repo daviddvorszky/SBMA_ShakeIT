@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 import org.sbma_shakeit.R
-import org.sbma_shakeit.data.User
+import org.sbma_shakeit.data.room.User
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.viewmodels.AuthViewModel
 

@@ -1,4 +1,5 @@
-package org.sbma_shakeit.data
+package org.sbma_shakeit.data.web
+
 
 object UserKeys {
     const val USERNAME = "username"
@@ -11,7 +12,7 @@ object FriendRequestKeys {
     const val SENDER = "sender"
 }
 
-object Collections {
+object FirestoreCollections {
     const val USERS = "users"
-    const val FRIEND_REQUEST = "friendRequest"
+    const val FRIEND_REQUESTS = "friendRequest"
 }

@@ -1,28 +1,28 @@
 package org.sbma_shakeit.viewmodels
 
+import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.sbma_shakeit.data.*
+import org.sbma_shakeit.data.FriendRequest
+import org.sbma_shakeit.data.room.User
+import org.sbma_shakeit.data.room.UserDB
+import org.sbma_shakeit.data.web.FriendsProvider
+import org.sbma_shakeit.data.web.UserProvider
 
-class UserViewModel : ViewModel() {
-    private lateinit var userPath: String
+class UserViewModel(application: Application) : AndroidViewModel(application) {
+    private val roomDb = UserDB.get(application)
+
     val user = MutableLiveData<User?>(null)
 
     private val _allUsers = mutableStateListOf<User>()
-    val allUsers : List<User> = _allUsers
-
-    private val userEmail = Firebase.auth.currentUser?.email
-    private val db = Firebase.firestore
+    val allUsers: List<User> = _allUsers
 
     private val _friendRequests = mutableStateListOf<FriendRequest>()
     val friendRequests: List<FriendRequest> = _friendRequests
@@ -36,40 +36,59 @@ class UserViewModel : ViewModel() {
     init {
         Log.d("USER VM", "INIT")
         viewModelScope.launch {
-            getUsers()
+            userProvider.getAllUsers(_allUsers)
             user.value = userProvider.getCurrentUser()
             friendsProvider.getFriendRequests(user.value!!.username, _friendRequests)
-            getFriends()
-            userPath = userProvider.getUserPath(user.value!!.username)
-
+            friendsProvider.getFriends(_friends)
+            delay(5000)
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(2000)
+            updateUserList()
+            delay(1000)
+            Log.d("getAll", getAll().value?.size.toString())
         }
     }
 
-    fun orderUsersByLong() {
-        val orderedList = allUsers.sortedBy {
-            it.longShake.time
-        }.reversed()
-        _allUsers.clear()
-        _allUsers.addAll(orderedList)
+    //---------------------------------------------------------------------------
+    fun getAll(): LiveData<List<User>> =
+        roomDb.userDao().getAll()
+//
+//    fun getAll(): LiveData<List<TestEntity>> =
+//        roomDb.testDao().getAll()
+
+    private suspend fun updateUserList() {
+        roomDb.userDao().insertAll(allUsers)
     }
-    fun orderUsersByViolent() {
-        val orderedList = allUsers.sortedBy {
-            it.violentShake.score
-        }.reversed()
-        _allUsers.clear()
-        _allUsers.addAll(orderedList)
-    }
-    fun orderUsersByQuick() {
-        val orderedList = allUsers.sortedBy {
-            it.quickShake.score
-        }.reversed()
-        _allUsers.clear()
-        _allUsers.addAll(orderedList)
-    }
+
+//---------------------------------------------------------------------------
+
+
+//    fun orderUsersByLong() {
+//        val orderedList = allUsers.sortedBy {
+//            it.longShake.time
+//        }.reversed()
+//        _allUsers.clear()
+//        _allUsers.addAll(orderedList)
+//    }
+//    fun orderUsersByViolent() {
+//        val orderedList = allUsers.sortedBy {
+//            it.violentShake.score
+//        }.reversed()
+//        _allUsers.clear()
+//        _allUsers.addAll(orderedList)
+//    }
+//    fun orderUsersByQuick() {
+//        val orderedList = allUsers.sortedBy {
+//            it.quickShake.score
+//        }.reversed()
+//        _allUsers.clear()
+//        _allUsers.addAll(orderedList)
+//    }
 
     fun sendFriendRequest(receiver: String) {
         user.value?.let {
-            if (it.friends.contains(receiver)) return
+            if (it.friends.friends.contains(receiver)) return
             friendsProvider.sendFriendRequest(receiver, it.username)
         }
     }
@@ -87,66 +106,25 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    fun removeFromFriends(friend: String) {
-        val currentFriends = user.value?.friends
-        val updatedFriends = currentFriends?.minus(listOf(friend).toSet())
-        user.value?.let {
-            removeFriendRequest(friend, it.username)
-        if (!updatedFriends.isNullOrEmpty()) {
-            viewModelScope.launch {
-                val _friend = userProvider.getUserByUsername(friend)
-                var friendsFriendList = _friend.friends
-                friendsFriendList = friendsFriendList.minus(it.username)
-                updateFriends(it.username,updatedFriends)
-                updateFriends(friend, friendsFriendList)
-            }
+    fun removeFromFriends(friendsName: String) {
+        val currentUser = user.value ?: return
+        // Remove friend from users friend list
+        val currentFriends = currentUser.friends.friends
+        val updatedFriends = currentFriends.minus(friendsName)
+        // Remove friend request if that existed
+        removeFriendRequest(friendsName, currentUser.username)
+        viewModelScope.launch {
+            val friend = userProvider.getUserByUsername(friendsName)
+            // Remove user from friends friend list
+            var friendsFriendList = friend.friends.friends
+            friendsFriendList = friendsFriendList.minus(currentUser.username)
+            // Update both users friend lists in firestore
+            friendsProvider.updateFriends(currentUser.username, updatedFriends)
+            friendsProvider.updateFriends(friendsName, friendsFriendList)
+            delay(4000)
+            user.value = userProvider.getCurrentUser()
+            userProvider.getAllUsers(_allUsers)
         }
-        }
-    }
 
-    private suspend fun updateFriends(user2: String, updatedFriends: List<String>) {
-        val userPath2 = userProvider.getUserPath(user2)
-        db.collection(Collections.USERS)
-            .document(userPath2)
-            .update(UserKeys.FRIENDS, updatedFriends)
-            .addOnSuccessListener {
-                viewModelScope.launch {
-                    user.value = userProvider.getCurrentUser()
-                    getUsers()
-                }
-            }
-    }
-
-    fun isRequestedForFriend(user: String, friend: String): State<Boolean> =
-        mutableStateOf(friendRequests.any() {
-            it.sender == user && it.receiver == friend
-        })
-
-
-    fun isUserFriend(username: String): State<Boolean> =
-        mutableStateOf(user.value?.friends?.any {
-            it == username
-        } ?: false)
-
-
-    private fun getUsers() {
-        Log.d("getUsers", "called")
-        db.collection(Collections.USERS)
-            .get()
-            .addOnSuccessListener { result ->
-                _allUsers.clear()
-                for (user in result) {
-                    val userToAdd = user.toObject(User::class.java)
-                    _allUsers.add(userToAdd)
-                }
-            }
-    }
-
-    private suspend fun getFriends() {
-        if (user.value?.friends.isNullOrEmpty()) return
-        for (friend in user.value?.friends!!) {
-            val userToAdd = userProvider.getUserByUsername(friend)
-            _friends.add(userToAdd)
-        }
     }
 }

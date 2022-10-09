@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -21,12 +20,13 @@ import org.sbma_shakeit.viewmodels.AuthViewModel
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
-    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authViewModel = AuthViewModel()
+
+        val authViewModel = AuthViewModel()
         authViewModel.auth.value = Firebase.auth
+
         setContent {
             SBMA_ShakeITTheme {
                 navController = rememberNavController()
