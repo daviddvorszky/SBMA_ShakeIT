@@ -1,30 +1,31 @@
-package org.sbma_shakeit.viewmodel
+package org.sbma_shakeit.viewmodels
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.os.postDelayed
 import androidx.lifecycle.ViewModel
 import org.sbma_shakeit.sensors.MeasurableSensor
-import java.lang.System.currentTimeMillis
 import kotlin.math.sqrt
 
-class LongShakeViewModel(
+class QuickShakeViewModel(
     shakeSensor: MeasurableSensor
 ): ViewModel() {
-    private val n = 20
+    private val n = 100
     private val lastRecords = FloatArray(n)
     private var idx: Int = 0
     private var sum: Float = 0.0f
     private val basicThreshold = 1f
     private val violentThreshold = 4f
-    private var isShaking = false
-    private var startTime = 0L
-    private var currentTime = 0L
 
     var shakeIntensity by mutableStateOf(0.0f)
     var basicShake by mutableStateOf(false)
     var violentShake by mutableStateOf(false)
-    var timePassed by mutableStateOf(0L)
+
+    val mainHandler = Handler(Looper.getMainLooper())
+    var score by mutableStateOf(0)
 
     init {
         shakeSensor.setOnSensorValuesChangedListener { values ->
@@ -42,23 +43,30 @@ class LongShakeViewModel(
 
             basicShake = shakeIntensity > basicThreshold
             violentShake = shakeIntensity > violentThreshold
+        }
+    }
 
-            // Start measuring when the shake intensity crosses the basic threshold
-            if(!isShaking && basicShake){
-                isShaking = true
-                startTime = currentTimeMillis()
-            }
+    fun startScoring(){
+        mainHandler.post(updateScore)
+    }
 
-            // Stop measuring when the shake intensity falls below the basic threshold
-            if(isShaking && !basicShake){
-                isShaking = false
-                shakeSensor.stopListening()
-            }
+    fun stopScoring(){
+        mainHandler.removeCallbacks(updateScore)
+    }
 
-            if(isShaking) {
-                currentTime = currentTimeMillis()
-                timePassed = (currentTime - startTime) / 1000
-            }
+
+    private val updateScore = object : Runnable {
+        override fun run() {
+            addScore()
+            mainHandler.postDelayed(this, 1000)
+        }
+    }
+
+    fun addScore(){
+        if(violentShake){
+            score += 3
+        }else if(basicShake){
+            score += 1
         }
     }
 }
