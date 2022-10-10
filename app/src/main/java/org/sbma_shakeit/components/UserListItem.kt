@@ -56,7 +56,7 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
                 Button(onClick = {
                     isAlertVisible = true
                     alertTitle = "Remove from friends"
-                    alertText = "Do you want to remove this user from friends?"
+                    alertText = "Do you want to remove ${itemUser.username} from friends?"
                     val confirm = {
                         userViewModel.removeFromFriends(itemUser.username)
 //                            vm.isUserFriend.value = false
@@ -97,7 +97,7 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
                 IconButton(onClick = {
                     isAlertVisible = true
                     alertTitle = "Add to friends"
-                    alertText = "Do you want to send a friend request to this user?"
+                    alertText = "Do you want to send a friend request to ${itemUser.username}?"
                     val confirm = {
                         userViewModel.sendFriendRequest(itemUser.username)
                         isRequestSent.value = true
