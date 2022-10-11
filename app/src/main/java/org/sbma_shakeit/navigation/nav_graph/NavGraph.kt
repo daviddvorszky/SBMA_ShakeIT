@@ -11,7 +11,7 @@ import org.sbma_shakeit.navigation.NEW_SHAKE_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.ROOT_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.screens.SettingsScreen
-import org.sbma_shakeit.viewmodels.AuthViewModel
+import org.sbma_shakeit.viewmodels.users.AuthViewModel
 
 @Composable
 fun SetupNavGraph(

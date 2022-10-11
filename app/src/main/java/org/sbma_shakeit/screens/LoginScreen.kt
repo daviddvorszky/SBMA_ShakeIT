@@ -26,7 +26,7 @@ import androidx.navigation.NavController
 import org.sbma_shakeit.R
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.ui.theme.Purple700
-import org.sbma_shakeit.viewmodels.AuthViewModel
+import org.sbma_shakeit.viewmodels.users.AuthViewModel
 
 @Composable
 fun LoginScreen(

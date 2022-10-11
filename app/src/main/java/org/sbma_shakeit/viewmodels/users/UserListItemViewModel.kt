@@ -1,4 +1,4 @@
-package org.sbma_shakeit.viewmodels
+package org.sbma_shakeit.viewmodels.users
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf

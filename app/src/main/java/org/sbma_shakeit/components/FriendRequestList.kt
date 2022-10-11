@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.sbma_shakeit.viewmodels.UserViewModel
+import org.sbma_shakeit.viewmodels.users.UserViewModel
 
 @Composable
 fun FriendRequestList(vm: UserViewModel = viewModel()) {

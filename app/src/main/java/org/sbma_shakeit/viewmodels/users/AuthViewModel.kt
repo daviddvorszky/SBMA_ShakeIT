@@ -1,4 +1,4 @@
-package org.sbma_shakeit.viewmodels
+package org.sbma_shakeit.viewmodels.users
 
 import android.app.Application
 import android.util.Log

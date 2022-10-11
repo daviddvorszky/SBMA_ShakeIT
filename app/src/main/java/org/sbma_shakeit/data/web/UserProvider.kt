@@ -1,5 +1,6 @@
 package org.sbma_shakeit.data.web
 
+import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -35,6 +36,7 @@ open class UserProvider {
             .get()
             .addOnSuccessListener { result ->
                 val list = mutableListOf<User>()
+                Log.d("SIZE IS", result.size().toString())
                 for (user in result) {
                     val userToAdd = user.toObject(User::class.java)
                     list.add(userToAdd)

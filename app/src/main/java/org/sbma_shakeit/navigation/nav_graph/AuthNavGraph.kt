@@ -8,7 +8,7 @@ import org.sbma_shakeit.navigation.AUTH_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.screens.LoginScreen
 import org.sbma_shakeit.screens.RegisterScreen
-import org.sbma_shakeit.viewmodels.AuthViewModel
+import org.sbma_shakeit.viewmodels.users.AuthViewModel
 
 fun NavGraphBuilder.authNavGraph(
     navController: NavController,

@@ -7,7 +7,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.sbma_shakeit.components.FriendRequestList
-import org.sbma_shakeit.viewmodels.UserViewModel
+import org.sbma_shakeit.viewmodels.users.UserViewModel
 
 @Composable
 fun UserProfileScreen(

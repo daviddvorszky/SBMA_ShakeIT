@@ -15,7 +15,7 @@ import com.google.firebase.ktx.Firebase
 import org.sbma_shakeit.components.TopMenuBar
 import org.sbma_shakeit.navigation.nav_graph.SetupNavGraph
 import org.sbma_shakeit.ui.theme.SBMA_ShakeITTheme
-import org.sbma_shakeit.viewmodels.AuthViewModel
+import org.sbma_shakeit.viewmodels.users.AuthViewModel
 
 class MainActivity : ComponentActivity() {
 
