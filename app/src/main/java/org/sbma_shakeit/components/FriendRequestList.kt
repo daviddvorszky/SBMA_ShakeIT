@@ -43,7 +43,7 @@ fun FriendRequestList(vm: UserViewModel = viewModel()) {
                             Icon(
                                 Icons.Filled.Done,
                                 contentDescription = "Accept friend request",
-                                tint = Color.Green
+                                tint = Color.Black
                             )
                         }
                         Spacer(modifier = Modifier.width(10.dp))
@@ -56,7 +56,7 @@ fun FriendRequestList(vm: UserViewModel = viewModel()) {
                             Icon(
                                 Icons.Filled.Close,
                                 contentDescription = "Deny friend request",
-                                tint = Color.Red
+                                tint = Color.Black
                             )
                         }
                     }

@@ -19,6 +19,7 @@ fun GlobalScoreboardScreen(
     vm: UserViewModel = UserViewModel(LocalContext.current.applicationContext as Application)
 ) {
     val allUsers = vm.getAll().observeAsState(listOf())
+    val friendList = remember { mutableStateOf(vm.friends) }
     val list = listOf("Global", "Friends")
     val shakeTypes = listOf("Long", "Violent", "Quick")
     val selectedIndex = remember { mutableStateOf(0) }
@@ -31,6 +32,9 @@ fun GlobalScoreboardScreen(
         Text("Type")
         TabsView(selectedIndex = selectedShakeIndex, headers = shakeTypes)
         Spacer(Modifier.height(5.dp))
-        UserList(viewModel = vm, allUsers)
+        if (selectedIndex.value == 0)
+            UserList(viewModel = vm, allUsers)
+        else
+            UserList(viewModel = vm, friendList)
     }
 }
