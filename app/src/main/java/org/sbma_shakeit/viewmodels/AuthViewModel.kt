@@ -17,9 +17,9 @@ import org.sbma_shakeit.data.web.UserKeys
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     val auth = MutableLiveData<FirebaseAuth>()
-    private val db = Firebase.firestore
     private val userDB = UserDB.get(application)
-    private val userCollection = db.collection(FirestoreCollections.USERS)
+    private val userCollection =
+        Firebase.firestore.collection(FirestoreCollections.USERS)
     private var usernames =
         MutableLiveData<MutableList<String>>(mutableListOf())
 

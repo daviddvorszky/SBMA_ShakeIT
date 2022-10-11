@@ -7,12 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sbma_shakeit.viewmodels.UserViewModel
@@ -42,7 +40,6 @@ fun UserList(viewModel: UserViewModel) {
         }
         items(allUsers.value) { user ->
             UserListItem(itemUser = user, userViewModel = viewModel)
-            Divider(color = Color.LightGray, thickness = 1.dp)
         }
     }
 }

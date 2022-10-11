@@ -48,7 +48,6 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    //---------------------------------------------------------------------------
     fun getAll(): LiveData<List<User>> =
         roomDb.userDao().getAll()
 
@@ -59,10 +58,11 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     private suspend fun updateUserList() {
         val users = userProvider.getAllUsers()
+        val oldCount = roomDb.userDao().getUserCount()
+        // Delete all if users have been removed from firestore
+        if (users.size < oldCount) roomDb.userDao().deleteAll()
         roomDb.userDao().insertAll(users)
     }
-
-//---------------------------------------------------------------------------
 
 // Functions for ordering shakes
 
@@ -127,6 +127,5 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             user.value = userProvider.getCurrentUser()
             updateUserList()
         }
-
     }
 }

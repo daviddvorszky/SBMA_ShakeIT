@@ -2,9 +2,11 @@ package org.sbma_shakeit.components
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.sbma_shakeit.components.buttons.FriendsButton
 import org.sbma_shakeit.components.buttons.FriendsButtonType
@@ -27,72 +29,76 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
     var alertConfirm by remember { mutableStateOf({}) }
 
 
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = 5.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        if (isAlertVisible) MyAlert(
-            title = alertTitle, text = alertText,
-            confirmAction = alertConfirm, dismissAction = alertDismiss
-        )
+    Column {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            if (isAlertVisible) MyAlert(
+                title = alertTitle, text = alertText,
+                confirmAction = alertConfirm, dismissAction = alertDismiss
+            )
 
-        Text(itemUser.username)
-        // TODO: Add users shake scores
-        Column {
+            Text(itemUser.username)
+            // TODO: Add users shake scores
+            Column {
 //            Text("Long ${itemUser.longShake.time}")
 //            Text("Quick ${itemUser.quickShake.score}")
 //            Text("Violent ${itemUser.violentShake.score}")
-        }
+            }
 
-        if (isCurrentUser.value) {
-            Text("YOU")
-        } else {
-            if (isUserFriend.value) {
-                Log.d("HERE", "HERE")
-                val onClick = {
-                    isAlertVisible = true
-                    alertTitle = "Remove from friends"
-                    alertText = "Do you want to remove ${itemUser.username} from friends?"
-                    val confirm = {
-                        userViewModel.removeFromFriends(itemUser.username)
-//                            vm.isUserFriend.value = false
-                        isUserFriend.value = false
-                        isRequestSent.value = false
-                        isAlertVisible = false
-                    }
-                    alertConfirm = confirm
-                }
-                FriendsButton(type = FriendsButtonType.FRIEND, onClickAction = onClick)
-            } else if (isRequestSent.value) {
-                val onClick = {
-                    isAlertVisible = true
-                    alertTitle = "Cancel friend request"
-                    alertText = "Do you want to cancel this friend request?"
-                    val confirm = {
-                        userViewModel.removeFromFriends(itemUser.username)
-                        isRequestSent.value = false
-                        isAlertVisible = false
-                    }
-                    alertConfirm = confirm
-                }
-                FriendsButton(type = FriendsButtonType.CANCEL, onClickAction = onClick)
+            if (isCurrentUser.value) {
+                Text("YOU")
             } else {
-                val onClick = {
-                    isAlertVisible = true
-                    alertTitle = "Add to friends"
-                    alertText = "Do you want to send a friend request to ${itemUser.username}?"
-                    val confirm = {
-                        userViewModel.sendFriendRequest(itemUser.username)
-                        isRequestSent.value = true
-                        isAlertVisible = false
+                if (isUserFriend.value) {
+                    Log.d("HERE", "HERE")
+                    val onClick = {
+                        isAlertVisible = true
+                        alertTitle = "Remove from friends"
+                        alertText = "Do you want to remove ${itemUser.username} from friends?"
+                        val confirm = {
+                            userViewModel.removeFromFriends(itemUser.username)
+//                            vm.isUserFriend.value = false
+                            isUserFriend.value = false
+                            isRequestSent.value = false
+                            isAlertVisible = false
+                        }
+                        alertConfirm = confirm
                     }
-                    alertConfirm = confirm
+                    FriendsButton(type = FriendsButtonType.FRIEND, onClickAction = onClick)
+                } else if (isRequestSent.value) {
+                    val onClick = {
+                        isAlertVisible = true
+                        alertTitle = "Cancel friend request"
+                        alertText = "Do you want to cancel this friend request?"
+                        val confirm = {
+                            userViewModel.removeFromFriends(itemUser.username)
+                            isRequestSent.value = false
+                            isAlertVisible = false
+                        }
+                        alertConfirm = confirm
+                    }
+                    FriendsButton(type = FriendsButtonType.CANCEL, onClickAction = onClick)
+                } else {
+                    val onClick = {
+                        isAlertVisible = true
+                        alertTitle = "Add to friends"
+                        alertText = "Do you want to send a friend request to ${itemUser.username}?"
+                        val confirm = {
+                            userViewModel.sendFriendRequest(itemUser.username)
+                            isRequestSent.value = true
+                            isAlertVisible = false
+                        }
+                        alertConfirm = confirm
+                    }
+                    FriendsButton(type = FriendsButtonType.ADD, onClickAction = onClick)
                 }
-                FriendsButton(type = FriendsButtonType.ADD, onClickAction = onClick)
             }
         }
+        Divider(color = Color.LightGray, thickness = 1.dp)
     }
+
 }
 

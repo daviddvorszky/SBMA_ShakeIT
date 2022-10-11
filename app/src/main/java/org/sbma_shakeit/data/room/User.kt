@@ -30,6 +30,9 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE email = :email")
     fun getUserByEmail(email: String): LiveData<User>
 
+    @Query("SELECT COUNT(username) FROM user")
+    suspend fun getUserCount() : Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(users: List<User>)
 
