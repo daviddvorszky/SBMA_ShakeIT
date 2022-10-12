@@ -1,10 +1,8 @@
 package org.sbma_shakeit.viewmodels.users
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.sbma_shakeit.data.room.User
 import org.sbma_shakeit.data.web.FriendRequest
@@ -22,14 +20,13 @@ class UserListItemViewModel(itemUser: String) : ViewModel() {
 
     private val userProvider = UserProvider()
     private val friendsProvider = FriendsProvider()
-    private val friendRequests = mutableStateListOf<FriendRequest>()
+    private var friendRequests = listOf<FriendRequest>()
 
     init {
         viewModelScope.launch {
             val cUser = userProvider.getCurrentUser()
             isCurrentUser.value = isCurrentUser(cUser, itemUser)
-            friendsProvider.getFriendRequests(itemUser, friendRequests)
-            delay(1000)
+            friendRequests = friendsProvider.getFriendRequests(itemUser)
             isSentFriendReq.value = isRequestedForFriend(cUser.username, itemUser)
             isUserFriend.value = isUserFriend(cUser, itemUser)
         }

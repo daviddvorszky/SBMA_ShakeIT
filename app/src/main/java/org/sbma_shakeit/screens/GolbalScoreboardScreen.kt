@@ -24,6 +24,7 @@ fun GlobalScoreboardScreen(
     val shakeTypes = listOf("Long", "Violent", "Quick")
     val selectedIndex = remember { mutableStateOf(0) }
     val selectedShakeIndex = remember { mutableStateOf(0) }
+
     Column(
         Modifier
             .fillMaxSize()

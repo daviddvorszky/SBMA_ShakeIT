@@ -27,7 +27,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 //    val allUsers: List<User> = _allUsers
 
     private val _friendRequests = mutableStateListOf<FriendRequest>()
-    val friendRequests: List<FriendRequest> = _friendRequests
+    var friendRequests: List<FriendRequest> = _friendRequests
 
     private val friendsProvider = FriendsProvider()
     private val userProvider = UserProvider()
@@ -40,14 +40,15 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             Log.d("ALL USERS", userProvider.getAllUsers().size.toString())
             user.value = userProvider.getCurrentUser()
-            friendsProvider.getFriendRequests(user.value!!.username, _friendRequests)
+            if (user.value != null) {
+                _friendRequests.addAll(friendsProvider.getFriendRequests(user.value!!.username))
+            }
             friendsProvider.getFriends(_friends)
         }
         viewModelScope.launch(Dispatchers.IO) {
             updateUserList()
         }
     }
-
     fun getAll(): LiveData<List<User>> =
         roomDb.userDao().getAll()
 
@@ -96,15 +97,19 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun removeFriendRequest(receiver: String, sender: String) {
-        friendsProvider.removeFriendRequest(receiver, sender)
+        viewModelScope.launch {
+            friendsProvider.removeFriendRequest(receiver, sender)
+            // Update UI
+            _friendRequests.remove(FriendRequest(receiver, sender))
+        }
     }
 
     fun acceptFriendRequest(username: String, friend: String) {
         _friendRequests.clear()
         viewModelScope.launch {
             friendsProvider.acceptFriendRequest(username, friend)
-            delay(1000)
-            friendsProvider.getFriendRequests(user.value!!.username, _friendRequests)
+            // Update UI
+            _friendRequests.remove(FriendRequest(receiver = username, sender = friend))
         }
     }
 
@@ -123,6 +128,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             // Update both users friend lists in firestore
             friendsProvider.updateFriends(currentUser.username, updatedFriends)
             friendsProvider.updateFriends(friendsName, friendsFriendList)
+            _friends.removeIf { it.username == friendsName }
             delay(4000)
             user.value = userProvider.getCurrentUser()
             updateUserList()

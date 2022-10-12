@@ -3,12 +3,12 @@ package org.sbma_shakeit.data.web
 import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import org.sbma_shakeit.data.*
+import kotlinx.coroutines.CompletableDeferred
 import org.sbma_shakeit.data.room.Friends
 import org.sbma_shakeit.data.room.User
 
 /**
- Provides and handles friends related data from firestore
+Provides and handles friends related data from firestore
  */
 class FriendsProvider : UserProvider() {
 
@@ -26,6 +26,7 @@ class FriendsProvider : UserProvider() {
             listToAdd.add(userToAdd)
         }
     }
+
     suspend fun updateFriends(user: String, updatedFriends: List<String>) {
         Log.d("UPDATE FRIENDS", "CALLED")
         val userPath = getUserPath(user)
@@ -36,20 +37,26 @@ class FriendsProvider : UserProvider() {
 
             }
     }
+
     /**
-     Get friend requests for given user
+    Get friend requests for given user
      */
-    fun getFriendRequests(username: String, friendRequests: MutableList<FriendRequest>) {
+    suspend fun getFriendRequests(friend: String): List<FriendRequest> {
+        val def = CompletableDeferred<List<FriendRequest>>()
         friendRequestCollection
-            .whereEqualTo(FriendRequestKeys.RECEIVER, username)
+            .whereEqualTo(FriendRequestKeys.RECEIVER, friend)
             .get()
             .addOnSuccessListener { result ->
+                val list = mutableListOf<FriendRequest>()
                 for (request in result) {
                     val req = request.toObject(FriendRequest::class.java)
-                    friendRequests.add(req)
+                    list.add(req)
                 }
+                def.complete(list)
             }
+        return def.await()
     }
+
     /**
     Creates a friend request to firestore
      */
@@ -66,7 +73,7 @@ class FriendsProvider : UserProvider() {
     }
 
     /**
-     Removes friend request from firestore
+    Removes friend request from firestore
      */
     fun removeFriendRequest(receiver: String, sender: String) {
         friendRequestCollection
