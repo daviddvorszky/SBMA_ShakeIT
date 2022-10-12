@@ -27,8 +27,10 @@ class FriendsProvider : UserProvider() {
         }
     }
 
+    /**
+     * Updates users friend list in firestore
+     * */
     suspend fun updateFriends(user: String, updatedFriends: List<String>) {
-        Log.d("UPDATE FRIENDS", "CALLED")
         val userPath = getUserPath(user)
         userCollection
             .document(userPath)

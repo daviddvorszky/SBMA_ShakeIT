@@ -16,20 +16,8 @@ open class UserProvider {
     private val userCollection = db.collection(FirestoreCollections.USERS)
 
     /**
-     * Add all users from firestore to the given list
+     * Returns all users from firestore as a list
      * */
-//    fun getAllUsers(listToAdd: MutableList<User>) {
-//        userCollection
-//            .get()
-//            .addOnSuccessListener { result ->
-//                listToAdd.clear()
-//                for (user in result) {
-//                    val userToAdd = user.toObject(User::class.java)
-//                    listToAdd.add(userToAdd)
-//                }
-//            }
-//    }
-
     suspend fun getAllUsers(): List<User> {
         val def = CompletableDeferred<List<User>>()
         userCollection
@@ -83,6 +71,9 @@ open class UserProvider {
         return def.await()
     }
 
+    /**
+     * Get users firestore id
+     * */
     suspend fun getUserPath(username: String): String {
         val def = CompletableDeferred<String>()
         userCollection

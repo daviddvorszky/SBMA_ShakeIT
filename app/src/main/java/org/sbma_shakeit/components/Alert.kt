@@ -19,7 +19,7 @@ fun MyAlert(
         text = {
             Text(text)
         },
-        onDismissRequest = { /*TODO*/ },
+        onDismissRequest = dismissAction,
         confirmButton = {
             Button(onClick = confirmAction) {
                 Text("YES")
