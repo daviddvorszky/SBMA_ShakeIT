@@ -83,4 +83,14 @@ open class UserProvider {
             }
         return def.await()
     }
+
+    suspend fun removeUser(username: String) {
+        val userPath = getUserPath(username)
+        userCollection
+            .document(userPath)
+            .delete()
+            .addOnSuccessListener {
+                Log.d("removeUser", "removed $username")
+            }
+    }
 }

@@ -65,6 +65,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         roomDb.userDao().insertAll(users)
     }
 
+    fun removeUser(userName: String? = user.value?.username) {
+        userName ?: return
+        viewModelScope.launch {
+            userProvider.removeUser(userName)
+        }
+    }
+
 // Functions for ordering shakes
 
 //    fun orderUsersByLong() {
