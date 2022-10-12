@@ -84,13 +84,19 @@ open class UserProvider {
         return def.await()
     }
 
+    /**
+     * Removes user from firestore and authentication
+     * */
     suspend fun removeUser(username: String) {
         val userPath = getUserPath(username)
+        val userAuth = Firebase.auth.currentUser ?: return
         userCollection
             .document(userPath)
             .delete()
             .addOnSuccessListener {
                 Log.d("removeUser", "removed $username")
             }
+        userAuth
+            .delete()
     }
 }

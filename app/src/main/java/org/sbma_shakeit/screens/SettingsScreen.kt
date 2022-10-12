@@ -1,6 +1,9 @@
 package org.sbma_shakeit.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
@@ -8,8 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import org.sbma_shakeit.MainActivity.Companion.isDarkMode
 import org.sbma_shakeit.components.MyAlert
 import org.sbma_shakeit.navigation.Screen
@@ -27,9 +28,8 @@ fun SettingsScreen(
                 title = "Delete account",
                 text = "Do you want to remove this account from the app?",
                 confirmAction = {
-                    Firebase.auth.signOut()
-                    navController.navigate(Screen.Register.route)
                     userViewModel.removeUser()
+                    navController.navigate(Screen.Register.route)
                 },
                 dismissAction = { showAlert = false }
             )
