@@ -2,13 +2,11 @@ package org.sbma_shakeit.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.sbma_shakeit.components.buttons.FriendsButton
@@ -51,7 +49,6 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
         alertText = "Do you want to remove ${itemUser.username} from friends?"
         val confirm = {
             userViewModel.removeFromFriends(itemUser.username)
-//                            vm.isUserFriend.value = false
             isUserFriend.value = false
             isRequestSent.value = false
             isAlertVisible = false
@@ -125,7 +122,6 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
                 }
             }
         }
-//        Divider(color = Color.LightGray, thickness = 1.dp)
     }
 }
 

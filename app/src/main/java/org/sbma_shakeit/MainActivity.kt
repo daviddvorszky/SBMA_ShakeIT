@@ -10,6 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -29,6 +30,10 @@ import org.sbma_shakeit.viewmodels.users.AuthViewModel
 
 class MainActivity : ComponentActivity() {
 
+    companion object {
+        val isDarkMode = mutableStateOf(false)
+    }
+
     private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +44,7 @@ class MainActivity : ComponentActivity() {
         val context = this
 
         setContent {
-            SBMA_ShakeITTheme {
+            SBMA_ShakeITTheme(darkTheme = isDarkMode.value) {
                 navController = rememberNavController()
                 //MODIFIED
                 val scaffoldState = rememberScaffoldState()
