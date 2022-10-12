@@ -6,19 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [(User::class)], version = 1)
+@Database(entities = [(User::class), (Shake::class)], version = 2)
 @TypeConverters(TypeConverter::class)
-abstract class UserDB: RoomDatabase() {
+abstract class ShakeItDB: RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun shakeDao(): ShakeDao
 
     companion object {
-        private var sInstance: UserDB? = null
+        private var sInstance: ShakeItDB? = null
         @Synchronized
-        fun get(context:Context) : UserDB {
+        fun get(context:Context) : ShakeItDB {
             if (sInstance == null) {
                 sInstance =
                     Room.databaseBuilder(context.applicationContext,
-                    UserDB::class.java, "users.db").build()
+                    ShakeItDB::class.java, "users.db")
+                        .build()
             }
             return sInstance!!
         }
