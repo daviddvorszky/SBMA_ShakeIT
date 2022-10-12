@@ -76,7 +76,7 @@ fun FriendList(vm: UserViewModel = viewModel()) {
     val friendList = vm.friends
     LazyColumn {
         items(friendList) { friend ->
-            UserListItem(itemUser = friend, userViewModel = vm)
+            UserListItem(itemUser = friend, userViewModel = vm, isScore = false)
         }
     }
 

@@ -16,7 +16,7 @@ import org.sbma_shakeit.viewmodels.users.UserListItemViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
 
 @Composable
-fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
+fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean = true) {
 
     var username: String
 
@@ -100,7 +100,7 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
             Column() {
                 Text(text = username, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(3.dp))
-                Text(text = "Best score: ")
+                if (isScore) Text(text = "Best score: ")
             }
 
             if (!isCurrentUser.value) {
