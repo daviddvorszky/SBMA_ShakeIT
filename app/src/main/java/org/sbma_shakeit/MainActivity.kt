@@ -1,7 +1,9 @@
 package org.sbma_shakeit
 
 import android.Manifest
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,6 +40,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private lateinit var navController: NavHostController
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +50,11 @@ class MainActivity : ComponentActivity() {
         val authViewModel = AuthViewModel(application)
         authViewModel.auth.value = Firebase.auth
         val context = this
+
+        sharedPref = getSharedPreferences("pref", MODE_PRIVATE)
+        isDarkMode.value = sharedPref.getBoolean("isDarkMode", false)
+
+        Log.d("IS DARK MODE", isDarkMode.value.toString())
 
         val database = ShakeItDB.get(context)
 
@@ -157,6 +165,14 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sharedPref.edit().apply {
+            putBoolean("isDarkMode", isDarkMode.value)
+            apply()
         }
     }
 
