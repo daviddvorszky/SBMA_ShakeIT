@@ -1,5 +1,6 @@
 package org.sbma_shakeit
 
+import android.Manifest
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.ktx.auth
@@ -22,6 +24,7 @@ import org.sbma_shakeit.components.topMenuBar.AppBar
 import org.sbma_shakeit.components.topMenuBar.DrawerBody
 import org.sbma_shakeit.components.topMenuBar.DrawerHeader
 import org.sbma_shakeit.components.topMenuBar.MenuItem
+import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.navigation.nav_graph.SetupNavGraph
 import org.sbma_shakeit.ui.theme.SBMA_ShakeITTheme
@@ -34,9 +37,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        requestLocationPermission()
+
         val authViewModel = AuthViewModel(application)
         authViewModel.auth.value = Firebase.auth
         val context = this
+
+        val database = ShakeItDB.get(context)
 
         setContent {
             SBMA_ShakeITTheme {
@@ -137,11 +144,23 @@ class MainActivity : ComponentActivity() {
                     Box(modifier = Modifier.padding(innerPadding)) {
                         SetupNavGraph(
                             navController = navController,
-                            authViewModel = authViewModel
+                            authViewModel = authViewModel,
+                            application,
+                            context,
+                            database
                         )
                     }
                 }
             }
         }
+    }
+
+    private fun requestLocationPermission(){
+        ActivityCompat.requestPermissions(
+            this, arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ), 123
+        )
     }
 }
