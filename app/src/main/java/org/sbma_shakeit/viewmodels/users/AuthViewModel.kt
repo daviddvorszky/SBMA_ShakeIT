@@ -11,13 +11,13 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.sbma_shakeit.data.room.User
-import org.sbma_shakeit.data.room.UserDB
+import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.data.web.FirestoreCollections
 import org.sbma_shakeit.data.web.UserKeys
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     val auth = MutableLiveData<FirebaseAuth>()
-    private val userDB = UserDB.get(application)
+    private val shakeItDB = ShakeItDB.get(application)
     private val userCollection =
         Firebase.firestore.collection(FirestoreCollections.USERS)
     private var usernames =
@@ -35,7 +35,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             .addOnSuccessListener {
                 Log.d("CREATE USER", "SUCCESS")
                 viewModelScope.launch(Dispatchers.IO) {
-                    userDB.userDao().insertUser(user)
+                    shakeItDB.userDao().insertUser(user)
                 }
             }
             .addOnFailureListener {

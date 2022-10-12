@@ -33,6 +33,10 @@ interface UserDao {
     @Query("SELECT COUNT(username) FROM user")
     suspend fun getUserCount() : Int
 
+    @Transaction
+    @Query("SELECT * FROM user WHERE username = :username")
+    fun getUserByUsernameWithShakes(username: String): LiveData<UserWithShakes>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(users: List<User>)
 

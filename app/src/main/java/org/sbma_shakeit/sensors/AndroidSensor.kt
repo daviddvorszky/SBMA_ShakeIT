@@ -38,6 +38,7 @@ abstract class AndroidSensor(
             return
         }
         sensorManager.unregisterListener(this)
+        onStopListening?.let { it() }
     }
 
     override fun onSensorChanged(event: SensorEvent?) {

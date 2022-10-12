@@ -13,13 +13,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.sbma_shakeit.data.room.User
-import org.sbma_shakeit.data.room.UserDB
+import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.data.web.FriendRequest
 import org.sbma_shakeit.data.web.FriendsProvider
 import org.sbma_shakeit.data.web.UserProvider
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
-    private val roomDb = UserDB.get(application)
+    private val roomDb = ShakeItDB.get(application)
 
     val user = MutableLiveData<User?>(null)
 
