@@ -35,7 +35,7 @@ fun FriendListScreen(
     val list = listOf("Friends", "Requests")
 
     Column {
-        TabRow(selectedTabIndex = selectedIndex, backgroundColor = Color.White) {
+        TabRow(selectedTabIndex = selectedIndex, backgroundColor = Color.Transparent) {
             list.forEachIndexed { index, text ->
                 val selected = selectedIndex == index
                 Tab(

@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TabsView(selectedIndex: MutableState<Int>, headers: List<String>) {
-    TabRow(selectedTabIndex = selectedIndex.value, backgroundColor = Color.White) {
+    TabRow(selectedTabIndex = selectedIndex.value, backgroundColor = Color.Transparent) {
         headers.forEachIndexed { index, header ->
             val selected = selectedIndex.value == index
             Tab(

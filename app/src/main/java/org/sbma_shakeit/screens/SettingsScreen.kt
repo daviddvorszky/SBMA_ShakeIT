@@ -21,7 +21,7 @@ fun SettingsScreen(
 ) {
     val userViewModel: UserViewModel = viewModel()
     var showAlert by remember { mutableStateOf(false) }
-    Column(Modifier.padding(5.dp)) {
+    Column(Modifier.padding(10.dp)) {
         if (showAlert) {
             MyAlert(
                 title = "Delete account",
