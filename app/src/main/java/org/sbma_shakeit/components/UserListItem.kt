@@ -3,10 +3,13 @@ package org.sbma_shakeit.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.sbma_shakeit.components.buttons.FriendsButton
 import org.sbma_shakeit.components.buttons.FriendsButtonType
@@ -16,6 +19,8 @@ import org.sbma_shakeit.viewmodels.users.UserViewModel
 
 @Composable
 fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
+
+    var username: String
 
     val vm = UserListItemViewModel(itemUser.username)
     val isCurrentUser by remember { mutableStateOf(vm.isCurrentUser) }
@@ -67,36 +72,56 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel) {
     }
 
 
-    Card(elevation = 2.dp) {
+    Card(
+        elevation = 10.dp,
+        backgroundColor = MaterialTheme.colors.background
+    ) {
         Row(
-            Modifier.fillMaxWidth().padding(5.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            Modifier
+                .fillMaxWidth()
+                .padding(5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             if (isAlertVisible) MyAlert(
                 title = alertTitle, text = alertText,
                 confirmAction = alertConfirm, dismissAction = alertDismiss
             )
 
-            Text(itemUser.username)
-            // TODO: Add users shake scores
+            /* TODO: Add users shake scores
             Column {
 //            Text("Long ${itemUser.longShake.time}")
 //            Text("Quick ${itemUser.quickShake.score}")
 //            Text("Violent ${itemUser.violentShake.score}")
+            }*/
+
+            if (isCurrentUser.value)
+                username = "You"
+            else
+                username = itemUser.username
+
+            Column() {
+                Text(text = username, fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(text = "Best score: ")
             }
 
-            if (isCurrentUser.value) {
-                Text("YOU")
-            } else {
+            if (!isCurrentUser.value) {
                 if (isUserFriend.value) {
-                    FriendsButton(type = FriendsButtonType.FRIEND,
-                        onClickAction = isFriendAction)
+                    FriendsButton(
+                        type = FriendsButtonType.FRIEND,
+                        onClickAction = isFriendAction
+                    )
                 } else if (isRequestSent.value) {
-                    FriendsButton(type = FriendsButtonType.CANCEL,
-                        onClickAction = cancelRequestAction)
+                    FriendsButton(
+                        type = FriendsButtonType.CANCEL,
+                        onClickAction = cancelRequestAction
+                    )
                 } else {
-                    FriendsButton(type = FriendsButtonType.ADD,
-                        onClickAction = addFriendAction)
+                    FriendsButton(
+                        type = FriendsButtonType.ADD,
+                        onClickAction = addFriendAction
+                    )
                 }
             }
         }

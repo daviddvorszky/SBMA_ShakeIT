@@ -18,14 +18,14 @@ import org.sbma_shakeit.viewmodels.users.UserViewModel
 @Composable
 fun UserList(viewModel: UserViewModel, userList: State<List<User>>) {
 
-    val allUsers = viewModel.getAll().observeAsState(listOf())
+    //val allUsers = viewModel.getAll().observeAsState(listOf())
 
     LazyColumn {
         items(userList.value) { user ->
+            Spacer(Modifier.height(10.dp))
 //            Card(/*Modifier.padding(5.dp)*/) {
                 UserListItem(itemUser = user, userViewModel = viewModel)
 //            }
-            Spacer(Modifier.height(10.dp))
         }
     }
 }

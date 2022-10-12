@@ -3,6 +3,7 @@ package org.sbma_shakeit.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
@@ -12,6 +13,7 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -22,7 +24,7 @@ fun TabsView(selectedIndex: MutableState<Int>, headers: List<String>) {
             Tab(
                 modifier = if (selected) Modifier
                     .clip(RoundedCornerShape(50))
-                    .background(Color.LightGray)
+                    .background(MaterialTheme.colors.primaryVariant)
                     .height(50.dp)
                 else Modifier
                     .clip(RoundedCornerShape(50))

@@ -5,6 +5,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import org.sbma_shakeit.R
 import org.sbma_shakeit.ui.theme.Add
 import org.sbma_shakeit.ui.theme.Remove
@@ -17,11 +18,11 @@ fun FriendsButton(type: FriendsButtonType, onClickAction: () -> Unit = {}) {
     val buttonContent = ButtonContent(type)
 
     Button(
-        colors = ButtonDefaults.buttonColors(backgroundColor = buttonContent.backgroundColor),
+        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
         onClick = onClickAction
     ) {
         Row {
-            Text(buttonContent.text)
+            Text(buttonContent.text, fontWeight = FontWeight.Bold)
             Icon(
                 painterResource(buttonContent.icon),
                 contentDescription = buttonContent.contentDescription

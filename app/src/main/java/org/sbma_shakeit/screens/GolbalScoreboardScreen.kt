@@ -2,6 +2,7 @@ package org.sbma_shakeit.screens
 
 import android.app.Application
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -30,9 +31,14 @@ fun GlobalScoreboardScreen(
             .fillMaxSize()
             .padding(5.dp)) {
         TabsView(selectedIndex = selectedIndex, headers = list)
-        Text("Type")
+        Spacer(modifier = Modifier.height(5.dp))
+        //Text("Type", style = MaterialTheme.typography.h6)
         TabsView(selectedIndex = selectedShakeIndex, headers = shakeTypes)
-        Spacer(Modifier.height(5.dp))
+
+        Spacer(Modifier.height(30.dp))
+        Text(text = "Ranking:")
+
+        Spacer(Modifier.height(10.dp))
         if (selectedIndex.value == 0)
             UserList(viewModel = vm, allUsers)
         else
