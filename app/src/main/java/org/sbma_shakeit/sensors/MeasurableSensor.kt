@@ -4,6 +4,7 @@ abstract class MeasurableSensor(
     protected val sensorType: Int
 ) {
     protected var onSensorValueChanged: ((List<Float>) -> Unit)? = null
+    protected var onStopListening: (() -> Unit)? = null
 
     abstract val doesSensorExists: Boolean
 
@@ -12,5 +13,9 @@ abstract class MeasurableSensor(
 
     fun setOnSensorValuesChangedListener(listener: (List<Float>) -> Unit) {
         onSensorValueChanged = listener
+    }
+
+    fun setOnStopListeningCallback(callback: () -> Unit){
+        onStopListening = callback
     }
 }
