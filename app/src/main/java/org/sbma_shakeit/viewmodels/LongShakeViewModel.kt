@@ -1,15 +1,22 @@
 package org.sbma_shakeit.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.sbma_shakeit.data.room.Shake
+import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.MeasurableSensor
 import java.lang.System.currentTimeMillis
 import kotlin.math.sqrt
 
 class LongShakeViewModel(
-    shakeSensor: MeasurableSensor
+    shakeSensor: MeasurableSensor,
+    database: ShakeItDB
 ): ViewModel() {
     private val n = 20
     private val lastRecords = FloatArray(n)
@@ -58,6 +65,23 @@ class LongShakeViewModel(
             if(isShaking) {
                 currentTime = currentTimeMillis()
                 timePassed = (currentTime - startTime) / 1000
+            }
+        }
+
+        shakeSensor.setOnStopListeningCallback {
+            Log.d("SHAKE", "Long shake stopped: $timePassed sec")
+            GlobalScope.launch(Dispatchers.IO) {
+                database.shakeDao().insert(
+                    Shake(
+                        (Math.random()*10000).toInt(),
+                        Shake.TYPE_LONG,
+                        0,
+                        timePassed,
+                        "testuser",
+                        null,
+                        0f, 0f
+                    )
+                )
             }
         }
     }
