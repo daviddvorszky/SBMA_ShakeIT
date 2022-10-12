@@ -1,17 +1,22 @@
 package org.sbma_shakeit.viewmodels
 
+import android.app.Activity
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.MeasurableSensor
 import kotlin.math.sqrt
 
 class ViolentShakeViewModel(
-    shakeSensor: MeasurableSensor
-): ViewModel() {
+    activity: Activity,
+    database: ShakeItDB,
+    shakeSensor: MeasurableSensor,
+    username: String
+): ShakeViewModel(activity, database, username) {
 
-    var shakeIntensity by mutableStateOf(0.0f)
     var maxShakeIntensity by mutableStateOf(0.0f)
 
     init {
@@ -24,6 +29,10 @@ class ViolentShakeViewModel(
             shakeIntensity = sqrt(x*x + y*y + z*z)
             if(shakeIntensity > maxShakeIntensity)
                 maxShakeIntensity = shakeIntensity
+        }
+        shakeSensor.setOnStopListeningCallback {
+            score = maxShakeIntensity
+            Log.d("SHAKE", "Violent shake stopped, max intensity: $score")
         }
     }
 }
