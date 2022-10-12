@@ -54,8 +54,6 @@ class MainActivity : ComponentActivity() {
         sharedPref = getSharedPreferences("pref", MODE_PRIVATE)
         isDarkMode.value = sharedPref.getBoolean("isDarkMode", false)
 
-        Log.d("IS DARK MODE", isDarkMode.value.toString())
-
         val database = ShakeItDB.get(context)
 
         setContent {
