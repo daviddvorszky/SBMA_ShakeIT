@@ -1,31 +1,30 @@
 package org.sbma_shakeit.viewmodels
 
+import android.app.Activity
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.os.postDelayed
 import androidx.lifecycle.ViewModel
+import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.MeasurableSensor
 import kotlin.math.sqrt
 
 class QuickShakeViewModel(
-    shakeSensor: MeasurableSensor
-): ViewModel() {
+    activity: Activity,
+    database: ShakeItDB,
+    shakeSensor: MeasurableSensor,
+    username: String
+): ShakeViewModel(activity, database, username) {
     private val n = 100
     private val lastRecords = FloatArray(n)
     private var idx: Int = 0
     private var sum: Float = 0.0f
-    private val basicThreshold = 1f
-    private val violentThreshold = 4f
-
-    var shakeIntensity by mutableStateOf(0.0f)
-    var basicShake by mutableStateOf(false)
-    var violentShake by mutableStateOf(false)
 
     val mainHandler = Handler(Looper.getMainLooper())
-    var score by mutableStateOf(0)
 
     init {
         shakeSensor.setOnSensorValuesChangedListener { values ->
@@ -43,6 +42,10 @@ class QuickShakeViewModel(
 
             basicShake = shakeIntensity > basicThreshold
             violentShake = shakeIntensity > violentThreshold
+        }
+
+        shakeSensor.setOnStopListeningCallback {
+            Log.d("SHAKE", "Quick shake stopped, score: $score")
         }
     }
 
