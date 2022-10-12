@@ -7,7 +7,7 @@ import androidx.room.*
 data class Shake(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "type") val type: Int,
-    @ColumnInfo(name = "score") val score: Int,
+    @ColumnInfo(name = "score") val score: Float,
     @ColumnInfo(name = "duration") val duration: Long,
     @ColumnInfo(name = "parent_username") val parent: String,
     @ColumnInfo(name = "image_path") val imagePath: String?,
