@@ -1,7 +1,9 @@
 package org.sbma_shakeit
 
 import android.Manifest
+import android.content.Context
 import android.content.SharedPreferences
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -19,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.preference.PreferenceManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
+import org.osmdroid.config.Configuration
 import org.sbma_shakeit.components._title
 import org.sbma_shakeit.components.topMenuBar.AppBar
 import org.sbma_shakeit.components.topMenuBar.DrawerBody
@@ -31,12 +35,14 @@ import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.navigation.nav_graph.SetupNavGraph
 import org.sbma_shakeit.ui.theme.SBMA_ShakeITTheme
+import org.sbma_shakeit.viewmodels.LocationViewModel
 import org.sbma_shakeit.viewmodels.users.AuthViewModel
 
 class MainActivity : ComponentActivity() {
 
     companion object {
         val isDarkMode = mutableStateOf(false)
+        lateinit var lm: LocationManager
     }
 
     private lateinit var navController: NavHostController
@@ -44,6 +50,21 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        var locationViewModel = LocationViewModel(application = application, this, lm)
+
+
+        //PERMISSIONS CHECK
+        if (locationViewModel.hasPermission())
+            Log.d("DBG", "all permissions are granted")
+        else
+            Log.d("DBG", "one of the permissions is not granted")
+        //
+
+        //Osmandroid conf
+        Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
+        //
 
         requestLocationPermission()
 
