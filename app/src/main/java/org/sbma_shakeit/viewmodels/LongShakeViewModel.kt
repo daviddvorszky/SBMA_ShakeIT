@@ -18,9 +18,8 @@ import kotlin.math.sqrt
 class LongShakeViewModel(
     activity: Activity,
     database: ShakeItDB,
-    shakeSensor: MeasurableSensor,
-    username: String
-): ShakeViewModel(activity, database, username) {
+    var shakeSensor: MeasurableSensor,
+): ShakeViewModel(activity, database) {
     private val n = 20
     private val lastRecords = FloatArray(n)
     private var idx: Int = 0
@@ -47,6 +46,7 @@ class LongShakeViewModel(
             if(!isShaking && basicShake){
                 isShaking = true
                 startTime = currentTimeMillis()
+                timer.start()
             }
 
             // Stop measuring when the shake intensity falls below the basic threshold
@@ -54,15 +54,13 @@ class LongShakeViewModel(
                 isShaking = false
                 shakeSensor.stopListening()
             }
-
-            if(isShaking) {
-                currentTime = currentTimeMillis()
-                timePassed = (currentTime - startTime) / 1000
-            }
         }
 
         shakeSensor.setOnStopListeningCallback {
-            Log.d("SHAKE", "Long shake stopped: $timePassed sec")
+            Log.d("SHAKE", "Long shake stopped: ${timer.timeMillis/1000} sec")
+            isSensorRunning = false
+            timer.pause()
+            shakeExists = true
         }
     }
 }

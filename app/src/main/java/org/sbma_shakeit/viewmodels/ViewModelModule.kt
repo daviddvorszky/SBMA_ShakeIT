@@ -12,7 +12,7 @@ object ViewModelModule {
     fun provideLongShakeViewModel(app: Application, activity: Activity, database: ShakeItDB): LongShakeViewModel{
         if(longShakeViewModel == null){
             val shakeSensor = SensorModule.provideShakeSensor(app)
-            longShakeViewModel = LongShakeViewModel(activity, database, shakeSensor, "testuser")
+            longShakeViewModel = LongShakeViewModel(activity, database, shakeSensor)
         }
         return longShakeViewModel!!
     }

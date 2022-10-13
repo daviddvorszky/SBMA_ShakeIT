@@ -2,10 +2,11 @@ package org.sbma_shakeit.data.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.google.firebase.firestore.Exclude
 
 @Entity
 data class Shake(
-    @PrimaryKey val id: Int,
+    @PrimaryKey @Exclude var id: String,
     @ColumnInfo(name = "type") val type: Int,
     @ColumnInfo(name = "score") val score: Float,
     @ColumnInfo(name = "duration") val duration: Long,
@@ -20,7 +21,7 @@ data class Shake(
         const val TYPE_VIOLENT = 2
     }
     override fun toString(): String {
-        return "Shake $id, type: $type, score: $score, duration: $duration, image path: $imagePath, location: [$latitude, $longitude]"
+        return "Shake $id, type: $type, score: $score, duration: $duration, parent: $parent, image path: $imagePath, location: [$latitude, $longitude]"
     }
 }
 

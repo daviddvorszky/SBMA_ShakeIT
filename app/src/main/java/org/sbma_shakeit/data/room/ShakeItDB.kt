@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [(User::class), (Shake::class)], version = 2)
+@Database(entities = [(User::class), (Shake::class)], version = 3)
 @TypeConverters(TypeConverter::class)
 abstract class ShakeItDB: RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -20,6 +20,7 @@ abstract class ShakeItDB: RoomDatabase() {
                 sInstance =
                     Room.databaseBuilder(context.applicationContext,
                     ShakeItDB::class.java, "users.db")
+                        .fallbackToDestructiveMigration()
                         .build()
             }
             return sInstance!!

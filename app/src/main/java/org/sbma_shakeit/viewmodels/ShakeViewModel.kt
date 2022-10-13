@@ -14,12 +14,13 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.*
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
+import org.sbma_shakeit.data.web.ShakeProvider
+import org.sbma_shakeit.data.web.UserProvider
+import org.sbma_shakeit.tools.Timer
 
 open class ShakeViewModel(
     @SuppressLint("StaticFieldLeak") private val activity: Activity,
     private val database: ShakeItDB,
-    // TODO: username should come from auth provider
-    private val username: String
 ): ViewModel() {
     protected val basicThreshold = 1f
     protected val violentThreshold = 4f
@@ -29,16 +30,21 @@ open class ShakeViewModel(
     protected var startTime = 0L
     protected var currentTime = 0L
 
+    private val shakeProvider = ShakeProvider()
+
     private var fusedLocationClient: FusedLocationProviderClient
     var latitude by mutableStateOf(0.0)
     var longitude by mutableStateOf(0.0)
 
+    val timer by mutableStateOf(Timer())
+
+    var isSensorRunning by mutableStateOf(false)
     var isShaking by mutableStateOf(false)
     var shakeIntensity by mutableStateOf(0.0f)
     var basicShake by mutableStateOf(false)
     var violentShake by mutableStateOf(false)
-    var timePassed by mutableStateOf(0L)
     var score by mutableStateOf(0f)
+    var shakeExists by mutableStateOf(false)
 
     init {
         Log.d("pengb", "Shake View Model init")
@@ -46,9 +52,6 @@ open class ShakeViewModel(
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
         if(ActivityCompat.checkSelfPermission(activity.applicationContext,
             Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            fusedLocationClient.lastLocation.addOnSuccessListener {
-                Log.i("ShakeLocation", "latitude: ${it.latitude}, longitude: ${it.longitude}, etc: $it")
-            }
             Log.i("ShakeLocation", "FINE LOCATION access granted")
         }else{
             Log.d("pengb", "FINE LOCATION access NOT granted")
@@ -69,15 +72,18 @@ open class ShakeViewModel(
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
-    public fun saveShake(){
+    suspend fun saveShake(){
         // TODO: Shake id should come from Firestore database
-        val shakeId = (Math.random()*100_000).toInt()
+        val shakeId = (Math.random()*100_000).toString()
 
         // TODO: Image path should come from Firestore database
         val imagePath:String? = null
 
-        val shake = Shake(shakeId, shakeType, score, timePassed, username, imagePath, longitude.toFloat(), latitude.toFloat())
+        val userProvider = UserProvider()
+        val username = userProvider.getCurrentUser().username
+        val shake = Shake("", shakeType, score, timer.timeMillis, username, imagePath, longitude.toFloat(), latitude.toFloat())
         Log.d("SaveShake", "${shake.toString()}")
-        //database.shakeDao().insert(shake)
+
+        shakeProvider.saveShake(shake, database)
     }
 }
