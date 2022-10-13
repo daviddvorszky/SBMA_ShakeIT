@@ -3,7 +3,7 @@ package org.sbma_shakeit.data.web
 import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.tasks.await
 import org.sbma_shakeit.data.room.Friends
 import org.sbma_shakeit.data.room.User
 
@@ -43,21 +43,14 @@ class FriendsProvider : UserProvider() {
     /**
     Get friend requests for given user
      */
-    suspend fun getFriendRequests(friend: String): List<FriendRequest> {
-        val def = CompletableDeferred<List<FriendRequest>>()
-        friendRequestCollection
-            .whereEqualTo(FriendRequestKeys.RECEIVER, friend)
-            .get()
-            .addOnSuccessListener { result ->
-                val list = mutableListOf<FriendRequest>()
-                for (request in result) {
-                    val req = request.toObject(FriendRequest::class.java)
-                    list.add(req)
-                }
-                def.complete(list)
-            }
-        return def.await()
-    }
+    suspend fun getFriendRequests(friend: String): List<FriendRequest> =
+        try {
+            val result = friendRequestCollection
+                .whereEqualTo(FriendRequestKeys.RECEIVER, friend).get().await()
+            result.toObjects(FriendRequest::class.java)
+        } catch (e: Exception) {
+            throw e
+        }
 
     /**
     Creates a friend request to firestore

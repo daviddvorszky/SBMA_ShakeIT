@@ -1,8 +1,6 @@
 package org.sbma_shakeit.components
 
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 
 @Composable
@@ -21,12 +19,19 @@ fun MyAlert(
         },
         onDismissRequest = dismissAction,
         confirmButton = {
-            Button(onClick = confirmAction) {
+            Button(
+                colors = ButtonDefaults
+                    .buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                onClick = confirmAction
+            ) {
                 Text("YES")
             }
         },
         dismissButton = {
-            Button(onClick = dismissAction) {
+            Button(
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                onClick = dismissAction
+            ) {
                 Text("NO")
             }
         }

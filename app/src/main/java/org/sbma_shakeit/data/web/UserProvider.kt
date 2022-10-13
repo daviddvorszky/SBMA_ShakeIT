@@ -5,6 +5,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.tasks.await
 import org.sbma_shakeit.data.room.User
 
 /**
@@ -18,71 +19,52 @@ open class UserProvider {
     /**
      * Returns all users from firestore as a list
      * */
-    suspend fun getAllUsers(): List<User> {
-        val def = CompletableDeferred<List<User>>()
-        userCollection
-            .get()
-            .addOnSuccessListener { result ->
-                val list = mutableListOf<User>()
-                Log.d("SIZE IS", result.size().toString())
-                for (user in result) {
-                    val userToAdd = user.toObject(User::class.java)
-                    list.add(userToAdd)
-                }
-                def.complete(list)
-            }
-        return def.await()
-    }
+    suspend fun getAllUsers(): List<User> =
+        try {
+            val result = userCollection.get().await()
+            result.toObjects(User::class.java)
+        } catch (e: Exception) {
+            Log.e("getAllUsers", e.toString())
+            throw e
+        }
 
     /**
      * Get user object by its username
      * */
-    suspend fun getUserByUsername(username: String): User {
-        val def = CompletableDeferred<User>()
-        userCollection
-            .whereEqualTo(UserKeys.USERNAME, username)
-            .get()
-            .addOnSuccessListener {
-                if (it.documents.isNotEmpty()) {
-                    val res = it.documents.first()
-//                    userPath = res.id
-                    val userToAdd = res.toObject(User::class.java)
-                    if (userToAdd != null) def.complete(userToAdd)
-                }
-            }
-        return def.await()
-    }
+    suspend fun getUserByUsername(username: String): User =
+        try {
+            val result = userCollection.whereEqualTo(UserKeys.USERNAME, username).get().await()
+            result.first().toObject(User::class.java)
+        } catch (e: Exception) {
+            Log.e("getUserByUsername", e.toString())
+            throw e
+        }
 
     /**
      * Get signed in user by users email
      * */
-    suspend fun getCurrentUser(): User {
-        val def = CompletableDeferred<User>()
-        userCollection
-            .whereEqualTo(UserKeys.EMAIL, usersEmail)
-            .get()
-            .addOnSuccessListener { result ->
-                if (result.documents.isNotEmpty()) {
-                    val res = result.documents.first()
-                    val userToAdd = res.toObject(User::class.java)
-                    if (userToAdd != null) def.complete(userToAdd)
-                }
-            }
-        return def.await()
-    }
+    suspend fun getCurrentUser(): User =
+        try {
+            val result =
+                userCollection.whereEqualTo(UserKeys.EMAIL, usersEmail).get().await()
+            result.first().toObject(User::class.java)
+        } catch (e: Exception) {
+            Log.e("getCurrentUser", e.message ?: "error getting user")
+            throw e
+        }
+
 
     /**
      * Get users firestore id
      * */
-    suspend fun getUserPath(username: String): String {
-        val def = CompletableDeferred<String>()
-        userCollection
-            .whereEqualTo(UserKeys.USERNAME, username)
-            .get().addOnSuccessListener {
-                if (it.documents.first() != null) def.complete(it.documents.first().id)
-            }
-        return def.await()
-    }
+    suspend fun getUserPath(username: String): String =
+        try {
+            val result =
+                userCollection.whereEqualTo(UserKeys.USERNAME, username).get().await()
+            result.first().id
+        } catch (e: Exception) {
+            throw e
+        }
 
     /**
      * Removes user from firestore and authentication
