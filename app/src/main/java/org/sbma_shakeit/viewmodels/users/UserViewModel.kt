@@ -112,11 +112,12 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun acceptFriendRequest(username: String, friend: String) {
-        _friendRequests.clear()
         viewModelScope.launch {
             friendsProvider.acceptFriendRequest(username, friend)
             // Update UI
             _friendRequests.remove(FriendRequest(receiver = username, sender = friend))
+            val friendObj = userProvider.getUserByUsername(friend)
+            _friends.add(friendObj)
         }
     }
 

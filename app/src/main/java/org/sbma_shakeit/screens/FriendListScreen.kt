@@ -25,8 +25,8 @@ import org.sbma_shakeit.viewmodels.users.UserViewModel
 @Composable
 fun FriendListScreen(
     navController: NavController,
-    vm: UserViewModel = viewModel()
 ) {
+    val vm: UserViewModel = viewModel()
     // TODO: Get friends from room
     val friendList = vm.friends
     val friendReqs = vm.friendRequests
