@@ -2,6 +2,8 @@ package org.sbma_shakeit.screens
 
 import android.app.Activity
 import android.app.Application
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Card
@@ -10,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -32,22 +35,43 @@ fun NewShakeListScreen(
     val locationViewModel = LocationViewModel(application = Application(), Activity(), MainActivity.lm)
 
     Column(Modifier.fillMaxSize()) {
-        Text("New Shake List Screen")
-        Button(onClick = {
-            navController.navigate(Screen.QuickShake.route)
-        }) {
-            Text("Quick Shake")
+        Spacer(modifier = Modifier.height(5.dp))
+        Card(
+            elevation = 10.dp,
+            backgroundColor = MaterialTheme.colors.primary,
+            modifier = Modifier
+                .padding(10.dp)
+        ) {
+            Column(Modifier.fillMaxWidth()) {
+                Text("New Shake:", modifier = Modifier.padding(5.dp))
+
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .border(3.dp, MaterialTheme.colors.primary)
+                        .background(MaterialTheme.colors.background),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+
+                ) {
+                    Button(modifier = Modifier.padding(5.dp), onClick = {
+                        navController.navigate(Screen.QuickShake.route)
+                    }) {
+                        Text("Quick")
+                    }
+                    Button(modifier = Modifier.padding(5.dp), onClick = {
+                        navController.navigate(Screen.LongShake.route)
+                    }) {
+                        Text("Long")
+                    }
+                    Button(modifier = Modifier.padding(5.dp), onClick = {
+                        navController.navigate(Screen.ViolentShake.route)
+                    }) {
+                        Text("Violent")
+                    }
+                }
+            }
         }
-        Button(onClick = {
-            navController.navigate(Screen.LongShake.route)
-        }) {
-            Text("Long Shake")
-        }
-        Button(onClick = {
-            navController.navigate(Screen.ViolentShake.route)
-        }) {
-            Text("Violent Shake")
-        }
+
         Spacer(modifier = Modifier.height(10.dp))
         Card(
             elevation = 10.dp,
