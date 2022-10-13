@@ -15,7 +15,7 @@ class ViolentShakeViewModel(
     database: ShakeItDB,
     shakeSensor: MeasurableSensor,
     username: String
-): ShakeViewModel(activity, database, username) {
+): ShakeViewModel(activity, database) {
 
     var maxShakeIntensity by mutableStateOf(0.0f)
 

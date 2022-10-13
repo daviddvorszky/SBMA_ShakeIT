@@ -19,4 +19,5 @@ object FriendRequestKeys {
 object FirestoreCollections {
     const val USERS = "users"
     const val FRIEND_REQUESTS = "friendRequest"
+    const val SHAKES = "shakes"
 }
