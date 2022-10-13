@@ -77,7 +77,7 @@ open class ShakeViewModel(
         val shakeId = (Math.random()*100_000).toString()
 
         // TODO: Image path should come from Firestore database
-        val imagePath:String? = null
+        val imagePath = ""
 
         val userProvider = UserProvider()
         val username = userProvider.getCurrentUser().username
