@@ -51,6 +51,7 @@ fun UserProfileScreen(
             var userImage: ImageBitmap = ImageBitmap.imageResource(id = org.osmdroid.library.R.drawable.person)
 
             Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+
                 Spacer(modifier = Modifier.height(5.dp))
                 IconButton(onClick = { launcher.launch() }) {
                     Icon(Icons.Filled.Edit, contentDescription = "Localized description")
