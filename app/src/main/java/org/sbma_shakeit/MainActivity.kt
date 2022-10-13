@@ -15,6 +15,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.preference.PreferenceManager
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -34,6 +36,8 @@ import org.sbma_shakeit.components.topMenuBar.MenuItem
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.navigation.nav_graph.SetupNavGraph
+import org.sbma_shakeit.ui.theme.Green200
+import org.sbma_shakeit.ui.theme.Green500
 import org.sbma_shakeit.ui.theme.SBMA_ShakeITTheme
 import org.sbma_shakeit.viewmodels.LocationViewModel
 import org.sbma_shakeit.viewmodels.users.AuthViewModel
@@ -83,6 +87,11 @@ class MainActivity : ComponentActivity() {
                 val scaffoldState = rememberScaffoldState()
                 val scope = rememberCoroutineScope()
 
+                val systemUiController = rememberSystemUiController()
+                SideEffect {
+                    systemUiController.setSystemBarsColor(
+                        if (isDarkMode.value) Green200 else Green500)
+                }
                 Scaffold(
                     scaffoldState = scaffoldState,
                     topBar = {
