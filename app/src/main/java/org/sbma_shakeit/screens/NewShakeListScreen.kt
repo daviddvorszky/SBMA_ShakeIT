@@ -62,7 +62,7 @@ fun NewShakeListScreen(
 
 
 @Composable
-fun composeMap(): MapView {
+private fun composeMap(): MapView {
     val context = LocalContext.current
     val mapView = remember{
         MapView(context).apply { id = R.id.map }
@@ -71,7 +71,7 @@ fun composeMap(): MapView {
 }
 
 @Composable
-fun ShowMap(locationViewModel: LocationViewModel, navController: NavController){
+private fun ShowMap(locationViewModel: LocationViewModel, navController: NavController){
     val map = composeMap()
     var mapInizialized by remember(map){ mutableStateOf(false) }
     val marker = Marker(map)
