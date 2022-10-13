@@ -6,14 +6,14 @@ import com.google.firebase.firestore.Exclude
 
 @Entity
 data class Shake(
-    @PrimaryKey @Exclude var id: String,
-    @ColumnInfo(name = "type") val type: Int,
-    @ColumnInfo(name = "score") val score: Float,
-    @ColumnInfo(name = "duration") val duration: Long,
-    @ColumnInfo(name = "parent_username") val parent: String,
-    @ColumnInfo(name = "image_path") val imagePath: String?,
-    @ColumnInfo(name = "longitude") val longitude: Float,
-    @ColumnInfo(name = "latitude") val latitude: Float,
+    @PrimaryKey @Exclude var id: String = "",
+    @ColumnInfo(name = "type") var type: Int = -1,
+    @ColumnInfo(name = "score") var score: Float = 0f,
+    @ColumnInfo(name = "duration") var duration: Long = 0,
+    @ColumnInfo(name = "parent_username") var parent: String = "",
+    @ColumnInfo(name = "image_path") var imagePath: String = "",
+    @ColumnInfo(name = "longitude") var longitude: Float = 0f,
+    @ColumnInfo(name = "latitude") var latitude: Float = 0f,
 ){
     companion object{
         const val TYPE_LONG = 0
