@@ -18,7 +18,7 @@ class QuickShakeViewModel(
     database: ShakeItDB,
     shakeSensor: MeasurableSensor,
     username: String
-): ShakeViewModel(activity, database, username) {
+): ShakeViewModel(activity, database) {
     private val n = 100
     private val lastRecords = FloatArray(n)
     private var idx: Int = 0
