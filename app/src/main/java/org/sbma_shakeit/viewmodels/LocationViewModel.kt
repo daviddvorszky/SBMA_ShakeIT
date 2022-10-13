@@ -26,8 +26,8 @@ class LocationViewModel(application: Application, activity: Activity, lm: Locati
 
     //LIVEDATA TRACKING
     var speedLiveData = MutableLiveData<Float>(0f)
-    var latitudeLiveData = MutableLiveData<Double>(60.0)
-    var longitudeLiveData = MutableLiveData<Double>(25.0)
+    var latitudeLiveData = MutableLiveData<Double>(60.224086)
+    var longitudeLiveData = MutableLiveData<Double>(24.758160)
     var startingPointLiveData = MutableLiveData<Location>(Location(LocationManager.GPS_PROVIDER))
     var endingPointLiveData = MutableLiveData<Location>(Location(LocationManager.GPS_PROVIDER))
     var distanceFromStartingPoint = MutableLiveData<Float>(0f)
@@ -35,7 +35,7 @@ class LocationViewModel(application: Application, activity: Activity, lm: Locati
     //
 
     //LIVEDATA MAP
-    var currentGeoPoint = MutableLiveData<GeoPoint>(GeoPoint(60.0,25.0))
+    var currentGeoPoint = MutableLiveData<GeoPoint>(GeoPoint(60.224086, 24.758160))
     //
 
     fun hasPermission(): Boolean{                                                    //check permission to scan
