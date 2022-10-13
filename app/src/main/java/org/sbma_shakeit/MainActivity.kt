@@ -72,8 +72,7 @@ class MainActivity : ComponentActivity() {
         authViewModel.auth.value = Firebase.auth
         val context = this
 
-        sharedPref = getSharedPreferences("pref", MODE_PRIVATE)
-        isDarkMode.value = sharedPref.getBoolean("isDarkMode", false)
+        getSharedPrefs()
 
         val database = ShakeItDB.get(context)
 
@@ -193,6 +192,11 @@ class MainActivity : ComponentActivity() {
             putBoolean("isDarkMode", isDarkMode.value)
             apply()
         }
+    }
+
+    private fun getSharedPrefs() {
+        sharedPref = getSharedPreferences("pref", MODE_PRIVATE)
+        isDarkMode.value = sharedPref.getBoolean("isDarkMode", false)
     }
 
     private fun requestLocationPermission(){
