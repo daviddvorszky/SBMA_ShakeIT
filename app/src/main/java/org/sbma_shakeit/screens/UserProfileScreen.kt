@@ -7,6 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -33,6 +34,7 @@ import org.sbma_shakeit.MainActivity
 import org.sbma_shakeit.viewmodels.LocationViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
 import org.sbma_shakeit.R
+import org.sbma_shakeit.viewmodels.HistoryViewModel
 
 @Composable
 fun UserProfileScreen(
@@ -141,14 +143,18 @@ fun UserProfileScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                //Spacer(modifier = Modifier.height(10.dp))
                 Card(
-                    elevation = 10.dp,
+                    elevation = 5.dp,
                     backgroundColor = MaterialTheme.colors.background,
                     modifier = Modifier
                         .padding(10.dp)
                 ) {
-                    ShowMap(locationViewModel = locationViewModel, navController)
+                    Column(Modifier.fillMaxWidth().background(MaterialTheme.colors.primaryVariant)) {
+                        Text(text = "My shakes:", fontWeight = FontWeight.Bold)
+                        Spacer(modifier = Modifier.height(3.dp))
+                        ShowMap(locationViewModel = locationViewModel, navController)
+                    }
                 }
             }
     }
@@ -169,12 +175,8 @@ private fun composeMap(): MapView {
 private fun ShowMap(locationViewModel: LocationViewModel, navController: NavController){
     val map = composeMap()
     var mapInizialized by remember(map){ mutableStateOf(false) }
-    val marker = Marker(map)
-    val geoPoints = mutableListOf<GeoPoint>()
-    //replace with firebase data
-    geoPoints += GeoPoint(1.0, 2.0)
-    geoPoints += GeoPoint(20.0, 60.0)
-    geoPoints += GeoPoint(10.0, 10.0)
+    val vm = HistoryViewModel()
+
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
 
 
@@ -190,10 +192,10 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
         currentGeoPoint ?: return@AndroidView
         it.controller.setCenter(currentGeoPoint.value)
 
-        geoPoints.forEach{
+        vm.allShakes.forEach{
             var marker = Marker(map)
-            marker.position = it
-            marker.title = "You are here! latitude: "+it.latitude+" longitude: "+it.longitude
+            marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
+            marker.title = "Duration: "+it.duration+"Score: "+it.score
             map.overlays.add(marker)
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             marker.closeInfoWindow()
