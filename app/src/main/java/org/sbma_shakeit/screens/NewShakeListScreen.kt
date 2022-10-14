@@ -145,7 +145,7 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
 
                 marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
                 marker.title =
-                    "Friend: " + friendUsername + "-> Duration: " + it.duration + "Score: " + it.score
+                    "Friend: " + friendUsername + "-> Duration: " + it.duration + " Score: " + it.score
                 map.overlays.add(marker)
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             }
