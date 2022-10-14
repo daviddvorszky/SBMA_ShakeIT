@@ -35,11 +35,13 @@ class ScoreboardViewModel: ViewModel() {
             // TODO: get values for every list
         }
     }
+    // TODO: Order all users list by shake records
     private fun getGlobalLists(list: List<User>) {
 //        _longShakesAll.addAll()
 //        _violentShakesAll.addAll()
 //        _quickShakesAll.addAll()
     }
+    // TODO: Order friend list by shake records
     private fun getFriendsLists(list: List<User>) {
 //        _longShakesFriends.addAll()
 //        _violentShakesFriends.addAll()
