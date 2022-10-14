@@ -170,10 +170,11 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
     val map = composeMap()
     var mapInizialized by remember(map){ mutableStateOf(false) }
     val marker = Marker(map)
-    val markers = mutableListOf<Marker>()
-    markers += marker
-    markers += marker
-    markers += marker
+    val geoPoints = mutableListOf<GeoPoint>()
+    //replace with firebase data
+    geoPoints += GeoPoint(1.0, 2.0)
+    geoPoints += GeoPoint(20.0, 60.0)
+    geoPoints += GeoPoint(10.0, 10.0)
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
 
 
@@ -188,11 +189,16 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
     AndroidView({map}){
         currentGeoPoint ?: return@AndroidView
         it.controller.setCenter(currentGeoPoint.value)
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        marker.position = currentGeoPoint.value
-        marker.closeInfoWindow()
-        marker.title = "You are here! latitude: "+currentGeoPoint.value?.latitude+" longitude: "+currentGeoPoint.value?.longitude
-        map.overlays.add(marker)
+
+        geoPoints.forEach{
+            var marker = Marker(map)
+            marker.position = it
+            marker.title = "You are here! latitude: "+it.latitude+" longitude: "+it.longitude
+            map.overlays.add(marker)
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            marker.closeInfoWindow()
+        }
+
         map.invalidate()
     }
 }
