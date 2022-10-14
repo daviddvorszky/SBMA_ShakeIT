@@ -2,6 +2,7 @@ package org.sbma_shakeit.viewmodels
 
 import android.app.Activity
 import android.app.Application
+import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.SensorModule
 
@@ -10,6 +11,7 @@ object ViewModelModule {
     private var longShakeViewModel: LongShakeViewModel? = null
     private var quickShakeViewModel: QuickShakeViewModel? = null
     private var violentShakeViewModel: ViolentShakeViewModel? = null
+    private var showShakeViewModel: SingleShakeViewModel? = null
 
     fun provideLongShakeViewModel(app: Application, activity: Activity, database: ShakeItDB): LongShakeViewModel{
         if(longShakeViewModel == null){
@@ -33,5 +35,12 @@ object ViewModelModule {
             violentShakeViewModel = ViolentShakeViewModel(activity, database, shakeSensor)
         }
         return violentShakeViewModel!!
+    }
+
+    fun provideShowShakeViewModel(): SingleShakeViewModel{
+        if(showShakeViewModel == null){
+            showShakeViewModel = SingleShakeViewModel()
+        }
+        return showShakeViewModel!!
     }
 }

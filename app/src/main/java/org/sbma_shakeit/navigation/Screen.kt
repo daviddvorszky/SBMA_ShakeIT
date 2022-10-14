@@ -21,4 +21,14 @@ sealed class Screen(val route: String){
     object Register : Screen(route = "register_screen")
     object Login : Screen(route = "login_screen")
     object Settings : Screen(route = "settings")
+    object Shake : Screen(route = "shake")
+
+    fun withArgs(vararg args: String): String {
+        return buildString {
+            append(route)
+            args.forEach { arg ->
+                append("/$arg")
+            }
+        }
+    }
 }

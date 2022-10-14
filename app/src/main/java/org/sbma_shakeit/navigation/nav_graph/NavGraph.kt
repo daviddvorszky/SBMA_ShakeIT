@@ -14,6 +14,8 @@ import org.sbma_shakeit.navigation.NEW_SHAKE_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.ROOT_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.screens.SettingsScreen
+import org.sbma_shakeit.screens.ShakeScreen
+import org.sbma_shakeit.viewmodels.SingleShakeViewModel
 import org.sbma_shakeit.viewmodels.users.AuthViewModel
 
 @Composable
@@ -22,7 +24,8 @@ fun SetupNavGraph(
     authViewModel: AuthViewModel,
     application: Application,
     activity: Activity,
-    database: ShakeItDB
+    database: ShakeItDB,
+    showShakeViewModel: SingleShakeViewModel
 ) {
     val startDestination =
         if (Firebase.auth.currentUser != null) NEW_SHAKE_GRAPH_ROUTE
@@ -52,6 +55,12 @@ fun SetupNavGraph(
             route = Screen.Settings.route
         ) {
             SettingsScreen(navController = navController)
+        }
+
+        composable(
+            route = Screen.Shake.route
+        ) {
+            ShakeScreen(showShakeViewModel)
         }
     }
 }
