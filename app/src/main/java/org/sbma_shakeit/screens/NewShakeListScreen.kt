@@ -128,10 +128,12 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
 
         mapInizialized = true
     }
+
+    var shakesFriend by remember { mutableStateOf(listOf<Shake>()) }
     AndroidView({map}){
         currentGeoPoint ?: return@AndroidView
         it.controller.setCenter(currentGeoPoint.value)
-        var shakesFriend = listOf<Shake>()
+
 
         friendList.forEach{
             val friendUsername = it.username//for each friend of yours
@@ -144,10 +146,9 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
             shakesFriend.forEach{                   //for each shake of it
                 val marker = Marker(map)
                 marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
-                marker.title = friendUsername+"-> Duration: "+it.duration+"Score: "+it.score
+                marker.title = "Friend: "+friendUsername+"-> Duration: "+it.duration+"Score: "+it.score
                 map.overlays.add(marker)
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                marker.closeInfoWindow()
             }
         }
         map.invalidate()
