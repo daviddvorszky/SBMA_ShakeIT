@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [(User::class), (Shake::class)], version = 4)
+@Database(entities = [(User::class), (Shake::class)], version = 5)
 @TypeConverters(TypeConverter::class)
 abstract class ShakeItDB: RoomDatabase() {
     abstract fun userDao(): UserDao
