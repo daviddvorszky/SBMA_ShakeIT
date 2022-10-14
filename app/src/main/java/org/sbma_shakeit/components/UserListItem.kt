@@ -104,7 +104,9 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean 
             Column() {
                 Text(text = username, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(3.dp))
-                if (isScore) Text(text = "Best score: ${(shake.value.value?.duration?.div(1000)) ?: "0"} sec")
+                if (isScore) {
+                    Text(text = "Best score: ${(shake.value.value?.duration?.div(1000)) ?: "0"} sec")
+                }
             }
 
             if (!isCurrentUser.value) {
