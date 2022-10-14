@@ -146,12 +146,15 @@ fun UserProfileScreen(
                 //Spacer(modifier = Modifier.height(10.dp))
                 Card(
                     elevation = 5.dp,
-                    backgroundColor = MaterialTheme.colors.background,
-                    modifier = Modifier
-                        .padding(10.dp)
+                    backgroundColor = MaterialTheme.colors.primaryVariant,
+                    modifier = Modifier.padding(5.dp)
                 ) {
-                    Column(Modifier.fillMaxWidth().background(MaterialTheme.colors.primaryVariant)) {
-                        Text(text = "My shakes:", fontWeight = FontWeight.Bold)
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(1.dp)
+                    ) {
+                        Text(text = "My shakes:", fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
                         Spacer(modifier = Modifier.height(3.dp))
                         ShowMap(locationViewModel = locationViewModel, navController)
                     }
