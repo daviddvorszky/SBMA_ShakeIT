@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.recyclerview.widget.SortedList
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -34,6 +35,7 @@ import org.sbma_shakeit.MainActivity
 import org.sbma_shakeit.viewmodels.LocationViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
 import org.sbma_shakeit.R
+import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.viewmodels.HistoryViewModel
 
 @Composable
@@ -44,6 +46,23 @@ fun UserProfileScreen(
     val user = vm.getCurrentUser().observeAsState()
     val userData = user.value ?: return
     val locationViewModel = LocationViewModel(application = Application(), Activity(), MainActivity.lm)
+    val vm = HistoryViewModel()
+    var maxLongShake = 0L
+    var maxQuickShake = 0L
+    var maxViolentShake = 0L
+
+    vm.longShakes.forEach{
+        if (it.duration > maxLongShake)
+            maxLongShake = it.duration
+    }
+    vm.quickShakes.forEach{
+        if (it.duration > maxQuickShake)
+            maxQuickShake = it.duration
+    }
+    vm.violentShakes.forEach{
+        if (it.duration > maxQuickShake)
+            maxViolentShake = it.duration
+    }
 //    val date = userData.quickShake.created
 //    val f = SimpleDateFormat("dd.MM.yyyy").format(date)
 
@@ -107,7 +126,7 @@ fun UserProfileScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "Long shake time: ", fontWeight = FontWeight.Bold)
-                        Text(userData.longShake.toString())
+                        Text(maxLongShake.toString())
                     }
                 }
                 Card(
@@ -123,7 +142,7 @@ fun UserProfileScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "Violent shake score: ", fontWeight = FontWeight.Bold)
-                        Text(userData.violentShake.toString())
+                        Text(maxViolentShake.toString())
                     }
                 }
                 Card(
@@ -139,7 +158,7 @@ fun UserProfileScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "Quick shake score: ", fontWeight = FontWeight.Bold)
-                        Text(userData.quickShake.toString())
+                        Text(maxQuickShake.toString())
                     }
                 }
 
