@@ -16,6 +16,7 @@ import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.data.web.ShakeProvider
 import org.sbma_shakeit.data.web.UserProvider
+import org.sbma_shakeit.tools.Stopper
 import org.sbma_shakeit.tools.Timer
 
 open class ShakeViewModel(
@@ -36,6 +37,7 @@ open class ShakeViewModel(
     var latitude by mutableStateOf(0.0)
     var longitude by mutableStateOf(0.0)
 
+    val stopper by mutableStateOf(Stopper())
     val timer by mutableStateOf(Timer())
 
     var isSensorRunning by mutableStateOf(false)
@@ -73,15 +75,14 @@ open class ShakeViewModel(
     }
 
     suspend fun saveShake(){
-        // TODO: Shake id should come from Firestore database
-        val shakeId = (Math.random()*100_000).toString()
-
         // TODO: Image path should come from Firestore database
         val imagePath = ""
 
         val userProvider = UserProvider()
         val username = userProvider.getCurrentUser().username
-        val shake = Shake("", shakeType, score, timer.timeMillis, username, imagePath, longitude.toFloat(), latitude.toFloat())
+        val duration = if(shakeType == Shake.TYPE_QUICK) 60_000 else stopper.timeMillis
+
+        val shake = Shake("", shakeType, score, duration, username, imagePath, longitude.toFloat(), latitude.toFloat())
         Log.d("SaveShake", "${shake.toString()}")
 
         shakeProvider.saveShake(shake, database)

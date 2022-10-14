@@ -36,13 +36,13 @@ fun LongShakeScreen(
             color = Color.White,
         )
         Text(
-            text = viewModel.timer.formattedTime
+            text = viewModel.stopper.formattedTime
         )
         Button(
             onClick = {
+                viewModel.stopper.reset()
                 viewModel.shakeSensor.startListening()
                 viewModel.isSensorRunning = true
-                viewModel.timer.reset()
             },
             enabled = !viewModel.isSensorRunning
         ) {

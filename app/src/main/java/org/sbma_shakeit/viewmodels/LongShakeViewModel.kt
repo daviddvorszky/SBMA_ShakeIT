@@ -2,13 +2,6 @@ package org.sbma_shakeit.viewmodels
 
 import android.app.Activity
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.MeasurableSensor
@@ -46,7 +39,7 @@ class LongShakeViewModel(
             if(!isShaking && basicShake){
                 isShaking = true
                 startTime = currentTimeMillis()
-                timer.start()
+                stopper.start()
             }
 
             // Stop measuring when the shake intensity falls below the basic threshold
@@ -57,9 +50,9 @@ class LongShakeViewModel(
         }
 
         shakeSensor.setOnStopListeningCallback {
-            Log.d("SHAKE", "Long shake stopped: ${timer.timeMillis/1000} sec")
+            Log.d("SHAKE", "Long shake stopped: ${stopper.timeMillis/1000} sec")
             isSensorRunning = false
-            timer.pause()
+            stopper.pause()
             shakeExists = true
         }
     }
