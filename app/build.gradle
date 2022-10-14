@@ -70,6 +70,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.1.0'
 
     // Livedata
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"

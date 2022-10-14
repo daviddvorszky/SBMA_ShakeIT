@@ -82,8 +82,6 @@ open class ShakeViewModel(
                 val location = p0.lastLocation
                 latitude = location?.latitude ?: latitude
                 longitude = location?.longitude ?: longitude
-
-                Log.d("pengb", "${latitude} ${longitude}")
             }
         }
         val locationRequest = LocationRequest
@@ -104,7 +102,9 @@ open class ShakeViewModel(
         val shake = Shake("", shakeType, score, duration, username, imagePath, longitude.toFloat(), latitude.toFloat())
         Log.d("SaveShake", "${shake.toString()}")
 
-        shakeProvider.saveShake(shake, database)
+        val image = if(this::photoUri.isInitialized) File(photoUri.path) else null
+
+        shakeProvider.saveShake(shake, database, image)
     }
 
     fun handleImageCapture(uri: Uri){
