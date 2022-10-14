@@ -10,31 +10,39 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class Timer {
-
-    var formattedTime by mutableStateOf("00:00:000")
+    var formattedTime by mutableStateOf("60:00:000")
+    private lateinit var callback: () -> Unit
 
     private var coroutineScope = CoroutineScope(Dispatchers.Main)
     private var isActive = false
 
-    var timeMillis = 0L
-    private var lastTimestamp = 0L
+    private var timeMillis = 0L
+    private var stopTimestamp = 0L
+
+    fun setStopCallback(stopCallback: ()->Unit){
+        callback = stopCallback
+    }
 
     fun start(){
         if(isActive) return
 
         coroutineScope.launch {
-            lastTimestamp = System.currentTimeMillis()
+            stopTimestamp = System.currentTimeMillis() + 60_000
             this@Timer.isActive = true
             while(this@Timer.isActive){
                 delay(10L)
-                timeMillis += System.currentTimeMillis() - lastTimestamp
-                lastTimestamp = System.currentTimeMillis()
+                timeMillis = stopTimestamp - System.currentTimeMillis()
+                if(timeMillis <= 0){
+                    timeMillis = 0
+                    pause()
+                    callback.invoke()
+                }
                 formattedTime = formatTime(timeMillis)
             }
         }
     }
 
-    fun pause(){
+    private fun pause(){
         isActive = false
     }
 
@@ -42,8 +50,8 @@ class Timer {
         coroutineScope.cancel()
         coroutineScope = CoroutineScope(Dispatchers.Main)
         timeMillis = 0L
-        lastTimestamp = 0L
-        formattedTime = "00:00:000"
+        stopTimestamp = 0L
+        formattedTime = "60:00:000"
         isActive = false
     }
 
