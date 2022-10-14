@@ -2,6 +2,7 @@ package org.sbma_shakeit.screens
 
 import android.app.Activity
 import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -41,6 +42,7 @@ fun NewShakeListScreen(
 
     //MAP VARIABLES
     val locationViewModel = LocationViewModel(application = Application(), Activity(), MainActivity.lm)
+    val map = composeMap()
 
     Column(Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(5.dp))
@@ -87,7 +89,7 @@ fun NewShakeListScreen(
             modifier = Modifier
                 .padding(10.dp)
         ) {
-            ShowMap(locationViewModel = locationViewModel, navController)
+            ShowMap(locationViewModel = locationViewModel, navController, map)
         }
     }
 }
@@ -103,8 +105,7 @@ private fun composeMap(): MapView {
 }
 
 @Composable
-private fun ShowMap(locationViewModel: LocationViewModel, navController: NavController){
-    val map = composeMap()
+private fun ShowMap(locationViewModel: LocationViewModel, navController: NavController, map: MapView){
     var mapInizialized by remember(map){ mutableStateOf(false) }
     val marker = Marker(map)
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
@@ -129,24 +130,22 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
         mapInizialized = true
     }
 
-    var shakesFriend by remember { mutableStateOf(listOf<Shake>()) }
+    var shakesFriend  = locationViewModel.shakesFriend.observeAsState()
     AndroidView({map}){
         currentGeoPoint ?: return@AndroidView
         it.controller.setCenter(currentGeoPoint.value)
 
 
-        friendList.forEach{
-            val friendUsername = it.username//for each friend of yours
+        friendList.forEach{                                         //for each friend of yours
+            val friendUsername = it.username
+            locationViewModel.getFriendsShakes(it)
 
-            GlobalScope.launch {
-                val awt = async { shakesFriend = sp.getShakesOfUser(it.username) }
-                awt.await()
-            }
-
-            shakesFriend.forEach{                   //for each shake of it
+            shakesFriend.value?.forEach{                                   //for each shake of it
                 val marker = Marker(map)
+
                 marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
-                marker.title = "Friend: "+friendUsername+"-> Duration: "+it.duration+"Score: "+it.score
+                marker.title =
+                    "Friend: " + friendUsername + "-> Duration: " + it.duration + "Score: " + it.score
                 map.overlays.add(marker)
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             }
