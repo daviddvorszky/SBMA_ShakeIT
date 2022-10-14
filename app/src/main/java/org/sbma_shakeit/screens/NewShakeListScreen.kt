@@ -16,15 +16,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.sbma_shakeit.MainActivity
 import org.sbma_shakeit.R
+import org.sbma_shakeit.data.room.Shake
+import org.sbma_shakeit.data.web.ShakeProvider
 import org.sbma_shakeit.navigation.Screen
+import org.sbma_shakeit.viewmodels.HistoryViewModel
 import org.sbma_shakeit.viewmodels.LocationViewModel
+import org.sbma_shakeit.viewmodels.users.UserViewModel
 
 @Composable
 fun NewShakeListScreen(
@@ -100,6 +108,10 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
     var mapInizialized by remember(map){ mutableStateOf(false) }
     val marker = Marker(map)
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
+    val vmh = HistoryViewModel()
+    val sp = ShakeProvider()
+    val vm: UserViewModel = viewModel()
+    val friendList = vm.friends
 
     val geoPoints = mutableListOf<GeoPoint>()
     //replace with firebase data
@@ -119,14 +131,24 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
     AndroidView({map}){
         currentGeoPoint ?: return@AndroidView
         it.controller.setCenter(currentGeoPoint.value)
+        var shakesFriend = listOf<Shake>()
 
-        geoPoints.forEach{
-            var marker = Marker(map)
-            marker.position = it
-            marker.title = "You are here! latitude: "+it.latitude+" longitude: "+it.longitude
-            map.overlays.add(marker)
-            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            marker.closeInfoWindow()
+        friendList.forEach{
+            GlobalScope.launch {
+                var awt = async { shakesFriend = sp.getShakesOfUser(it.username) }
+                awt.await()
+            }
+
+            var friendUsername = it.username
+
+            shakesFriend.forEach{
+                var marker = Marker(map)
+                marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
+                marker.title = friendUsername+"-> Duration: "+it.duration+"Score: "+it.score
+                map.overlays.add(marker)
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                marker.closeInfoWindow()
+            }
         }
         map.invalidate()
     }

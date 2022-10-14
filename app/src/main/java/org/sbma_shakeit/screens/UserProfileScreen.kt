@@ -226,10 +226,3 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
         map.invalidate()
     }
 }
-
-
-//        Text("date $f")
-//        Text("Long shake time ${userData.longShake.time}s")
-//        Text("Violent shake score ${userData.violentShake.score}")
-//        Text("Quick shake score ${userData.quickShake.score}")
-//            FriendRequestList()
