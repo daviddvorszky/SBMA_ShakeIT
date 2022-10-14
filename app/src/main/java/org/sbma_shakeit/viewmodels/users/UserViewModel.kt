@@ -56,6 +56,8 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         val userEmail = Firebase.auth.currentUser?.email
         return roomDb.userDao().getUserByEmail(userEmail ?: "")
     }
+//    fun getUserByUserName(username: String): LiveData<User> =
+//        roomDb.userDao().getUserByUsername(username)
 
     private suspend fun updateUserList() {
         val users = userProvider.getAllUsers()
