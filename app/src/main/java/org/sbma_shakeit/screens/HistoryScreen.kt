@@ -25,10 +25,10 @@ fun HistoryScreen(
     Column {
         TabsView(selectedIndex = selectedIndex, headers = tabHeaders)
         when (selectedIndex.value) {
-            0 -> ShakeHistoryList(shakes = allShakes)
-            1 -> ShakeHistoryList(shakes = longShakes)
-            2 -> ShakeHistoryList(shakes = violentShakes)
-            3 -> ShakeHistoryList(shakes = quickShakes)
+            0 -> ShakeHistoryList(shakes = allShakes, navController)
+            1 -> ShakeHistoryList(shakes = longShakes, navController)
+            2 -> ShakeHistoryList(shakes = violentShakes, navController)
+            3 -> ShakeHistoryList(shakes = quickShakes, navController)
         }
     }
 }

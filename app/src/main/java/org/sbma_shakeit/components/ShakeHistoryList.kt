@@ -1,5 +1,7 @@
 package org.sbma_shakeit.components
 
+import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import org.sbma_shakeit.data.room.Shake
+import org.sbma_shakeit.navigation.Screen
+import org.sbma_shakeit.viewmodels.ViewModelModule
 
 private fun getType(type: Int): String =
     when (type) {
@@ -24,7 +29,7 @@ private fun getType(type: Int): String =
     }
 
 @Composable
-fun ShakeHistoryList(shakes: State<List<Shake>>) {
+fun ShakeHistoryList(shakes: State<List<Shake>>, navController: NavController) {
     LazyColumn(
         Modifier
             .fillMaxSize()
@@ -45,12 +50,17 @@ fun ShakeHistoryList(shakes: State<List<Shake>>) {
         items(shakes.value) { shake ->
             Card(
                 Modifier.padding(vertical = 5.dp),
-                backgroundColor = MaterialTheme.colors.primaryVariant
+                backgroundColor = MaterialTheme.colors.primaryVariant,
             ) {
                 Row(
                     Modifier
                         .fillParentMaxWidth()
-                        .padding(5.dp),
+                        .padding(5.dp)
+                        .clickable {
+                            val vm = ViewModelModule.provideShowShakeViewModel()
+                            vm.setShake_(shake)
+                            navController.navigate(Screen.Shake.route)
+                        },
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(getType(shake.type))

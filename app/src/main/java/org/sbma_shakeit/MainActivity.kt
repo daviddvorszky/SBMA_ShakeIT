@@ -40,6 +40,7 @@ import org.sbma_shakeit.ui.theme.Green200
 import org.sbma_shakeit.ui.theme.Green500
 import org.sbma_shakeit.ui.theme.SBMA_ShakeITTheme
 import org.sbma_shakeit.viewmodels.LocationViewModel
+import org.sbma_shakeit.viewmodels.ViewModelModule
 import org.sbma_shakeit.viewmodels.users.AuthViewModel
 
 class MainActivity : ComponentActivity() {
@@ -188,7 +189,8 @@ class MainActivity : ComponentActivity() {
                             authViewModel = authViewModel,
                             application,
                             context,
-                            database
+                            database,
+                            ViewModelModule.provideShowShakeViewModel()
                         )
                     }
                 }
