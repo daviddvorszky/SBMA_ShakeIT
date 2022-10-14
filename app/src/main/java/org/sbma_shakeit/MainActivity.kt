@@ -71,6 +71,7 @@ class MainActivity : ComponentActivity() {
         //
 
         requestLocationPermission()
+        requestCameraPermission()
 
         val authViewModel = AuthViewModel(application)
         authViewModel.auth.value = Firebase.auth
@@ -214,6 +215,12 @@ class MainActivity : ComponentActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ), 123
+        )
+    }
+
+    private fun requestCameraPermission(){
+        ActivityCompat.requestPermissions(
+            this, arrayOf(Manifest.permission.CAMERA), 124
         )
     }
 }
