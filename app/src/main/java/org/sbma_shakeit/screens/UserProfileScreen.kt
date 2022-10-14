@@ -7,6 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.recyclerview.widget.SortedList
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -33,6 +35,8 @@ import org.sbma_shakeit.MainActivity
 import org.sbma_shakeit.viewmodels.LocationViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
 import org.sbma_shakeit.R
+import org.sbma_shakeit.data.room.Shake
+import org.sbma_shakeit.viewmodels.HistoryViewModel
 
 @Composable
 fun UserProfileScreen(
@@ -42,6 +46,23 @@ fun UserProfileScreen(
     val user = vm.getCurrentUser().observeAsState()
     val userData = user.value ?: return
     val locationViewModel = LocationViewModel(application = Application(), Activity(), MainActivity.lm)
+    val vm = HistoryViewModel()
+    var maxLongShake = 0L
+    var maxQuickShake = 0L
+    var maxViolentShake = 0L
+
+    vm.longShakes.forEach{
+        if (it.duration > maxLongShake)
+            maxLongShake = it.duration
+    }
+    vm.quickShakes.forEach{
+        if (it.duration > maxQuickShake)
+            maxQuickShake = it.duration
+    }
+    vm.violentShakes.forEach{
+        if (it.duration > maxQuickShake)
+            maxViolentShake = it.duration
+    }
 //    val date = userData.quickShake.created
 //    val f = SimpleDateFormat("dd.MM.yyyy").format(date)
 
@@ -105,7 +126,7 @@ fun UserProfileScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "Long shake time: ", fontWeight = FontWeight.Bold)
-                        Text(userData.longShake.toString())
+                        Text(maxLongShake.toString())
                     }
                 }
                 Card(
@@ -121,7 +142,7 @@ fun UserProfileScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "Violent shake score: ", fontWeight = FontWeight.Bold)
-                        Text(userData.violentShake.toString())
+                        Text(maxViolentShake.toString())
                     }
                 }
                 Card(
@@ -137,18 +158,25 @@ fun UserProfileScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(text = "Quick shake score: ", fontWeight = FontWeight.Bold)
-                        Text(userData.quickShake.toString())
+                        Text(maxQuickShake.toString())
                     }
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                //Spacer(modifier = Modifier.height(10.dp))
                 Card(
-                    elevation = 10.dp,
-                    backgroundColor = MaterialTheme.colors.background,
-                    modifier = Modifier
-                        .padding(10.dp)
+                    elevation = 5.dp,
+                    backgroundColor = MaterialTheme.colors.primaryVariant,
+                    modifier = Modifier.padding(5.dp)
                 ) {
-                    ShowMap(locationViewModel = locationViewModel, navController)
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(1.dp)
+                    ) {
+                        Text(text = "My shakes:", fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
+                        Spacer(modifier = Modifier.height(3.dp))
+                        ShowMap(locationViewModel = locationViewModel, navController)
+                    }
                 }
             }
     }
@@ -169,12 +197,8 @@ private fun composeMap(): MapView {
 private fun ShowMap(locationViewModel: LocationViewModel, navController: NavController){
     val map = composeMap()
     var mapInizialized by remember(map){ mutableStateOf(false) }
-    val marker = Marker(map)
-    val geoPoints = mutableListOf<GeoPoint>()
-    //replace with firebase data
-    geoPoints += GeoPoint(1.0, 2.0)
-    geoPoints += GeoPoint(20.0, 60.0)
-    geoPoints += GeoPoint(10.0, 10.0)
+    val vm = HistoryViewModel()
+
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
 
 
@@ -190,10 +214,10 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
         currentGeoPoint ?: return@AndroidView
         it.controller.setCenter(currentGeoPoint.value)
 
-        geoPoints.forEach{
+        vm.allShakes.forEach{
             var marker = Marker(map)
-            marker.position = it
-            marker.title = "You are here! latitude: "+it.latitude+" longitude: "+it.longitude
+            marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
+            marker.title = "Duration: "+it.duration+"Score: "+it.score
             map.overlays.add(marker)
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             marker.closeInfoWindow()
