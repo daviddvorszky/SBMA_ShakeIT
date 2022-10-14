@@ -11,12 +11,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.sbma_shakeit.components.buttons.FriendsButton
 import org.sbma_shakeit.components.buttons.FriendsButtonType
+import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.User
 import org.sbma_shakeit.viewmodels.users.UserListItemViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
 
 @Composable
-fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean = true) {
+fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean = true, shake: Shake? = null) {
 
     var username: String
 
@@ -31,9 +32,9 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean 
     val alertDismiss = { isAlertVisible = false }
     var alertConfirm by remember { mutableStateOf({}) }
 
-    val shake = remember {
-        mutableStateOf(vm.shake)
-    }
+//    val shake = remember {
+//        mutableStateOf(vm.shake)
+//    }
 
     val addFriendAction = {
         isAlertVisible = true
@@ -104,8 +105,11 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean 
             Column() {
                 Text(text = username, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(3.dp))
-                if (isScore) {
-                    Text(text = "Best score: ${(shake.value.value?.duration?.div(1000)) ?: "0"} sec")
+                if (isScore && shake != null && shake.type == Shake.TYPE_LONG) {
+                    Text(text = "Best score: ${(shake.duration / 1000)} sec")
+                }
+                if (isScore && shake != null && shake.type != Shake.TYPE_LONG) {
+                    Text(text = "Best score: ${shake.score} points")
                 }
             }
 

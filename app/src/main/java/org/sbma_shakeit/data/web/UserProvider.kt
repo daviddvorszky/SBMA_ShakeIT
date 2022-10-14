@@ -4,7 +4,6 @@ import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.tasks.await
 import org.sbma_shakeit.data.room.User
 
@@ -80,5 +79,26 @@ open class UserProvider {
             }
         userAuth
             .delete()
+    }
+    suspend fun updateLong(shakeId: String) {
+        val cUser = getCurrentUser()
+        val userPath = getUserPath(cUser.username)
+        userCollection
+            .document(userPath)
+            .update(UserKeys.LONG_SHAKE, shakeId)
+    }
+    suspend fun updateViolent(shakeId: String) {
+        val cUser = getCurrentUser()
+        val userPath = getUserPath(cUser.username)
+        userCollection
+            .document(userPath)
+            .update(UserKeys.VIOLENT_SHAKE, shakeId)
+    }
+    suspend fun updateQuick(shakeId: String) {
+        val cUser = getCurrentUser()
+        val userPath = getUserPath(cUser.username)
+        userCollection
+            .document(userPath)
+            .update(UserKeys.QUICK_SHAKE, shakeId)
     }
 }

@@ -9,6 +9,9 @@ object UserKeys {
     const val USERNAME = "username"
     const val EMAIL = "email"
     const val FRIENDS = "friends"
+    const val LONG_SHAKE = "longShake"
+    const val QUICK_SHAKE = "quickShake"
+    const val VIOLENT_SHAKE = "violentShake"
 }
 
 object FriendRequestKeys {

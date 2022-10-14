@@ -42,13 +42,15 @@ class ShakeProvider {
         return def.await()
     }
 
-    suspend fun getShakeById(id: String): Shake? =
+    suspend fun getShakeById(id: String): Shake? {
         try {
+            if (id == "") return null
             val result = shakeCollection.document(id).get().await()
-            result.toObject(Shake::class.java)
+            return result.toObject(Shake::class.java)
         } catch (e: Exception) {
             throw e
         }
+    }
 
 
     fun getShakesFromLocal(database: ShakeItDB): LiveData<List<Shake>> {

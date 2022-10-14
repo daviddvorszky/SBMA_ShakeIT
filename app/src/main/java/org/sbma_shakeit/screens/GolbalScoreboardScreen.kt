@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import org.sbma_shakeit.components.TabsView
 import org.sbma_shakeit.components.UserList
+import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.viewmodels.ScoreboardViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
 
@@ -57,20 +58,20 @@ fun GlobalScoreboardScreen(
 
         // Global lists
         if (selectedIndexGroup.value == 0) {
-            UserList(viewModel = vm, allUsers)
+//            UserList(viewModel = vm, allUsers)
             when (selectedShakeIndex.value) {
-                0 -> UserList(viewModel = vm, userList = longRecordsAll)
-                1 -> UserList(viewModel = vm, userList = violentRecordsAll)
-                2 -> UserList(viewModel = vm, userList = quickRecordsAll)
+                0 -> UserList(viewModel = vm, userList = longRecordsAll, type = Shake.TYPE_LONG)
+                1 -> UserList(viewModel = vm, userList = violentRecordsAll, type = Shake.TYPE_VIOLENT)
+                2 -> UserList(viewModel = vm, userList = quickRecordsAll, type = Shake.TYPE_QUICK)
             }
         }
         // Friend lists
         else {
-            UserList(viewModel = vm, friendList)
+//            UserList(viewModel = vm, friendList)
             when (selectedShakeIndex.value) {
-                0 -> UserList(viewModel = vm, userList = longRecordsFriends)
-                1 -> UserList(viewModel = vm, userList = violentRecordsFriends)
-                2 -> UserList(viewModel = vm, userList = quickRecordsFriends)
+                0 -> UserList(viewModel = vm, userList = longRecordsFriends, type = Shake.TYPE_LONG)
+                1 -> UserList(viewModel = vm, userList = violentRecordsFriends, type = Shake.TYPE_VIOLENT)
+                2 -> UserList(viewModel = vm, userList = quickRecordsFriends, type = Shake.TYPE_QUICK)
             }
         }
     }
