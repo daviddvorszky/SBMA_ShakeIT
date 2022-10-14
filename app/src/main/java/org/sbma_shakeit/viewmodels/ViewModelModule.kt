@@ -8,6 +8,8 @@ import org.sbma_shakeit.sensors.SensorModule
 object ViewModelModule {
 
     private var longShakeViewModel: LongShakeViewModel? = null
+    private var quickShakeViewModel: QuickShakeViewModel? = null
+    private var violentShakeViewModel: ViolentShakeViewModel? = null
 
     fun provideLongShakeViewModel(app: Application, activity: Activity, database: ShakeItDB): LongShakeViewModel{
         if(longShakeViewModel == null){
@@ -15,5 +17,21 @@ object ViewModelModule {
             longShakeViewModel = LongShakeViewModel(activity, database, shakeSensor)
         }
         return longShakeViewModel!!
+    }
+
+    fun provideQuickShakeViewModel(app: Application, activity: Activity, database: ShakeItDB): QuickShakeViewModel{
+        if(quickShakeViewModel == null){
+            val shakeSensor = SensorModule.provideShakeSensor(app)
+            quickShakeViewModel = QuickShakeViewModel(activity, database, shakeSensor)
+        }
+        return quickShakeViewModel!!
+    }
+
+    fun provideViolentShakeViewModel(app: Application, activity: Activity, database: ShakeItDB): ViolentShakeViewModel{
+        if(violentShakeViewModel == null){
+            val shakeSensor = SensorModule.provideShakeSensor(app)
+            violentShakeViewModel = ViolentShakeViewModel(activity, database, shakeSensor)
+        }
+        return violentShakeViewModel!!
     }
 }
