@@ -98,14 +98,23 @@ private fun composeMap(): MapView {
 private fun ShowMap(locationViewModel: LocationViewModel, navController: NavController){
     val map = composeMap()
     var mapInizialized by remember(map){ mutableStateOf(false) }
+    val marker = Marker(map)
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
+
     val geoPoints = mutableListOf<GeoPoint>()
+    //replace with firebase data
+    geoPoints += GeoPoint(59.0, 25.1)
+    geoPoints += GeoPoint(60.0, 25.2)
+    geoPoints += GeoPoint(60.0, 25.3)
+
 
     if (!mapInizialized){
         map.setTileSource(TileSourceFactory.MAPNIK)     //Set the Tiles source
         map.setMultiTouchControls(true)                 //Ability to zoom with 2 fingers
         map.controller.setZoom(9.0)                     //Set the default zoom
         map.controller.setCenter(GeoPoint(60.0, 25.0)) //set the center of the map initialization
+
+        mapInizialized = true
     }
     AndroidView({map}){
         currentGeoPoint ?: return@AndroidView
