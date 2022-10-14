@@ -134,15 +134,15 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
         var shakesFriend = listOf<Shake>()
 
         friendList.forEach{
+            val friendUsername = it.username//for each friend of yours
+
             GlobalScope.launch {
-                var awt = async { shakesFriend = sp.getShakesOfUser(it.username) }
+                val awt = async { shakesFriend = sp.getShakesOfUser(it.username) }
                 awt.await()
             }
 
-            var friendUsername = it.username
-
-            shakesFriend.forEach{
-                var marker = Marker(map)
+            shakesFriend.forEach{                   //for each shake of it
+                val marker = Marker(map)
                 marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
                 marker.title = friendUsername+"-> Duration: "+it.duration+"Score: "+it.score
                 map.overlays.add(marker)
