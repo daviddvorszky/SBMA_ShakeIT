@@ -31,6 +31,10 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean 
     val alertDismiss = { isAlertVisible = false }
     var alertConfirm by remember { mutableStateOf({}) }
 
+    val shake = remember {
+        mutableStateOf(vm.shake)
+    }
+
     val addFriendAction = {
         isAlertVisible = true
         alertTitle = "Add to friends"
@@ -100,7 +104,7 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean 
             Column() {
                 Text(text = username, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(3.dp))
-                if (isScore) Text(text = "Best score: ")
+                if (isScore) Text(text = "Best score: ${(shake.value.value?.duration?.div(1000)) ?: "0"} sec")
             }
 
             if (!isCurrentUser.value) {

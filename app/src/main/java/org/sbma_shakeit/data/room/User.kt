@@ -13,9 +13,9 @@ data class User(
     var username: String = "",
     var email: String = "",
     var friends: Friends = Friends(),
-    var quickShake: Int? = null,
-    var violentShake: Int? = null,
-    var longShake: Int? = null,
+    var quickShake: String? = null,
+    var violentShake: String? = null,
+    var longShake: String? = null,
 )
 
 @Dao
