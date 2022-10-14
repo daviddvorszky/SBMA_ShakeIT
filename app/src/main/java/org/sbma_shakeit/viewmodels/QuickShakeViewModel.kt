@@ -9,24 +9,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.os.postDelayed
 import androidx.lifecycle.ViewModel
+import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.MeasurableSensor
+import java.util.*
 import kotlin.math.sqrt
 
 class QuickShakeViewModel(
     activity: Activity,
     database: ShakeItDB,
-    shakeSensor: MeasurableSensor,
-    username: String
+    var shakeSensor: MeasurableSensor,
 ): ShakeViewModel(activity, database) {
-    private val n = 100
-    private val lastRecords = FloatArray(n)
+    private val n = 60
+    private var lastRecords = FloatArray(n)
     private var idx: Int = 0
     private var sum: Float = 0.0f
 
     val mainHandler = Handler(Looper.getMainLooper())
 
     init {
+        shakeType = Shake.TYPE_QUICK
         shakeSensor.setOnSensorValuesChangedListener { values ->
             val x = values[0]
             val y = values[1]
@@ -44,16 +46,29 @@ class QuickShakeViewModel(
             violentShake = shakeIntensity > violentThreshold
         }
 
+        timer.setStopCallback {
+            shakeSensor.stopListening()
+            stopScoring()
+            shakeExists = true
+        }
+
         shakeSensor.setOnStopListeningCallback {
             Log.d("SHAKE", "Quick shake stopped, score: $score")
+            isSensorRunning = false
+            isShaking = false
+            shakeExists = true
         }
     }
 
     fun startScoring(){
+        score = 0f
         mainHandler.post(updateScore)
+        sum = 0f
+        basicShake = false
+        violentShake = false
     }
 
-    fun stopScoring(){
+    private fun stopScoring(){
         mainHandler.removeCallbacks(updateScore)
     }
 

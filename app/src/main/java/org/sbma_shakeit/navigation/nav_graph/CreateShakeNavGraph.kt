@@ -28,7 +28,10 @@ fun NavGraphBuilder.createShakeNavGraph(
         composable(
             route = Screen.QuickShake.route
         ){
-            QuickShakeScreen(navController = navController)
+            QuickShakeScreen(
+                navController = navController,
+                ViewModelModule.provideQuickShakeViewModel(application, activity, database)
+            )
         }
 
         // Long Shake
@@ -45,7 +48,10 @@ fun NavGraphBuilder.createShakeNavGraph(
         composable(
             route = Screen.ViolentShake.route
         ){
-            ViolentShakeScreen(navController = navController)
+            ViolentShakeScreen(
+                navController = navController,
+                ViewModelModule.provideViolentShakeViewModel(application, activity, database)
+            )
         }
     }
 }
