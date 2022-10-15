@@ -3,23 +3,23 @@
     <string name="app_name">SBMA_ShakeIT</string>
 
     <string name="mapNavButton" translatable="false">mapNavButton</string>
-    <string name="parent">Parent</string>
+    <string name="parent">Omistaja</string>
     <string name="type">Tyyppi</string>
     <string name="duration">Kesto</string>
-    <string name="score">Score</string>
+    <string name="score">Tulos</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="null_value" translatable="false">null</string>
     <string name="friends">Kaverit</string>
     <string name="requests">Pyynnöt</string>
     <string name="global">Global</string>
-    <string name="long_">Long</string>
-    <string name="quick">Quick</string>
+    <string name="long_">Pituus</string>
+    <string name="quick">Nopeus</string>
     <string name="violent">violent</string>
     <string name="ranking">Sijoitus</string>
     <string name="all">Kaikki</string>
     <string name="sign_up_here">Rekisteröidy täältä</string>
-    <string name="login">Kirjaudu</string>
+    <string name="login">Kirjaudu sisään</string>
     <string name="email" translatable="false">Email</string>
     <string name="password">Salasana</string>
     <string name="show_password">Näytä salasana</string>
@@ -30,10 +30,10 @@
     <string name="restart">Aloita uudelleen</string>
     <string name="take_photo">Ota kuva</string>
     <string name="save_photo">Tallenna kuva</string>
-    <string name="new_shake">New Shake</string>
+    <string name="new_shake">Uusi ravistus</string>
     <string name="friend">Kaveri</string>
-    <string name="quick_shake">Quick Shake</string>
-    <string name="violent_shake">Violent Shake</string>
+    <string name="quick_shake">Nopea ravistus</string>
+    <string name="violent_shake">Voimakas ravistus</string>
     <string name="back_to_login">Kirjaudu sisään</string>
     <string name="register">Rekisteröidy</string>
     <string name="username">Käyttäjänimi</string>
@@ -50,4 +50,7 @@
     <string name="intensity">Intensiteetti</string>
     <string name="max_intensity">Maksimi intensiteetti</string>
     <string name="stop">Pysäytä</string>
+    <string name="friend">Kaveri</string>
+    <string name="add">Lisää</string>
+    <string name="cancel">Peru</string>
 </resources>
