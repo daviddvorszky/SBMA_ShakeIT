@@ -4,7 +4,9 @@ data class FriendRequest(
     val receiver: String = "",
     val sender: String = ""
 )
-
+/**
+ * User table keys in firestore
+ * */
 object UserKeys {
     const val USERNAME = "username"
     const val EMAIL = "email"
@@ -13,12 +15,16 @@ object UserKeys {
     const val QUICK_SHAKE = "quickShake"
     const val VIOLENT_SHAKE = "violentShake"
 }
-
+/**
+ * Friend request table keys in firestore
+ * */
 object FriendRequestKeys {
     const val RECEIVER = "receiver"
     const val SENDER = "sender"
 }
-
+/**
+ * Collection names in firestore
+ * */
 object FirestoreCollections {
     const val USERS = "users"
     const val FRIEND_REQUESTS = "friendRequest"

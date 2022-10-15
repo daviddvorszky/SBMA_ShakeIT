@@ -23,7 +23,6 @@ open class UserProvider {
             val result = userCollection.get().await()
             result.toObjects(User::class.java)
         } catch (e: Exception) {
-            Log.e("getAllUsers", e.toString())
             throw e
         }
 
@@ -35,7 +34,6 @@ open class UserProvider {
             val result = userCollection.whereEqualTo(UserKeys.USERNAME, username).get().await()
             result.first().toObject(User::class.java)
         } catch (e: Exception) {
-            Log.e("getUserByUsername", e.toString())
             throw e
         }
 
@@ -48,7 +46,6 @@ open class UserProvider {
                 userCollection.whereEqualTo(UserKeys.EMAIL, usersEmail).get().await()
             result.first().toObject(User::class.java)
         } catch (e: Exception) {
-            Log.e("getCurrentUser", e.message ?: "error getting user")
             throw e
         }
 
@@ -80,25 +77,23 @@ open class UserProvider {
         userAuth
             .delete()
     }
-    suspend fun updateLong(shakeId: String) {
-        val cUser = getCurrentUser()
-        val userPath = getUserPath(cUser.username)
-        userCollection
-            .document(userPath)
-            .update(UserKeys.LONG_SHAKE, shakeId)
+    suspend fun updateLongRecord(shakeId: String) {
+        updateShake(shakeId = shakeId, shakeKey = UserKeys.LONG_SHAKE)
     }
-    suspend fun updateViolent(shakeId: String) {
-        val cUser = getCurrentUser()
-        val userPath = getUserPath(cUser.username)
-        userCollection
-            .document(userPath)
-            .update(UserKeys.VIOLENT_SHAKE, shakeId)
+    suspend fun updateViolentRecord(shakeId: String) {
+        updateShake(shakeId = shakeId, shakeKey = UserKeys.VIOLENT_SHAKE)
     }
-    suspend fun updateQuick(shakeId: String) {
+    suspend fun updateQuickRecord(shakeId: String) {
+        updateShake(shakeId = shakeId, shakeKey = UserKeys.QUICK_SHAKE)
+    }
+    private suspend fun updateShake(shakeId: String, shakeKey: String) {
         val cUser = getCurrentUser()
         val userPath = getUserPath(cUser.username)
         userCollection
             .document(userPath)
-            .update(UserKeys.QUICK_SHAKE, shakeId)
+            .update(shakeKey, shakeId)
+            .addOnFailureListener {
+                Log.e("updateShake", it.message ?: "Failed to update users shake")
+            }
     }
 }
