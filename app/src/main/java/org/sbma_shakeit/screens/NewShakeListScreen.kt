@@ -15,6 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -53,7 +54,7 @@ fun NewShakeListScreen(
                 .padding(10.dp)
         ) {
             Column(Modifier.fillMaxWidth()) {
-                Text("New Shake:", modifier = Modifier.padding(5.dp))
+                Text("${stringResource(R.string.new_shake)}:", modifier = Modifier.padding(5.dp))
 
                 Row(
                     Modifier
@@ -66,17 +67,17 @@ fun NewShakeListScreen(
                     Button(modifier = Modifier.padding(5.dp), onClick = {
                         navController.navigate(Screen.QuickShake.route)
                     }) {
-                        Text("Quick")
+                        Text("${stringResource(R.string.quick)}")
                     }
                     Button(modifier = Modifier.padding(5.dp), onClick = {
                         navController.navigate(Screen.LongShake.route)
                     }) {
-                        Text("Long")
+                        Text("${stringResource(R.string.long_)}")
                     }
                     Button(modifier = Modifier.padding(5.dp), onClick = {
                         navController.navigate(Screen.ViolentShake.route)
                     }) {
-                        Text("Violent")
+                        Text("${stringResource(R.string.violent)}")
                     }
                 }
             }
@@ -113,6 +114,7 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
     val sp = ShakeProvider()
     val vm: UserViewModel = viewModel()
     val friendList = vm.friends
+    val context = LocalContext.current
 
     val geoPoints = mutableListOf<GeoPoint>()
     //replace with firebase data
@@ -145,7 +147,7 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
 
                 marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
                 marker.title =
-                    "Friend: " + friendUsername + "-> Duration: " + it.duration + " Score: " + it.score
+                    "${context.getString(R.string.friend)}: " + friendUsername + "-> ${context.getString(R.string.duration)}: " + it.duration + " ${context.getString(R.string.score)}: " + it.score
                 map.overlays.add(marker)
                 marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             }

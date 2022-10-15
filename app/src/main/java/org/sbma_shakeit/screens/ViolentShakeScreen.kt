@@ -12,12 +12,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.sbma_shakeit.R
 import org.sbma_shakeit.viewmodels.ViolentShakeViewModel
 
 @Composable
@@ -39,7 +41,7 @@ fun ViolentShakeScreen(
             )
         }else {
             Text(
-                "Violent Shake",
+                "${stringResource(R.string.violent_shake)}",
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(20.dp)
@@ -48,8 +50,8 @@ fun ViolentShakeScreen(
                     .padding(vertical = 20.dp),
                 color = Color.White,
             )
-            Text("Intensity: ${viewModel.shakeIntensity}")
-            Text("Max Intensity: ${viewModel.maxShakeIntensity}")
+            Text("${stringResource(R.string.intensity)}: ${viewModel.shakeIntensity}")
+            Text("${stringResource(R.string.max_intensity)}: ${viewModel.maxShakeIntensity}")
             Button(
                 onClick = {
                     if (viewModel.isSensorRunning) {
@@ -61,7 +63,7 @@ fun ViolentShakeScreen(
                     }
                 },
             ) {
-                Text(if (viewModel.isSensorRunning) "Stop" else "Start")
+                Text(if (viewModel.isSensorRunning) "${stringResource(R.string.stop)}" else "${stringResource(R.string.start)}")
             }
             if (viewModel.shouldShowPhoto.value) {
                 Image(
@@ -77,7 +79,7 @@ fun ViolentShakeScreen(
                 Button(onClick = {
                     viewModel.shouldShowCamera.value = true
                 }) {
-                    Text("Take photo")
+                    Text("${stringResource(R.string.take_photo)}")
                 }
             }
             Button(
@@ -88,7 +90,7 @@ fun ViolentShakeScreen(
                 },
                 enabled = viewModel.shakeExists && !viewModel.isSensorRunning
             ) {
-                Text("Save shake")
+                Text("${stringResource(R.string.save_photo)}")
             }
         }
     }

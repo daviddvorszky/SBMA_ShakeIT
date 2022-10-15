@@ -8,7 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import org.sbma_shakeit.R
 import org.sbma_shakeit.components.TabsView
 import org.sbma_shakeit.components.lists.UserList
 import org.sbma_shakeit.data.room.Shake
@@ -21,8 +23,8 @@ fun GlobalScoreboardScreen() {
     val scoreboardViewModel = ScoreboardViewModel()
 
     // Tabs
-    val groupHeaders = listOf("Global", "Friends")
-    val shakeTypes = listOf("Long", "Violent", "Quick")
+    val groupHeaders = listOf("${stringResource(R.string.global)}", "${stringResource(R.string.friends)}")
+    val shakeTypes = listOf("${stringResource(R.string.long_)}", "${stringResource(R.string.quick)}", "${stringResource(R.string.violent)}")
     val selectedIndexGroup = remember { mutableStateOf(0) }
     val selectedShakeIndex = remember { mutableStateOf(0) }
 
@@ -46,7 +48,7 @@ fun GlobalScoreboardScreen() {
         TabsView(selectedIndex = selectedShakeIndex, headers = shakeTypes)
 
         Spacer(Modifier.height(30.dp))
-        Text(text = "Ranking:")
+        Text(text = "${stringResource(R.string.ranking)}:")
 
         Spacer(Modifier.height(10.dp))
 

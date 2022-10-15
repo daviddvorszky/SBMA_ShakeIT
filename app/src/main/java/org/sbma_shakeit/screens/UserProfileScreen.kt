@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -109,7 +110,7 @@ fun UserProfileScreen(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "Username", fontWeight = FontWeight.Bold)
+                        Text(text = "${stringResource(R.string.username)}", fontWeight = FontWeight.Bold)
                         Text(userData.username)
                     }
                 }
@@ -125,7 +126,7 @@ fun UserProfileScreen(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "Long shake time: ", fontWeight = FontWeight.Bold)
+                        Text(text = "${stringResource(R.string.long_shake_time)}: ", fontWeight = FontWeight.Bold)
                         Text(maxLongShake.toString())
                     }
                 }
@@ -141,7 +142,7 @@ fun UserProfileScreen(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "Violent shake score: ", fontWeight = FontWeight.Bold)
+                        Text(text = "${stringResource(R.string.violent_shake_score)}: ", fontWeight = FontWeight.Bold)
                         Text(maxViolentShake.toString())
                     }
                 }
@@ -157,7 +158,7 @@ fun UserProfileScreen(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "Quick shake score: ", fontWeight = FontWeight.Bold)
+                        Text(text = "${stringResource(R.string.quick_shake_score)}: ", fontWeight = FontWeight.Bold)
                         Text(maxQuickShake.toString())
                     }
                 }
@@ -173,7 +174,7 @@ fun UserProfileScreen(
                             .fillMaxWidth()
                             .padding(1.dp)
                     ) {
-                        Text(text = "My shakes:", fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
+                        Text(text = "${stringResource(R.string.my_shakes)}:", fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
                         Spacer(modifier = Modifier.height(3.dp))
                         ShowMap(locationViewModel = locationViewModel, navController)
                     }
@@ -201,6 +202,8 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
 
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
 
+    val context = LocalContext.current
+
 
     if (!mapInizialized){
         map.setTileSource(TileSourceFactory.MAPNIK)     //Set the Tiles source
@@ -217,7 +220,7 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
         vm.allShakes.forEach{
             var marker = Marker(map)
             marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
-            marker.title = "Duration: "+it.duration+"Score: "+it.score
+            marker.title = "${context.getString(R.string.duration)}: "+it.duration+"${context.getString(R.string.score)}: "+it.score
             map.overlays.add(marker)
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             marker.closeInfoWindow()
