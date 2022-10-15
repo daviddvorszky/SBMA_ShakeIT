@@ -29,14 +29,17 @@ class SingleShakeViewModel():ViewModel() {
 
     fun downloadImage(){
         val storageRef = Firebase.storage.reference
-        val fileRef = storageRef.child("2022-10-14-10-58-18-918.jpg")
+        val imgname = shake.imagePath.ifEmpty { "no_image.png" }
+        Log.d("pengb_download", "$imgname, $${shake.imagePath}")
+        Log.d("pengb_download", "${shake.toString()}")
+        val fileRef = storageRef.child(imgname)
         val ONE_MEGABYTE = 1024 * 1024
         fileRef.getBytes(ONE_MEGABYTE.toLong()).addOnSuccessListener { bytearray ->
             image = byteArrayToBitmap(bytearray)
         }
     }
 
-    fun byteArrayToBitmap(data: ByteArray): Bitmap {
+    private fun byteArrayToBitmap(data: ByteArray): Bitmap {
         return BitmapFactory.decodeByteArray(data, 0, data.size)
     }
 }
