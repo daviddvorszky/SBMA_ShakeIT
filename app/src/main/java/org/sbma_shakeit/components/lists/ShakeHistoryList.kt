@@ -57,7 +57,7 @@ fun ShakeHistoryList(shakes: State<List<Shake>>, navController: NavController) {
                         .padding(5.dp)
                         .clickable {
                             val vm = ViewModelModule.provideShowShakeViewModel()
-                            vm.setShake_(shake)
+                            vm.setNewShake(shake)
                             navController.navigate(Screen.Shake.route)
                         },
                     horizontalArrangement = Arrangement.SpaceBetween

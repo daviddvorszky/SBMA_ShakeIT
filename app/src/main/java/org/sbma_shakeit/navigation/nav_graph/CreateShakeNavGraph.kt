@@ -1,11 +1,10 @@
 package org.sbma_shakeit.navigation.nav_graph
 
-import android.app.Activity
 import android.app.Application
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.google.android.gms.location.FusedLocationProviderClient
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.navigation.CREATE_SHAKE_GRAPH_ROUTE
 import org.sbma_shakeit.navigation.Screen
@@ -13,12 +12,13 @@ import org.sbma_shakeit.screens.LongShakeScreen
 import org.sbma_shakeit.screens.QuickShakeScreen
 import org.sbma_shakeit.screens.ViolentShakeScreen
 import org.sbma_shakeit.viewmodels.ViewModelModule
+import java.io.File
 
 fun NavGraphBuilder.createShakeNavGraph(
-    navController: NavController,
     application: Application,
-    activity: Activity,
-    database: ShakeItDB
+    database: ShakeItDB,
+    outputDirectory: File,
+    fusedLocationClient: FusedLocationProviderClient
 ){
     navigation(
         startDestination = Screen.QuickShake.route,
@@ -29,8 +29,7 @@ fun NavGraphBuilder.createShakeNavGraph(
             route = Screen.QuickShake.route
         ){
             QuickShakeScreen(
-                navController = navController,
-                ViewModelModule.provideQuickShakeViewModel(application, activity, database)
+                ViewModelModule.provideQuickShakeViewModel(application, database, outputDirectory, fusedLocationClient)
             )
         }
 
@@ -39,8 +38,7 @@ fun NavGraphBuilder.createShakeNavGraph(
             route = Screen.LongShake.route
         ){
             LongShakeScreen(
-                navController = navController,
-                ViewModelModule.provideLongShakeViewModel(application, activity, database)
+                ViewModelModule.provideLongShakeViewModel(application, database, outputDirectory, fusedLocationClient)
             )
         }
 
@@ -49,8 +47,7 @@ fun NavGraphBuilder.createShakeNavGraph(
             route = Screen.ViolentShake.route
         ){
             ViolentShakeScreen(
-                navController = navController,
-                ViewModelModule.provideViolentShakeViewModel(application, activity, database)
+                ViewModelModule.provideViolentShakeViewModel(application, database, outputDirectory, fusedLocationClient)
             )
         }
     }

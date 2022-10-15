@@ -23,8 +23,10 @@ fun GlobalScoreboardScreen() {
     val scoreboardViewModel = ScoreboardViewModel()
 
     // Tabs
-    val groupHeaders = listOf("${stringResource(R.string.global)}", "${stringResource(R.string.friends)}")
-    val shakeTypes = listOf("${stringResource(R.string.long_)}", "${stringResource(R.string.quick)}", "${stringResource(R.string.violent)}")
+    val groupHeaders = listOf(stringResource(R.string.global), stringResource(R.string.friends))
+    val shakeTypes = listOf(stringResource(R.string.long_), stringResource(R.string.quick),
+        stringResource(R.string.violent)
+    )
     val selectedIndexGroup = remember { mutableStateOf(0) }
     val selectedShakeIndex = remember { mutableStateOf(0) }
 

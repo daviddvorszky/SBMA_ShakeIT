@@ -42,7 +42,7 @@ fun LoginScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         ClickableText(
-            text = AnnotatedString("${stringResource(R.string.sign_up_here)}"),
+            text = AnnotatedString(stringResource(R.string.sign_up_here)),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(20.dp),
@@ -60,11 +60,11 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "${stringResource(R.string.login)}", style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
+        Text(text = stringResource(R.string.login), style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
-            label = { Text(text = "${stringResource(R.string.email)}") },
+            label = { Text(text = stringResource(R.string.email)) },
             value = email.value,
             onValueChange = { email.value = it })
 
@@ -81,12 +81,12 @@ fun LoginScreen(
                     if (showPassword)
                         Icon(
                             painterResource(R.drawable.visibility_off),
-                            contentDescription = "${stringResource(R.string.dont_show_password)}"
+                            contentDescription = stringResource(R.string.dont_show_password)
                         )
                     else
                         Icon(
                             painterResource(R.drawable.visibility),
-                            contentDescription = "${stringResource(R.string.show_password)}"
+                            contentDescription = stringResource(R.string.show_password)
                         )
                 }
             },
@@ -114,7 +114,7 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                Text(text = "${stringResource(R.string.login)}")
+                Text(text = stringResource(R.string.login))
             }
         }
 
