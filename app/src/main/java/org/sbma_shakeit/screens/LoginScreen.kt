@@ -128,9 +128,3 @@ fun LoginScreen(
         )
     }
 }
-
-//@Preview
-//@Composable
-//fun ComposablePreview() {
-//    LoginScreen(navController = NavController(LocalContext.current))
-//}

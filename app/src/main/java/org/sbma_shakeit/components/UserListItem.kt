@@ -15,11 +15,13 @@ import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.User
 import org.sbma_shakeit.viewmodels.users.UserListItemViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
-
+// TODO:CLEAN
 @Composable
-fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean = true, shake: Shake? = null) {
-
-    var username: String
+fun UserListItem(
+    itemUser: User,
+    userViewModel: UserViewModel,
+    shake: Shake? = null
+) {
 
     val vm = UserListItemViewModel(itemUser.username)
     val isCurrentUser by remember { mutableStateOf(vm.isCurrentUser) }
@@ -31,10 +33,6 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean 
     var alertText by remember { mutableStateOf("") }
     val alertDismiss = { isAlertVisible = false }
     var alertConfirm by remember { mutableStateOf({}) }
-
-//    val shake = remember {
-//        mutableStateOf(vm.shake)
-//    }
 
     val addFriendAction = {
         isAlertVisible = true
@@ -73,7 +71,7 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean 
         alertConfirm = confirm
     }
 
-
+    // User list item card
     Card(
         elevation = 10.dp,
         backgroundColor = MaterialTheme.colors.background
@@ -85,34 +83,28 @@ fun UserListItem(itemUser: User, userViewModel: UserViewModel, isScore: Boolean 
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (isAlertVisible) MyAlert(
-                title = alertTitle, text = alertText,
-                confirmAction = alertConfirm, dismissAction = alertDismiss
-            )
+            if (isAlertVisible) {
+                MyAlert(
+                    title = alertTitle, text = alertText,
+                    confirmAction = alertConfirm, dismissAction = alertDismiss
+                )
+            }
 
-            /* TODO: Add users shake scores
+            // Users name and score/time
             Column {
-//            Text("Long ${itemUser.longShake.time}")
-//            Text("Quick ${itemUser.quickShake.score}")
-//            Text("Violent ${itemUser.violentShake.score}")
-            }*/
-
-            if (isCurrentUser.value)
-                username = "You"
-            else
-                username = itemUser.username
-
-            Column() {
+                val username = if (isCurrentUser.value) "You" else itemUser.username
                 Text(text = username, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(3.dp))
-                if (isScore && shake != null && shake.type == Shake.TYPE_LONG) {
-                    Text(text = "Best score: ${(shake.duration / 1000)} sec")
-                }
-                if (isScore && shake != null && shake.type != Shake.TYPE_LONG) {
-                    Text(text = "Best score: ${shake.score} points")
+                if (shake != null) {
+                    if (shake.type == Shake.TYPE_LONG) {
+                        Text(text = "Best score: ${(shake.duration / 1000)} sec")
+                    } else {
+                        Text(text = "Best score: ${shake.score} points")
+                    }
                 }
             }
 
+            // Display friends button
             if (!isCurrentUser.value) {
                 if (isUserFriend.value) {
                     FriendsButton(

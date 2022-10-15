@@ -4,27 +4,22 @@ import android.app.Application
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import org.sbma_shakeit.components.TabsView
-import org.sbma_shakeit.components.UserList
+import org.sbma_shakeit.components.lists.UserList
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.viewmodels.ScoreboardViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
-
+// TODO:CLEAN
 @Composable
-fun GlobalScoreboardScreen(
-    navController: NavController,
-    vm: UserViewModel = UserViewModel(LocalContext.current.applicationContext as Application)
-) {
-    val vm2 = ScoreboardViewModel()
-    val allUsers = vm.getAll().observeAsState(listOf())
-    val friendList = remember { mutableStateOf(vm.friends) }
+fun GlobalScoreboardScreen() {
+    val userViewModel = UserViewModel(LocalContext.current.applicationContext as Application)
+    val scoreboardViewModel = ScoreboardViewModel()
+
     // Tabs
     val groupHeaders = listOf("Global", "Friends")
     val shakeTypes = listOf("Long", "Violent", "Quick")
@@ -32,14 +27,14 @@ fun GlobalScoreboardScreen(
     val selectedShakeIndex = remember { mutableStateOf(0) }
 
     // Global lists
-    val violentRecordsAll = remember { mutableStateOf(vm2.violentShakesAll) }
-    val quickRecordsAll = remember { mutableStateOf(vm2.quickShakesAll) }
-    val longRecordsAll = remember { mutableStateOf(vm2.longShakesAll) }
+    val violentRecordsAll = remember { mutableStateOf(scoreboardViewModel.violentShakesAll) }
+    val quickRecordsAll = remember { mutableStateOf(scoreboardViewModel.quickShakesAll) }
+    val longRecordsAll = remember { mutableStateOf(scoreboardViewModel.longShakesAll) }
 
     // Friends lists
-    val violentRecordsFriends = remember { mutableStateOf(vm2.violentShakesFriends) }
-    val quickRecordsFriends = remember { mutableStateOf(vm2.quickShakesFriends) }
-    val longRecordsFriends = remember { mutableStateOf(vm2.longShakesFriends) }
+    val violentRecordsFriends = remember { mutableStateOf(scoreboardViewModel.violentShakesFriends) }
+    val quickRecordsFriends = remember { mutableStateOf(scoreboardViewModel.quickShakesFriends) }
+    val longRecordsFriends = remember { mutableStateOf(scoreboardViewModel.longShakesFriends) }
 
     Column(
         Modifier
@@ -48,7 +43,6 @@ fun GlobalScoreboardScreen(
     ) {
         TabsView(selectedIndex = selectedIndexGroup, headers = groupHeaders)
         Spacer(modifier = Modifier.height(5.dp))
-        //Text("Type", style = MaterialTheme.typography.h6)
         TabsView(selectedIndex = selectedShakeIndex, headers = shakeTypes)
 
         Spacer(Modifier.height(30.dp))
@@ -56,22 +50,44 @@ fun GlobalScoreboardScreen(
 
         Spacer(Modifier.height(10.dp))
 
-        // Global lists
+        // Show global lists
         if (selectedIndexGroup.value == 0) {
-//            UserList(viewModel = vm, allUsers)
             when (selectedShakeIndex.value) {
-                0 -> UserList(viewModel = vm, userList = longRecordsAll, type = Shake.TYPE_LONG)
-                1 -> UserList(viewModel = vm, userList = violentRecordsAll, type = Shake.TYPE_VIOLENT)
-                2 -> UserList(viewModel = vm, userList = quickRecordsAll, type = Shake.TYPE_QUICK)
+                0 -> UserList(
+                    viewModel = userViewModel,
+                    usersWithShakes = longRecordsAll,
+                    shakeType = Shake.TYPE_LONG
+                )
+                1 -> UserList(
+                    viewModel = userViewModel,
+                    usersWithShakes = violentRecordsAll,
+                    shakeType = Shake.TYPE_VIOLENT
+                )
+                2 -> UserList(
+                    viewModel = userViewModel,
+                    usersWithShakes = quickRecordsAll,
+                    shakeType = Shake.TYPE_QUICK
+                )
             }
         }
-        // Friend lists
+        // Show friend lists
         else {
-//            UserList(viewModel = vm, friendList)
             when (selectedShakeIndex.value) {
-                0 -> UserList(viewModel = vm, userList = longRecordsFriends, type = Shake.TYPE_LONG)
-                1 -> UserList(viewModel = vm, userList = violentRecordsFriends, type = Shake.TYPE_VIOLENT)
-                2 -> UserList(viewModel = vm, userList = quickRecordsFriends, type = Shake.TYPE_QUICK)
+                0 -> UserList(
+                    viewModel = userViewModel,
+                    usersWithShakes = longRecordsFriends,
+                    shakeType = Shake.TYPE_LONG
+                )
+                1 -> UserList(
+                    viewModel = userViewModel,
+                    usersWithShakes = violentRecordsFriends,
+                    shakeType = Shake.TYPE_VIOLENT
+                )
+                2 -> UserList(
+                    viewModel = userViewModel,
+                    usersWithShakes = quickRecordsFriends,
+                    shakeType = Shake.TYPE_QUICK
+                )
             }
         }
     }

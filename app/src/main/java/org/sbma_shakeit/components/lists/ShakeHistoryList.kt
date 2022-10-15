@@ -1,6 +1,5 @@
-package org.sbma_shakeit.components
+package org.sbma_shakeit.components.lists
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -19,7 +18,7 @@ import androidx.navigation.NavController
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.viewmodels.ViewModelModule
-
+// TODO:CLEAN
 private fun getType(type: Int): String =
     when (type) {
         Shake.TYPE_LONG -> "Long"

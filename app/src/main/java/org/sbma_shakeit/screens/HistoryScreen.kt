@@ -5,22 +5,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
-import org.sbma_shakeit.components.ShakeHistoryList
+import org.sbma_shakeit.components.lists.ShakeHistoryList
 import org.sbma_shakeit.components.TabsView
 import org.sbma_shakeit.viewmodels.HistoryViewModel
 
+/**
+ * Shows users own shakes history
+ * */
 @Composable
 fun HistoryScreen(
     navController: NavController
 ) {
-    val vm = HistoryViewModel()
+    val historyViewModel = HistoryViewModel()
     val tabHeaders = listOf("All", "Long", "Violent", "Quick")
     val selectedIndex = remember { mutableStateOf(0) }
 
-    val allShakes = remember { mutableStateOf(vm.allShakes) }
-    val longShakes = remember { mutableStateOf(vm.longShakes) }
-    val quickShakes = remember { mutableStateOf(vm.quickShakes) }
-    val violentShakes = remember { mutableStateOf(vm.violentShakes) }
+    val allShakes = remember { mutableStateOf(historyViewModel.allShakes) }
+    val longShakes = remember { mutableStateOf(historyViewModel.longShakes) }
+    val quickShakes = remember { mutableStateOf(historyViewModel.quickShakes) }
+    val violentShakes = remember { mutableStateOf(historyViewModel.violentShakes) }
 
     Column {
         TabsView(selectedIndex = selectedIndex, headers = tabHeaders)

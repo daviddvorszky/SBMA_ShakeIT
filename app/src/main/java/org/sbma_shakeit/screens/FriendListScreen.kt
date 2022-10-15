@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.sbma_shakeit.MainActivity
-import org.sbma_shakeit.components.FriendRequestList
+import org.sbma_shakeit.components.lists.FriendRequestList
 import org.sbma_shakeit.components.UserListItem
 import org.sbma_shakeit.viewmodels.users.UserViewModel
-
+// TODO:CLEAN
 @Composable
 fun FriendListScreen(
     navController: NavController,
@@ -79,7 +79,7 @@ fun FriendList(vm: UserViewModel = viewModel()) {
     val friendList = vm.friends
     LazyColumn {
         items(friendList) { friend ->
-            UserListItem(itemUser = friend, userViewModel = vm, isScore = false)
+            UserListItem(itemUser = friend, userViewModel = vm)
         }
     }
 

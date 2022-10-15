@@ -20,7 +20,7 @@ fun NavGraphBuilder.scoreboardNavGraph(
         composable(
             route = Screen.GlobalScoreboard.route
         ){
-            GlobalScoreboardScreen(navController = navController)
+            GlobalScoreboardScreen()
         }
 
         // Friends Scoreboard

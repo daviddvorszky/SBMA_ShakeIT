@@ -10,7 +10,7 @@ import org.sbma_shakeit.data.web.FriendRequest
 import org.sbma_shakeit.data.web.FriendsProvider
 import org.sbma_shakeit.data.web.ShakeProvider
 import org.sbma_shakeit.data.web.UserProvider
-
+// TODO:CLEAN
 /**
  * ViewModel for user item in user list
  * */
