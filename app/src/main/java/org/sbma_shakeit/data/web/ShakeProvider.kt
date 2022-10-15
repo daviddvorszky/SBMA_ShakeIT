@@ -42,8 +42,8 @@ class ShakeProvider {
             }.addOnCompleteListener{ task ->
                 if(task.isSuccessful) {
                     val downloadUri = task.result
-                    Log.d("pengb", downloadUri?.path.toString())
-                    shake.imagePath = downloadUri?.path.toString()?:""
+                    Log.d("pengb", downloadUri?.lastPathSegment.toString())
+                    shake.imagePath = downloadUri?.lastPathSegment.toString()?:""
                 }else{
                     Log.w("Shake Image Upload", "Something went wrong... (ShakeProvider.kt)")
                 }
