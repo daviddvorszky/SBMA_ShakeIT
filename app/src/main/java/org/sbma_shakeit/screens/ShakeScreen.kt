@@ -31,11 +31,6 @@ fun ShakeScreen(vm: SingleShakeViewModel) {
         Text("Score: ${vm.shake?.score ?: "null"}")
         Text("Latitude: ${vm.shake?.latitude ?: "null"}")
         Text("Longitude: ${vm.shake?.longitude ?: "null"}")
-        Button(onClick = {
-            show.value = true
-        }) {
-            Text("Show image")
-        }
 
         Image(
             painter = rememberImagePainter(vm.image),
