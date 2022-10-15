@@ -19,13 +19,13 @@
     <string name="ranking">Sijoitus</string>
     <string name="all">Kaikki</string>
     <string name="sign_up_here">Rekisteröidy täältä</string>
-    <string name="login">Login</string>
+    <string name="login">Kirjaudu</string>
     <string name="email" translatable="false">Email</string>
     <string name="password">Salasana</string>
     <string name="show_password">Näytä salasana</string>
     <string name="dont_show_password">Älä näytä salasanaa</string>
     <string name="forgot_password">Unohditko salasanan</string>
-    <string name="long_shake">Long Shake</string>
+    <string name="long_shake">Pitkä ravistus</string>
     <string name="start">Aloita</string>
     <string name="restart">Aloita uudelleen</string>
     <string name="take_photo">Ota kuva</string>
@@ -34,20 +34,20 @@
     <string name="friend">Kaveri</string>
     <string name="quick_shake">Quick Shake</string>
     <string name="violent_shake">Violent Shake</string>
-    <string name="back_to_login">Back to login</string>
+    <string name="back_to_login">Kirjaudu sisään</string>
     <string name="register">Rekisteröidy</string>
     <string name="username">Käyttäjänimi</string>
     <string name="username_taken">Käyttäjänimi otettu</string>
-    <string name="register_failed">Register failed</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="register_failed">Rekisteröityminen epäonnistui</string>
+    <string name="sign_up">Luo tili</string>
     <string name="delete_account">Poista käyttäjä</string>
     <string name="dark_mode">Pimeä tila</string>
     <string name="delete_account_confirm_question">Haluatko poistaa tämän käyttäjän sovelluksesta</string>
     <string name="long_shake_time">Long shake time</string>
     <string name="quick_shake_score">Quick shake score</string>
     <string name="violent_shake_score">Violent shake score</string>
-    <string name="my_shakes">My shakes</string>
+    <string name="my_shakes">Ravistukseni</string>
     <string name="intensity">Intensiteetti</string>
-    <string name="max_intensity">Max Intensity</string>
+    <string name="max_intensity">Maksimi intensiteetti</string>
     <string name="stop">Pysäytä</string>
 </resources>
