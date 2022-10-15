@@ -1,4 +1,4 @@
-package org.sbma_shakeit.components
+package org.sbma_shakeit.components.lists
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,21 +16,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
 
 @Composable
-fun FriendRequestList(vm: UserViewModel = viewModel()) {
-    val requests = vm.friendRequests
+fun FriendRequestList(userViewModel: UserViewModel = viewModel()) {
+    val requests = userViewModel.friendRequests
 
     LazyColumn {
-        items(requests) { req ->
+        items(requests) { request ->
             Row(
                 Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(req.sender)
+                Text(request.sender)
                 Row {
                     Button(
                         onClick = {
-                            vm.acceptFriendRequest(req.receiver, req.sender)
+                            userViewModel.acceptFriendRequest(request.receiver, request.sender)
                         },
                         colors = ButtonDefaults
                             .buttonColors(backgroundColor = MaterialTheme.colors.primary)
@@ -44,7 +44,7 @@ fun FriendRequestList(vm: UserViewModel = viewModel()) {
                     Spacer(modifier = Modifier.width(10.dp))
                     Button(
                         onClick = {
-                            vm.removeFriendRequest(req.receiver, req.sender)
+                            userViewModel.removeFriendRequest(request.receiver, request.sender)
                         },
                         colors = ButtonDefaults
                             .buttonColors(backgroundColor = MaterialTheme.colors.primary)
@@ -56,7 +56,6 @@ fun FriendRequestList(vm: UserViewModel = viewModel()) {
                         )
                     }
                 }
-
             }
         }
     }

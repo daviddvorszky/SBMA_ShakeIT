@@ -16,30 +16,30 @@ import org.sbma_shakeit.viewmodels.users.UserViewModel
 @Composable
 fun UserList(
     viewModel: UserViewModel,
-    userList: State<List<UserWithShake>>,
+    usersWithShakes: State<List<UserWithShake>>,
     shakeType: Int
 ) {
     LazyColumn {
-        items(userList.value) { user ->
+        items(usersWithShakes.value) { userWithShake ->
             Spacer(Modifier.height(10.dp))
             when (shakeType) {
                 Shake.TYPE_LONG ->
                     UserListItem(
-                        itemUser = user.user,
+                        itemUser = userWithShake.user,
                         userViewModel = viewModel,
-                        shake = user.long
+                        shake = userWithShake.long
                     )
                 Shake.TYPE_VIOLENT ->
                     UserListItem(
-                        itemUser = user.user,
+                        itemUser = userWithShake.user,
                         userViewModel = viewModel,
-                        shake = user.violent
+                        shake = userWithShake.violent
                     )
                 Shake.TYPE_QUICK ->
                     UserListItem(
-                        itemUser = user.user,
+                        itemUser = userWithShake.user,
                         userViewModel = viewModel,
-                        shake = user.quick
+                        shake = userWithShake.quick
                     )
             }
         }

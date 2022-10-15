@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">SBMA_ShakeIT</string>
 
-    <string name="alert_add_friend_title">Add to friends</string>
-    <string name="alert_add_friend_text">Do you want to send a friend request to this user</string>
     <string name="mapNavButton">mapNavButton</string>
-
 </resources>

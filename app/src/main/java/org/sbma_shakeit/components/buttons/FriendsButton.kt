@@ -3,18 +3,20 @@ package org.sbma_shakeit.components.buttons
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import org.sbma_shakeit.R
-import org.sbma_shakeit.ui.theme.Add
-import org.sbma_shakeit.ui.theme.Remove
 
 enum class FriendsButtonType { ADD, CANCEL, FRIEND }
 
+/**
+ * Button for friend related actions
+ * */
 @Composable
-fun FriendsButton(type: FriendsButtonType, onClickAction: () -> Unit = {}) {
-
+fun FriendsButton(
+    type: FriendsButtonType,
+    onClickAction: () -> Unit = {}
+) {
     val buttonContent = ButtonContent(type)
 
     Button(
@@ -32,11 +34,6 @@ fun FriendsButton(type: FriendsButtonType, onClickAction: () -> Unit = {}) {
 }
 
 private class ButtonContent(type: FriendsButtonType) {
-    val backgroundColor = when (type) {
-        FriendsButtonType.ADD -> Color.White
-        FriendsButtonType.CANCEL -> Remove
-        FriendsButtonType.FRIEND -> Add
-    }
     val text = when (type) {
         FriendsButtonType.ADD -> "Add"
         FriendsButtonType.CANCEL -> "Cancel"

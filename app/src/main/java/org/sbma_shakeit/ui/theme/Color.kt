@@ -13,6 +13,3 @@ val Green500 = Color(0xFF7986CB)
 val Green700 = Color(0xFF4DB6AC)
 
 val Orange500 = Color(0xFFFF9800)
-
-val Remove = Color(0xFFE91E63)
-val Add = Color(0xFF03A9F4)
