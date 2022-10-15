@@ -17,14 +17,16 @@ class FriendsProvider : UserProvider() {
     private val friendRequestCollection = db.collection(FirestoreCollections.FRIEND_REQUESTS)
 
     /**
-     * Add all users friends to the given list
+     * Get friends of the current user
      * */
-    suspend fun getFriends(listToAdd: MutableList<User>) {
+    suspend fun getFriends(): List<User> {
         val currentUser = getCurrentUser()
+        val friendList = mutableListOf<User>()
         for (friend in currentUser.friends.friends) {
             val userToAdd = getUserByUsername(friend)
-            listToAdd.add(userToAdd)
+            friendList.add(userToAdd)
         }
+        return friendList
     }
 
     /**
@@ -35,8 +37,8 @@ class FriendsProvider : UserProvider() {
         userCollection
             .document(userPath)
             .update(UserKeys.FRIENDS, Friends(updatedFriends))
-            .addOnSuccessListener {
-
+            .addOnFailureListener {
+                Log.e("updateFriends", it.message ?: "Failed to update friends")
             }
     }
 
@@ -56,14 +58,11 @@ class FriendsProvider : UserProvider() {
     Creates a friend request to firestore
      */
     fun sendFriendRequest(receiver: String, sender: String) {
-        val request = object {
-            val receiver = receiver
-            val sender = sender
-        }
+        val request = FriendRequest(receiver, sender)
         friendRequestCollection
             .add(request)
-            .addOnSuccessListener {
-
+            .addOnFailureListener {
+                Log.e("sendFriendRequest()", it.message ?: "Failed to send request")
             }
     }
 
@@ -76,12 +75,14 @@ class FriendsProvider : UserProvider() {
             .whereEqualTo(FriendRequestKeys.SENDER, sender)
             .get()
             .addOnSuccessListener {
-                Log.d("FRIEND REQS", "FOUND ${it.documents.size}")
                 for (req in it.documents) {
                     db.collection(FirestoreCollections.FRIEND_REQUESTS)
                         .document(req.id)
                         .delete()
                 }
+            }
+            .addOnFailureListener {
+                Log.e("removeFriendRequest", it.message ?: "Failed to remove friend request")
             }
     }
 
@@ -95,12 +96,15 @@ class FriendsProvider : UserProvider() {
     }
 
     private suspend fun addToFriends(user: String, friend: String) {
-        val currentUser = getUserByUsername(user)
-        val oldFriends = currentUser.friends.friends
+        val userObj = getUserByUsername(user)
+        val oldFriends = userObj.friends.friends
         val newFriends = oldFriends.plus(friend)
         val userPath = getUserPath(user)
         userCollection
             .document(userPath)
             .update(UserKeys.FRIENDS, Friends(newFriends))
+            .addOnFailureListener {
+                Log.e("addToFriends", it.message ?: "Failed to add $friend to friends")
+            }
     }
 }
