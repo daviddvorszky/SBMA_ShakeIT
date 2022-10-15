@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -41,7 +42,7 @@ fun LoginScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         ClickableText(
-            text = AnnotatedString("Sign up here"),
+            text = AnnotatedString("${stringResource(R.string.sign_up_here)}"),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(20.dp),
@@ -59,11 +60,11 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Login", style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
+        Text(text = "${stringResource(R.string.login)}", style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
-            label = { Text(text = "Email") },
+            label = { Text(text = "${stringResource(R.string.email)}") },
             value = email.value,
             onValueChange = { email.value = it })
 
@@ -80,12 +81,12 @@ fun LoginScreen(
                     if (showPassword)
                         Icon(
                             painterResource(R.drawable.visibility_off),
-                            contentDescription = "Don't show password"
+                            contentDescription = "${stringResource(R.string.dont_show_password)}"
                         )
                     else
                         Icon(
                             painterResource(R.drawable.visibility),
-                            contentDescription = "Show password"
+                            contentDescription = "${stringResource(R.string.show_password)}"
                         )
                 }
             },
@@ -113,13 +114,13 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                Text(text = "Login")
+                Text(text = "${stringResource(R.string.login)}")
             }
         }
 
         Spacer(modifier = Modifier.height(20.dp))
         ClickableText(
-            text = AnnotatedString("Forgot password?"),
+            text = AnnotatedString("${stringResource(R.string.forgot_password)}?"),
             onClick = { },
             style = TextStyle(
                 fontSize = 14.sp,

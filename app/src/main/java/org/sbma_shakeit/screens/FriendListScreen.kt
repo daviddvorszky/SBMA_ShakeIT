@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,6 +21,7 @@ import androidx.navigation.NavController
 import org.sbma_shakeit.MainActivity
 import org.sbma_shakeit.components.lists.FriendRequestList
 import org.sbma_shakeit.components.UserListItem
+import org.sbma_shakeit.R
 import org.sbma_shakeit.viewmodels.users.UserViewModel
 // TODO:CLEAN
 @Composable
@@ -32,7 +34,7 @@ fun FriendListScreen(
     val friendReqs = vm.friendRequests
 
     var selectedIndex by remember { mutableStateOf(0) }
-    val list = listOf("Friends", "Requests")
+    val list = listOf("${stringResource(R.string.friends)}", "${stringResource(R.string.requests)}")
 
     Column {
         TabRow(selectedTabIndex = selectedIndex, backgroundColor = Color.Transparent) {

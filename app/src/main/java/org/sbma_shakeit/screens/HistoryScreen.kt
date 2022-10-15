@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import org.sbma_shakeit.R
 import org.sbma_shakeit.components.lists.ShakeHistoryList
 import org.sbma_shakeit.components.TabsView
 import org.sbma_shakeit.viewmodels.HistoryViewModel
@@ -17,7 +19,7 @@ fun HistoryScreen(
     navController: NavController
 ) {
     val historyViewModel = HistoryViewModel()
-    val tabHeaders = listOf("All", "Long", "Violent", "Quick")
+    val tabHeaders = listOf("${stringResource(R.string.all)}", "${stringResource(R.string.long_)}", "${stringResource(R.string.violent)}", "${stringResource(R.string.quick)}")
     val selectedIndex = remember { mutableStateOf(0) }
 
     val allShakes = remember { mutableStateOf(historyViewModel.allShakes) }

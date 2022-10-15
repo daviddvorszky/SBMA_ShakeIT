@@ -12,12 +12,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.sbma_shakeit.R
 import org.sbma_shakeit.viewmodels.QuickShakeViewModel
 
 @Composable
@@ -35,11 +37,11 @@ fun QuickShakeScreen(
                 viewModel.outputDirectory,
                 viewModel.cameraExecutor,
                 viewModel::handleImageCapture,
-                onError = { Log.e("ViolentShakeScreen", "View error:", it)}
+                onError = { Log.e("QuickShakeScreen", "View error:", it)}
             )
         }else {
             Text(
-                "Quick Shake",
+                "${stringResource(R.string.quick_shake)}",
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(20.dp)
@@ -51,7 +53,7 @@ fun QuickShakeScreen(
             Text(
                 text = viewModel.timer.formattedTime
             )
-            Text("Score: ${viewModel.score.toInt()}")
+            Text("${stringResource(R.string.score)}: ${viewModel.score.toInt()}")
             Button(
                 onClick = {
                     viewModel.timer.reset()
@@ -63,7 +65,7 @@ fun QuickShakeScreen(
                 },
                 enabled = !viewModel.isSensorRunning
             ) {
-                Text(if (viewModel.shakeExists) "Restart" else "Start")
+                Text(if (viewModel.shakeExists) "${stringResource(R.string.restart)}" else "${stringResource(R.string.start)}")
             }
             if (viewModel.shouldShowPhoto.value) {
                 Image(
@@ -79,7 +81,7 @@ fun QuickShakeScreen(
                 Button(onClick = {
                     viewModel.shouldShowCamera.value = true
                 }) {
-                    Text("Take photo")
+                    Text("${stringResource(R.string.take_photo)}")
                 }
             }
             Button(
@@ -90,7 +92,7 @@ fun QuickShakeScreen(
                 },
                 enabled = viewModel.shakeExists && !viewModel.isSensorRunning
             ) {
-                Text("Save shake")
+                Text("${stringResource(R.string.save_photo)}")
             }
         }
     }
