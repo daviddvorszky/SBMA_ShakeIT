@@ -1,4 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SBMA_ShakeIT</string>
+
+    <string name="mapNavButton" translatable="false">mapNavButton</string>
+    <string name="parent">Parent</string>
+    <string name="type">Tyyppi</string>
+    <string name="duration">Kesto</string>
+    <string name="score">Score</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="null_value" translatable="false">null</string>
+    <string name="friends">Kaverit</string>
+    <string name="requests">Pyynnöt</string>
+    <string name="global">Global</string>
+    <string name="long_">Long</string>
+    <string name="quick">Quick</string>
+    <string name="violent">violent</string>
+    <string name="ranking">Sijoitus</string>
+    <string name="all">Kaikki</string>
+    <string name="sign_up_here">Rekisteröidy täältä</string>
+    <string name="login">Login</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="password">Salasana</string>
+    <string name="show_password">Näytä salasana</string>
+    <string name="dont_show_password">Älä näytä salasanaa</string>
+    <string name="forgot_password">Unohditko salasanan</string>
+    <string name="long_shake">Long Shake</string>
+    <string name="start">Aloita</string>
+    <string name="restart">Aloita uudelleen</string>
+    <string name="take_photo">Ota kuva</string>
+    <string name="save_photo">Tallenna kuva</string>
+    <string name="new_shake">New Shake</string>
+    <string name="friend">Kaveri</string>
+    <string name="quick_shake">Quick Shake</string>
+    <string name="violent_shake">Violent Shake</string>
+    <string name="back_to_login">Back to login</string>
+    <string name="register">Rekisteröidy</string>
+    <string name="username">Käyttäjänimi</string>
+    <string name="username_taken">Käyttäjänimi otettu</string>
+    <string name="register_failed">Register failed</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="delete_account">Poista käyttäjä</string>
+    <string name="dark_mode">Pimeä tila</string>
+    <string name="delete_account_confirm_question">Haluatko poistaa tämän käyttäjän sovelluksesta</string>
+    <string name="long_shake_time">Long shake time</string>
+    <string name="quick_shake_score">Quick shake score</string>
+    <string name="violent_shake_score">Violent shake score</string>
+    <string name="my_shakes">My shakes</string>
+    <string name="intensity">Intensiteetti</string>
+    <string name="max_intensity">Max Intensity</string>
+    <string name="stop">Pysäytä</string>
 </resources>
