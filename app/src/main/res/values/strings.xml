@@ -49,4 +49,6 @@
     <string name="intensity">Intensity</string>
     <string name="max_intensity">Max Intensity</string>
     <string name="stop">Stop</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
 </resources>

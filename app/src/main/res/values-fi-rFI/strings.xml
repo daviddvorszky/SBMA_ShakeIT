@@ -50,7 +50,6 @@
     <string name="intensity">Intensiteetti</string>
     <string name="max_intensity">Maksimi intensiteetti</string>
     <string name="stop">Pysäytä</string>
-    <string name="friend">Kaveri</string>
     <string name="add">Lisää</string>
     <string name="cancel">Peru</string>
 </resources>

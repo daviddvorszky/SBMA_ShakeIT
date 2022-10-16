@@ -46,4 +46,6 @@
     <string name="intensity">Intenzitás</string>
     <string name="max_intensity">Legnagyobb intenzitás</string>
     <string name="stop">Állj</string>
+    <string name="add">Add hozzá</string>
+    <string name="cancel">Megszünteti</string>
 </resources>
