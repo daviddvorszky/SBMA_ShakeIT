@@ -12,10 +12,10 @@
     <string name="null_value" translatable="false">null</string>
     <string name="friends">Kaverit</string>
     <string name="requests">Pyynnöt</string>
-    <string name="global">Global</string>
+    <string name="global">Globaali</string>
     <string name="long_">Pituus</string>
     <string name="quick">Nopeus</string>
-    <string name="violent">violent</string>
+    <string name="violent">voimakas</string>
     <string name="ranking">Sijoitus</string>
     <string name="all">Kaikki</string>
     <string name="sign_up_here">Rekisteröidy täältä</string>
@@ -43,13 +43,21 @@
     <string name="delete_account">Poista käyttäjä</string>
     <string name="dark_mode">Pimeä tila</string>
     <string name="delete_account_confirm_question">Haluatko poistaa tämän käyttäjän sovelluksesta?</string>
-    <string name="long_shake_time">Long shake time</string>
-    <string name="quick_shake_score">Quick shake score</string>
-    <string name="violent_shake_score">Violent shake score</string>
+    <string name="long_shake_time">Pitkän ravistuksen aika</string>
+    <string name="quick_shake_score">Nopean ravistuksen tulos</string>
+    <string name="violent_shake_score">Voimakkaan ravistuksen tulos</string>
     <string name="my_shakes">Ravistukseni</string>
     <string name="intensity">Intensiteetti</string>
     <string name="max_intensity">Maksimi intensiteetti</string>
     <string name="stop">Pysäytä</string>
     <string name="add">Lisää</string>
     <string name="cancel">Peruuta</string>
+    <string name="add_title">Lisää kaveriksi</string>
+    <string name="add_text">Haluatko lähettää kaveripyynnön käyttäjälle %1$s?</string>
+    <string name="remove_title">Poista kavereista</string>
+    <string name="remove_text">Haluatko poistaa käyttäjän %1$s kavereistasi?</string>
+    <string name="cancel_title">Peruuta kaveripyyntö</string>
+    <string name="cancel_text">Haluatko peruuttaa kaveripyynnön käyttäjälle %1$s?</string>
+    <string name="yes">Kyllä</string>
+    <string name="no">Ei</string>
 </resources>

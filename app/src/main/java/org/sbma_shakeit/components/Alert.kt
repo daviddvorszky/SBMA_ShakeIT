@@ -2,6 +2,8 @@ package org.sbma_shakeit.components
 
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import org.sbma_shakeit.R
 
 @Composable
 fun MyAlert(
@@ -24,7 +26,7 @@ fun MyAlert(
                     .buttonColors(backgroundColor = MaterialTheme.colors.primary),
                 onClick = confirmAction
             ) {
-                Text("YES")
+                Text(stringResource(R.string.yes))
             }
         },
         dismissButton = {
@@ -32,7 +34,7 @@ fun MyAlert(
                 colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
                 onClick = dismissAction
             ) {
-                Text("NO")
+                Text(stringResource(R.string.no))
             }
         }
 
