@@ -18,17 +18,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sbma_shakeit.MainActivity
-import org.sbma_shakeit.components.lists.FriendRequestList
-import org.sbma_shakeit.components.UserListItem
 import org.sbma_shakeit.R
+import org.sbma_shakeit.components.UserListItem
+import org.sbma_shakeit.components.lists.FriendRequestList
 import org.sbma_shakeit.viewmodels.users.UserViewModel
-// TODO:CLEAN
+
+/**
+ * Screen that displays user's friend list and friend requests
+ * */
 @Composable
-fun FriendListScreen(){
-    val vm: UserViewModel = viewModel()
-    // TODO: Get friends from room
-    val friendList = vm.friends
-    val friendReqs = vm.friendRequests
+fun FriendsScreen() {
+    val userViewModel: UserViewModel = viewModel()
+
+    val friendList = userViewModel.friends
+    val friendRequests = userViewModel.friendRequests
 
     var selectedIndex by remember { mutableStateOf(0) }
     val list = listOf(stringResource(R.string.friends), stringResource(R.string.requests))
@@ -39,25 +42,21 @@ fun FriendListScreen(){
                 val selected = selectedIndex == index
                 Tab(
                     modifier = if (selected) Modifier
-//                        .clip(RoundedCornerShape(50))
-//                        .background(MaterialTheme.colors.primaryVariant)
                         .height(50.dp)
                     else Modifier
-//                        .clip(RoundedCornerShape(50))
-//                        .background(Color.White)
                         .height(50.dp),
                     selected = selected,
                     onClick = { selectedIndex = index },
-                    selectedContentColor = /*Color.Black*/
-                        if (MainActivity.isDarkMode.value) MaterialTheme.colors.secondary
-                            else MaterialTheme.colors.primaryVariant,
+                    selectedContentColor =
+                    if (MainActivity.isDarkMode.value) MaterialTheme.colors.secondary
+                    else MaterialTheme.colors.primaryVariant,
                     unselectedContentColor =
-                        if (MainActivity.isDarkMode.value) Color.White else Color.Gray
+                    if (MainActivity.isDarkMode.value) Color.White else Color.Gray
                 ) {
                     if (index == 0)
                         Text("$text(${friendList.size})", fontWeight = FontWeight.Bold)
                     else
-                        Text("$text(${friendReqs.size})", fontWeight = FontWeight.Bold)
+                        Text("$text(${friendRequests.size})", fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -69,17 +68,15 @@ fun FriendListScreen(){
                 FriendRequestList()
             }
         }
-
     }
 }
 
 @Composable
-fun FriendList(vm: UserViewModel = viewModel()) {
-    val friendList = vm.friends
+private fun FriendList(userViewModel: UserViewModel = viewModel()) {
+    val friendList = userViewModel.friends
     LazyColumn {
         items(friendList) { friend ->
-            UserListItem(itemUser = friend, userViewModel = vm)
+            UserListItem(itemUser = friend, userViewModel = userViewModel)
         }
     }
-
 }

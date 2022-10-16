@@ -7,26 +7,34 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.sbma_shakeit.R
 import org.sbma_shakeit.components.buttons.FriendsButton
 import org.sbma_shakeit.components.buttons.FriendsButtonType
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.User
 import org.sbma_shakeit.viewmodels.users.UserListItemViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
-// TODO:CLEAN
+
 @Composable
 fun UserListItem(
     itemUser: User,
     userViewModel: UserViewModel,
     shake: Shake? = null
 ) {
-
-    val vm = UserListItemViewModel(itemUser.username)
-    val isCurrentUser by remember { mutableStateOf(vm.isCurrentUser) }
-    val isUserFriend by remember { mutableStateOf(vm.isUserFriend) }
-    val isRequestSent by remember { mutableStateOf(vm.isSentFriendReq) }
+    val userListItemViewModel = UserListItemViewModel(itemUser.username)
+    val context = LocalContext.current
+    val isCurrentUser by remember {
+        mutableStateOf(userListItemViewModel.isCurrentUser)
+    }
+    val isUserFriend by remember {
+        mutableStateOf(userListItemViewModel.isUserFriend)
+    }
+    val isRequestSent by remember {
+        mutableStateOf(userListItemViewModel.isSentFriendReq)
+    }
 
     var isAlertVisible by remember { mutableStateOf(false) }
     var alertTitle by remember { mutableStateOf("") }
@@ -36,8 +44,8 @@ fun UserListItem(
 
     val addFriendAction = {
         isAlertVisible = true
-        alertTitle = "Add to friends"
-        alertText = "Do you want to send a friend request to ${itemUser.username}?"
+        alertTitle = context.getString(R.string.add_title)
+        alertText = context.getString(R.string.add_text, itemUser.username)
         val confirm = {
             userViewModel.sendFriendRequest(itemUser.username)
             isRequestSent.value = true
@@ -48,8 +56,8 @@ fun UserListItem(
 
     val isFriendAction = {
         isAlertVisible = true
-        alertTitle = "Remove from friends"
-        alertText = "Do you want to remove ${itemUser.username} from friends?"
+        alertTitle = context.getString(R.string.remove_title)
+        alertText = context.getString(R.string.remove_text, itemUser.username)
         val confirm = {
             userViewModel.removeFromFriends(itemUser.username)
             isUserFriend.value = false
@@ -61,8 +69,8 @@ fun UserListItem(
 
     val cancelRequestAction = {
         isAlertVisible = true
-        alertTitle = "Cancel friend request"
-        alertText = "Do you want to cancel this friend request?"
+        alertTitle = context.getString(R.string.cancel_title)
+        alertText = context.getString(R.string.cancel_text, itemUser.username)
         val confirm = {
             userViewModel.removeFromFriends(itemUser.username)
             isRequestSent.value = false

@@ -28,7 +28,7 @@
     <string name="start">Start</string>
     <string name="restart">Restart</string>
     <string name="take_photo">Take photo</string>
-    <string name="save_photo">Save photo</string>
+    <string name="save_shake">Save photo</string>
     <string name="new_shake">New Shake</string>
     <string name="friend">Friend</string>
     <string name="quick_shake">Quick Shake</string>
@@ -49,4 +49,14 @@
     <string name="intensity">Intensity</string>
     <string name="max_intensity">Max Intensity</string>
     <string name="stop">Stop</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_title">Add to friends</string>
+    <string name="add_text">Do you want to send a friend request to %1$s?</string>
+    <string name="remove_title">Remove from friends</string>
+    <string name="remove_text">Do you want to remove %1$s from friends?</string>
+    <string name="cancel_title">Cancel friend request</string>
+    <string name="cancel_text">Do you want to cancel friend request to %1$s</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

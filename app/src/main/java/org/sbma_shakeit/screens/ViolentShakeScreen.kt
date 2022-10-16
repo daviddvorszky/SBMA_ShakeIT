@@ -88,7 +88,7 @@ fun ViolentShakeScreen(
                 },
                 enabled = viewModel.shakeExists && !viewModel.isSensorRunning
             ) {
-                Text(stringResource(R.string.save_photo))
+                Text(stringResource(R.string.save_shake))
             }
         }
     }

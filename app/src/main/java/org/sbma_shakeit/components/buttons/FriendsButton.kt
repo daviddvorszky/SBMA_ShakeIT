@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import org.sbma_shakeit.R
 
@@ -24,7 +25,7 @@ fun FriendsButton(
         onClick = onClickAction
     ) {
         Row {
-            Text(buttonContent.text, fontWeight = FontWeight.Bold)
+            Text(stringResource(buttonContent.text), fontWeight = FontWeight.Bold)
             Icon(
                 painterResource(buttonContent.icon),
                 contentDescription = buttonContent.contentDescription
@@ -35,9 +36,9 @@ fun FriendsButton(
 
 private class ButtonContent(type: FriendsButtonType) {
     val text = when (type) {
-        FriendsButtonType.ADD -> "Add"
-        FriendsButtonType.CANCEL -> "Cancel"
-        FriendsButtonType.FRIEND -> "Friend"
+        FriendsButtonType.ADD -> R.string.add
+        FriendsButtonType.CANCEL -> R.string.cancel
+        FriendsButtonType.FRIEND -> R.string.friend
     }
     val contentDescription = when (type) {
         FriendsButtonType.ADD -> "Send friend request"
