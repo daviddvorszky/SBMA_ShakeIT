@@ -19,9 +19,7 @@ fun HistoryScreen(
     navController: NavController
 ) {
     val historyViewModel = HistoryViewModel()
-    val tabHeaders = listOf(stringResource(R.string.all),
-        stringResource(R.string.long_), stringResource(R.string.violent), stringResource(R.string.quick)
-    )
+    val tabHeaders = listOf("${stringResource(R.string.all)}", "${stringResource(R.string.long_)}", "${stringResource(R.string.violent)}", "${stringResource(R.string.quick)}")
     val selectedIndex = remember { mutableStateOf(0) }
 
     val allShakes = remember { mutableStateOf(historyViewModel.allShakes) }

@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ import org.sbma_shakeit.viewmodels.LongShakeViewModel
 
 @Composable
 fun LongShakeScreen(
+    navController: NavController,
     viewModel: LongShakeViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()

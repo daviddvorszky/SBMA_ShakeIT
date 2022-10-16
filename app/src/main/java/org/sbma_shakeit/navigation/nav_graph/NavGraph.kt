@@ -1,11 +1,11 @@
 package org.sbma_shakeit.navigation.nav_graph
 
+import android.app.Activity
 import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.sbma_shakeit.data.room.ShakeItDB
@@ -17,16 +17,14 @@ import org.sbma_shakeit.screens.SettingsScreen
 import org.sbma_shakeit.screens.ShakeScreen
 import org.sbma_shakeit.viewmodels.SingleShakeViewModel
 import org.sbma_shakeit.viewmodels.users.AuthViewModel
-import java.io.File
 
 @Composable
 fun SetupNavGraph(
     navController: NavHostController,
     authViewModel: AuthViewModel,
     application: Application,
+    activity: Activity,
     database: ShakeItDB,
-    outputDirectory: File,
-    fusedLocationClient: FusedLocationProviderClient,
     showShakeViewModel: SingleShakeViewModel
 ) {
     val startDestination =
@@ -41,13 +39,12 @@ fun SetupNavGraph(
         newShakeNavGraph(
             navController,
             application,
-            database,
-            outputDirectory,
-            fusedLocationClient
+            activity,
+            database
         )
         historyNavGraph(navController = navController)
-        scoreboardNavGraph()
-        userNavGraph()
+        scoreboardNavGraph(navController = navController)
+        userNavGraph(navController = navController)
         authNavGraph(
             navController = navController,
             authViewModel = authViewModel

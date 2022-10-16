@@ -1,23 +1,25 @@
 package org.sbma_shakeit.viewmodels
 
-import android.app.Application
+import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.google.android.gms.location.FusedLocationProviderClient
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.core.os.postDelayed
+import androidx.lifecycle.ViewModel
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.MeasurableSensor
-import java.io.File
+import java.util.*
 import kotlin.math.sqrt
 
 class QuickShakeViewModel(
+    activity: Activity,
     database: ShakeItDB,
-    outputDirectory: File,
-    fusedLocationClient: FusedLocationProviderClient,
-    application: Application,
     var shakeSensor: MeasurableSensor,
-): ShakeViewModel(database, outputDirectory, fusedLocationClient, application) {
+): ShakeViewModel(activity, database) {
     private val n = 60
     private var lastRecords = FloatArray(n)
     private var idx: Int = 0
