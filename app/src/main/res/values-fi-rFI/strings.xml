@@ -15,7 +15,7 @@
     <string name="global">Globaali</string>
     <string name="long_">Pituus</string>
     <string name="quick">Nopeus</string>
-    <string name="violent">voimakas</string>
+    <string name="violent">Raju</string>
     <string name="ranking">Sijoitus</string>
     <string name="all">Kaikki</string>
     <string name="sign_up_here">Rekisteröidy täältä</string>
@@ -33,7 +33,7 @@
     <string name="new_shake">Uusi ravistus</string>
     <string name="friend">Kaveri</string>
     <string name="quick_shake">Nopea ravistus</string>
-    <string name="violent_shake">Voimakas ravistus</string>
+    <string name="violent_shake">Raju ravistus</string>
     <string name="back_to_login">Kirjaudu sisään</string>
     <string name="register">Rekisteröidy</string>
     <string name="username">Käyttäjänimi</string>
