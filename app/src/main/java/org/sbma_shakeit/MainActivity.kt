@@ -3,6 +3,7 @@ package org.sbma_shakeit
 import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
@@ -24,11 +25,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.preference.PreferenceManager
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
-import org.sbma_shakeit.components._title
 import org.sbma_shakeit.components.topMenuBar.AppBar
 import org.sbma_shakeit.components.topMenuBar.DrawerBody
 import org.sbma_shakeit.components.topMenuBar.DrawerHeader
@@ -39,9 +40,9 @@ import org.sbma_shakeit.navigation.nav_graph.SetupNavGraph
 import org.sbma_shakeit.ui.theme.Green200
 import org.sbma_shakeit.ui.theme.Green500
 import org.sbma_shakeit.ui.theme.SBMA_ShakeITTheme
-import org.sbma_shakeit.viewmodels.LocationViewModel
 import org.sbma_shakeit.viewmodels.ViewModelModule
 import org.sbma_shakeit.viewmodels.users.AuthViewModel
+import java.io.File
 
 class MainActivity : ComponentActivity() {
 
@@ -57,11 +58,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        var locationViewModel = LocationViewModel(application = application, this, lm)
-
 
         //PERMISSIONS CHECK
-        if (locationViewModel.hasPermission())
+        if (hasLocationPermission())
             Log.d("DBG", "all permissions are granted")
         else
             Log.d("DBG", "one of the permissions is not granted")
@@ -159,7 +158,6 @@ class MainActivity : ComponentActivity() {
                                     scaffoldState.drawerState.close()
                                 }
 
-                                _title.value = it.title
                                 navController.popBackStack()
 
                                 var route = ""
@@ -188,8 +186,9 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             authViewModel = authViewModel,
                             application,
-                            context,
                             database,
+                            getExternalOutputDirectory(),
+                            LocationServices.getFusedLocationProviderClient(applicationContext),
                             ViewModelModule.provideShowShakeViewModel()
                         )
                     }
@@ -204,6 +203,29 @@ class MainActivity : ComponentActivity() {
             putBoolean("isDarkMode", isDarkMode.value)
             apply()
         }
+    }
+
+    private fun getExternalOutputDirectory(): File {
+        val mediaDir = this.externalMediaDirs.firstOrNull()?.let {
+            File(it, this.resources.getString(R.string.app_name)).apply { mkdirs() }
+        }
+        return if(mediaDir != null && mediaDir.exists()) mediaDir else this.filesDir
+    }
+
+    private fun hasLocationPermission(): Boolean{
+        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),0)
+            return false
+        }
+        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),0)
+            return false
+        }
+        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return false
+        }
+
+        return true
     }
 
     private fun getSharedPrefs() {

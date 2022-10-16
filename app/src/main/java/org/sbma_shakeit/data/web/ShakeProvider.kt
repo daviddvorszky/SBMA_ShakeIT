@@ -39,12 +39,11 @@ class ShakeProvider {
                         Log.w("Shake Image Upload", "Something went wrong... (ShakeProvider.kt)")
                     }
                 }
-
                 urlTask.await()
             }
 
         val bestShake = getBestShakeOfUser(shake.parent, shake.type)
-
+        
         val shakeUpload = runBlocking {
             shakeCollection.add(shake).continueWith{ ref ->
                 shake.id = ref.result.id

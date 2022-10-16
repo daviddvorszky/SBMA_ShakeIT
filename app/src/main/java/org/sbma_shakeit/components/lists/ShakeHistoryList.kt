@@ -27,46 +27,28 @@ fun ShakeHistoryList(shakes: State<List<Shake>>, navController: NavController) {
             HistoryListHeaders()
         }
         items(shakes.value) { shake ->
-            HistoryListItem(shake, navController)
-        }
-    }
-}
-
-@Composable
-private fun HistoryListHeaders() {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(5.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text("Type")
-        Text("Score/Time")
-    }
-}
-
-@Composable
-private fun HistoryListItem(shake: Shake, navController: NavController) {
-    Card(
-        Modifier.padding(vertical = 5.dp),
-        backgroundColor = MaterialTheme.colors.primaryVariant,
-    ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(5.dp)
-                .clickable {
-                    val vm = ViewModelModule.provideShowShakeViewModel()
-                    vm.setShake_(shake)
-                    navController.navigate(Screen.Shake.route)
-                },
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(getTypeName(shake.type))
-            if (shake.type == Shake.TYPE_LONG) {
-                Text("${shake.duration / 1000} sec")
-            } else {
-                Text("${shake.score}")
+            Card(
+                Modifier.padding(vertical = 5.dp),
+                backgroundColor = MaterialTheme.colors.primaryVariant,
+            ) {
+                Row(
+                    Modifier
+                        .fillParentMaxWidth()
+                        .padding(5.dp)
+                        .clickable {
+                            val vm = ViewModelModule.provideShowShakeViewModel()
+                            vm.setNewShake(shake)
+                            navController.navigate(Screen.Shake.route)
+                        },
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(getType(shake.type))
+                    if (shake.type == Shake.TYPE_LONG) {
+                        Text("${shake.duration / 1000} sec")
+                    } else {
+                        Text("${shake.score}")
+                    }
+                }
             }
         }
     }
