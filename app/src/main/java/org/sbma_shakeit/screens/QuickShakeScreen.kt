@@ -41,7 +41,7 @@ fun QuickShakeScreen(
             )
         }else {
             Text(
-                "${stringResource(R.string.quick_shake)}",
+                stringResource(R.string.quick_shake),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(20.dp)
@@ -65,7 +65,7 @@ fun QuickShakeScreen(
                 },
                 enabled = !viewModel.isSensorRunning
             ) {
-                Text(if (viewModel.shakeExists) "${stringResource(R.string.restart)}" else "${stringResource(R.string.start)}")
+                Text(if (viewModel.shakeExists) stringResource(R.string.restart) else stringResource(R.string.start))
             }
             if (viewModel.shouldShowPhoto.value) {
                 Image(
@@ -81,7 +81,7 @@ fun QuickShakeScreen(
                 Button(onClick = {
                     viewModel.shouldShowCamera.value = true
                 }) {
-                    Text("${stringResource(R.string.take_photo)}")
+                    Text(stringResource(R.string.take_photo))
                 }
             }
             Button(
@@ -92,7 +92,7 @@ fun QuickShakeScreen(
                 },
                 enabled = viewModel.shakeExists && !viewModel.isSensorRunning
             ) {
-                Text("${stringResource(R.string.save_photo)}")
+                Text(stringResource(R.string.save_shake))
             }
         }
     }

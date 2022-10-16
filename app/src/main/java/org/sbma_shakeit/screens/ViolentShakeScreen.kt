@@ -41,7 +41,7 @@ fun ViolentShakeScreen(
             )
         }else {
             Text(
-                "${stringResource(R.string.violent_shake)}",
+                stringResource(R.string.violent_shake),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(20.dp)
@@ -63,7 +63,7 @@ fun ViolentShakeScreen(
                     }
                 },
             ) {
-                Text(if (viewModel.isSensorRunning) "${stringResource(R.string.stop)}" else "${stringResource(R.string.start)}")
+                Text(if (viewModel.isSensorRunning) stringResource(R.string.stop) else stringResource(R.string.start))
             }
             if (viewModel.shouldShowPhoto.value) {
                 Image(
@@ -79,7 +79,7 @@ fun ViolentShakeScreen(
                 Button(onClick = {
                     viewModel.shouldShowCamera.value = true
                 }) {
-                    Text("${stringResource(R.string.take_photo)}")
+                    Text(stringResource(R.string.take_photo))
                 }
             }
             Button(
@@ -90,7 +90,7 @@ fun ViolentShakeScreen(
                 },
                 enabled = viewModel.shakeExists && !viewModel.isSensorRunning
             ) {
-                Text("${stringResource(R.string.save_photo)}")
+                Text(stringResource(R.string.save_shake))
             }
         }
     }
