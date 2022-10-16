@@ -44,7 +44,7 @@ fun RegisterScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         ClickableText(
-            text = AnnotatedString(stringResource(R.string.back_to_login)),
+            text = AnnotatedString("${stringResource(R.string.back_to_login)}"),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(20.dp),
@@ -62,23 +62,23 @@ fun RegisterScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = stringResource(R.string.register), style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
+        Text(text = "${stringResource(R.string.register)}", style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive))
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
-            label = { Text(text = stringResource(R.string.username)) },
+            label = { Text(text = "${stringResource(R.string.username)}") },
             value = username.value,
             onValueChange = { username.value = it })
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
-            label = { Text(text = stringResource(R.string.email)) },
+            label = { Text(text = "${stringResource(R.string.email)}") },
             value = email.value,
             onValueChange = { email.value = it })
 
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
-            label = { Text(text = stringResource(R.string.password)) },
+            label = { Text(text = "${stringResource(R.string.password)}") },
             value = password.value,
             visualTransformation = if (showPassword) VisualTransformation.None
             else PasswordVisualTransformation(),
@@ -89,12 +89,12 @@ fun RegisterScreen(
                     if (showPassword)
                         Icon(
                             painterResource(R.drawable.visibility_off),
-                            contentDescription = stringResource(R.string.dont_show_password)
+                            contentDescription = "${stringResource(R.string.dont_show_password)}"
                         )
                     else
                         Icon(
                             painterResource(R.drawable.visibility),
-                            contentDescription = stringResource(R.string.show_password)
+                            contentDescription = "${stringResource(R.string.show_password)}"
                         )
                 }
             },
@@ -109,7 +109,7 @@ fun RegisterScreen(
                     val isUserNameTaken = authViewModel.isUsernameTaken(username.value.text)
                     Log.d("isUsernameTaken", "$isUserNameTaken")
                     if (isUserNameTaken) {
-                        Toast.makeText(context, context.getString(R.string.username_taken), Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "${context.getString(R.string.username_taken)}", Toast.LENGTH_LONG).show()
                         return@Button
                     }
                     auth.createUserWithEmailAndPassword(email.value.text, password.value.text)
@@ -119,7 +119,7 @@ fun RegisterScreen(
                                 Log.d("REGISTER", "SUCCESS")
                                 navController.navigate(Screen.NewShakeList.route)
                             } else {
-                                val message = it.exception?.message ?: context.getString(R.string.register_failed)
+                                val message = it.exception?.message ?: "${context.getString(R.string.register_failed)}"
                                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                                 Log.d("REGISTER", "FAILED", it.exception)
                             }
@@ -130,7 +130,7 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                Text(text = stringResource(R.string.sign_up_here))
+                Text(text = "${stringResource(R.string.sign_up_here)}")
             }
         }
     }
