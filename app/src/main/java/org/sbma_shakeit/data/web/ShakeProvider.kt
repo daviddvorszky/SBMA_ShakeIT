@@ -8,12 +8,10 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
@@ -26,39 +24,66 @@ class ShakeProvider {
     private val storage = Firebase.storage
     private val shakeCollection = db.collection(FirestoreCollections.SHAKES)
     private val storageRef = storage.reference
+    private val userProvider = UserProvider()
 
     suspend fun saveShake(shake: Shake, database: ShakeItDB, image: File?){
         if(image != null){
-            val imageRef = storageRef.child(image.name)
-            val file = Uri.fromFile(image)
-            val uploadTask = imageRef.putFile(file)
-            val urlTask = uploadTask.continueWithTask { task ->
-                if(!task.isSuccessful) {
-                    task.exception?.let {
-                        throw it
+            runBlocking {
+                val imageRef = storageRef.child(image.name)
+                val file = Uri.fromFile(image)
+                val uploadTask = imageRef.putFile(file)
+                val urlTask = uploadTask.continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let {
+                            throw it
+                        }
+                    }
+                    imageRef.downloadUrl
+                }.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val downloadUri = task.result
+                        Log.d("pengb", downloadUri?.lastPathSegment.toString())
+                        shake.imagePath = downloadUri?.lastPathSegment.toString() ?: ""
+                    } else {
+                        Log.w("Shake Image Upload", "Something went wrong... (ShakeProvider.kt)")
                     }
                 }
-                imageRef.downloadUrl
-            }.addOnCompleteListener{ task ->
-                if(task.isSuccessful) {
-                    val downloadUri = task.result
-                    Log.d("pengb", downloadUri?.lastPathSegment.toString())
-                    shake.imagePath = downloadUri?.lastPathSegment.toString()?:""
-                }else{
-                    Log.w("Shake Image Upload", "Something went wrong... (ShakeProvider.kt)")
-                }
-            }
 
-            urlTask.await()
+                urlTask.await()
+            }
         }
 
-        shakeCollection.add(shake)
-            .addOnSuccessListener { ref ->
-                shake.id = ref.id
+        val bestShake: Shake
+        runBlocking {
+            bestShake = getBestShakeOfUser(shake.parent, shake.type)
+        }
+
+        val shakeUpload = runBlocking {
+            shakeCollection.add(shake).continueWith{ ref ->
+                shake.id = ref.result.id
+                Log.d("pengb_sp", shake.id)
                 GlobalScope.launch(Dispatchers.IO) {
                     database.shakeDao().insert(shake)
                 }
             }
+        }
+        shakeUpload.await()
+
+        Log.d("pengb_sp", shake.id)
+        when(shake.type){
+            Shake.TYPE_LONG -> {
+                if(shake.duration > bestShake.duration)
+                    userProvider.updateLongRecord(shake.id)
+            }
+            Shake.TYPE_QUICK -> {
+                if(shake.score > bestShake.score)
+                    userProvider.updateQuickRecord(shake.id)
+            }
+            Shake.TYPE_VIOLENT -> {
+                if(shake.score > bestShake.score)
+                    userProvider.updateViolentRecord(shake.id)
+            }
+        }
     }
 
     suspend fun getShakesOfUser(username: String): List<Shake>{
@@ -73,6 +98,25 @@ class ShakeProvider {
                     list.add(shakeToAdd)
                 }
                 def.complete(list)
+            }
+        return def.await()
+    }
+
+    suspend fun getBestShakeOfUser(username: String, type: Int): Shake{
+        val def = CompletableDeferred<Shake>()
+        val scoreType = when(type){
+            0 -> "duration"
+            else -> "score"
+        }
+        shakeCollection
+            .whereEqualTo("parent", username)
+            .whereEqualTo("type", type)
+            .orderBy(scoreType)
+            .limitToLast(1)
+            .get()
+            .addOnSuccessListener { result ->
+                val shake = result.first().toObject(Shake::class.java)
+                def.complete(shake)
             }
         return def.await()
     }
