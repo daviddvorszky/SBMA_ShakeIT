@@ -1,5 +1,14 @@
 # SBMA_ShakeIT
-System Based Mobile Applications projekt work
+System Based Mobile Applications project work. 
+
+## Features
+* Shake game, that uses the phone's internal sensors (accelerometer)
+* UI built with Jetpack Compose
+* Users
+  * Saves user credentials to firebase
+  * Can have other users as friends
+  * Save own shakes
+  * See other users' record shakes
 
 ## Firebase
 The app uses firebase to store data. 
