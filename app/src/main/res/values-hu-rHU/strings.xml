@@ -22,7 +22,7 @@
     <string name="start">Indítás</string>
     <string name="restart">Újraindítás</string>
     <string name="take_photo">Fénykép készítése</string>
-    <string name="save_photo">Fénykép mentése</string>
+    <string name="save_shake">Rázás mentése</string>
     <string name="friend">Barát</string>
     <string name="long_shake">Hosszú Rázás</string>
     <string name="quick_shake">Gyors Rázás</string>
@@ -48,4 +48,12 @@
     <string name="stop">Állj</string>
     <string name="add">Add hozzá</string>
     <string name="cancel">Megszünteti</string>
+    <string name="add_title">Barát hozzáadása</string>
+    <string name="add_text">Biztosan küldesz neki barátkérelmet: %1$s?</string>
+    <string name="remove_title">Barát eltávolítása</string>
+    <string name="remove_text">Biztosan eltávolítod %1$s-t a barátlistádról?</string>
+    <string name="cancel_title">Barátkérelem visszavonása</string>
+    <string name="cancel_text">Visszavonod a barátkérelmet: %1$s?</string>
+    <string name="yes">Igen</string>
+    <string name="no">Nem</string>
 </resources>
