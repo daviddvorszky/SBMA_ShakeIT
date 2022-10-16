@@ -92,6 +92,9 @@ open class UserProvider {
         userCollection
             .document(userPath)
             .update(shakeKey, shakeId)
+            .addOnSuccessListener {
+                Log.d("updateShake", "Successful update: $shakeId")
+            }
             .addOnFailureListener {
                 Log.e("updateShake", it.message ?: "Failed to update users shake")
             }
