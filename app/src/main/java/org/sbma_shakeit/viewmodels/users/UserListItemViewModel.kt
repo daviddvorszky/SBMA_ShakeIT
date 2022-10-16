@@ -8,9 +8,8 @@ import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.User
 import org.sbma_shakeit.data.web.FriendRequest
 import org.sbma_shakeit.data.web.FriendsProvider
-import org.sbma_shakeit.data.web.ShakeProvider
 import org.sbma_shakeit.data.web.UserProvider
-// TODO:CLEAN
+
 /**
  * ViewModel for user item in user list
  * */
@@ -25,19 +24,14 @@ class UserListItemViewModel(itemUser: String) : ViewModel() {
     private val userProvider = UserProvider()
     private val friendsProvider = FriendsProvider()
     private var friendRequests = listOf<FriendRequest>()
-    private val sp = ShakeProvider()
 
     init {
         viewModelScope.launch {
-            val cUser = userProvider.getCurrentUser()
-            isCurrentUser.value = isCurrentUser(cUser, itemUser)
+            val currentUser = userProvider.getCurrentUser()
+            isCurrentUser.value = isCurrentUser(currentUser, itemUser)
             friendRequests = friendsProvider.getFriendRequests(itemUser)
-            isSentFriendReq.value = isRequestedForFriend(cUser.username, itemUser)
-            isUserFriend.value = isUserFriend(cUser, itemUser)
-            val itemUserObj = userProvider.getUserByUsername(itemUser)
-            if (itemUserObj.longShake != null) {
-                shake.value = sp.getShakeById(itemUserObj.longShake!!)
-            }
+            isSentFriendReq.value = isRequestedForFriend(currentUser.username, itemUser)
+            isUserFriend.value = isUserFriend(currentUser, itemUser)
         }
     }
 
@@ -51,5 +45,4 @@ class UserListItemViewModel(itemUser: String) : ViewModel() {
         friendRequests.any {
             it.sender == user && it.receiver == friend
         }
-
 }

@@ -24,7 +24,7 @@
     <string name="password">Salasana</string>
     <string name="show_password">Näytä salasana</string>
     <string name="dont_show_password">Älä näytä salasanaa</string>
-    <string name="forgot_password">Unohditko salasanan</string>
+    <string name="forgot_password">Unohditko salasanan?</string>
     <string name="long_shake">Pitkä ravistus</string>
     <string name="start">Aloita</string>
     <string name="restart">Aloita uudelleen</string>
@@ -42,7 +42,7 @@
     <string name="sign_up">Luo tili</string>
     <string name="delete_account">Poista käyttäjä</string>
     <string name="dark_mode">Pimeä tila</string>
-    <string name="delete_account_confirm_question">Haluatko poistaa tämän käyttäjän sovelluksesta</string>
+    <string name="delete_account_confirm_question">Haluatko poistaa tämän käyttäjän sovelluksesta?</string>
     <string name="long_shake_time">Long shake time</string>
     <string name="quick_shake_score">Quick shake score</string>
     <string name="violent_shake_score">Violent shake score</string>
@@ -50,7 +50,6 @@
     <string name="intensity">Intensiteetti</string>
     <string name="max_intensity">Maksimi intensiteetti</string>
     <string name="stop">Pysäytä</string>
-    <string name="friend">Kaveri</string>
     <string name="add">Lisää</string>
-    <string name="cancel">Peru</string>
+    <string name="cancel">Peruuta</string>
 </resources>

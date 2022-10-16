@@ -15,18 +15,24 @@ import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.User
 import org.sbma_shakeit.viewmodels.users.UserListItemViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
-// TODO:CLEAN
+
 @Composable
 fun UserListItem(
     itemUser: User,
     userViewModel: UserViewModel,
     shake: Shake? = null
 ) {
+    val userListItemViewModel = UserListItemViewModel(itemUser.username)
 
-    val vm = UserListItemViewModel(itemUser.username)
-    val isCurrentUser by remember { mutableStateOf(vm.isCurrentUser) }
-    val isUserFriend by remember { mutableStateOf(vm.isUserFriend) }
-    val isRequestSent by remember { mutableStateOf(vm.isSentFriendReq) }
+    val isCurrentUser by remember {
+        mutableStateOf(userListItemViewModel.isCurrentUser)
+    }
+    val isUserFriend by remember {
+        mutableStateOf(userListItemViewModel.isUserFriend)
+    }
+    val isRequestSent by remember {
+        mutableStateOf(userListItemViewModel.isSentFriendReq)
+    }
 
     var isAlertVisible by remember { mutableStateOf(false) }
     var alertTitle by remember { mutableStateOf("") }
