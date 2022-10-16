@@ -40,7 +40,7 @@ fun LongShakeScreen(
             )
         }else {
             Text(
-                "${stringResource(R.string.long_shake)}",
+                stringResource(R.string.long_shake),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(20.dp)
@@ -60,7 +60,7 @@ fun LongShakeScreen(
                 },
                 enabled = !viewModel.isSensorRunning
             ) {
-                Text(if (viewModel.shakeExists) "${stringResource(R.string.restart)}" else "${stringResource(R.string.start)}")
+                Text(if (viewModel.shakeExists) stringResource(R.string.restart) else stringResource(R.string.start))
             }
             if (viewModel.shouldShowPhoto.value) {
                 Image(
@@ -76,7 +76,7 @@ fun LongShakeScreen(
                 Button(onClick = {
                     viewModel.shouldShowCamera.value = true
                 }) {
-                    Text("${stringResource(R.string.take_photo)}")
+                    Text(stringResource(R.string.take_photo))
                 }
             }
             Button(
@@ -87,7 +87,7 @@ fun LongShakeScreen(
                 },
                 enabled = viewModel.shakeExists && !viewModel.isSensorRunning
             ) {
-                Text("${stringResource(R.string.save_photo)}")
+                Text(stringResource(R.string.save_shake))
             }
         }
     }
