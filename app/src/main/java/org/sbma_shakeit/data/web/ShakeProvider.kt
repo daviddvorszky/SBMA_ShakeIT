@@ -1,23 +1,15 @@
 package org.sbma_shakeit.data.web
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.util.Log
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.core.net.toUri
-import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileInputStream
 
 class ShakeProvider {
     private val db = Firebase.firestore
@@ -28,7 +20,6 @@ class ShakeProvider {
 
     suspend fun saveShake(shake: Shake, database: ShakeItDB, image: File?){
         if(image != null){
-            runBlocking {
                 val imageRef = storageRef.child(image.name)
                 val file = Uri.fromFile(image)
                 val uploadTask = imageRef.putFile(file)
@@ -43,7 +34,7 @@ class ShakeProvider {
                     if (task.isSuccessful) {
                         val downloadUri = task.result
                         Log.d("pengb", downloadUri?.lastPathSegment.toString())
-                        shake.imagePath = downloadUri?.lastPathSegment.toString() ?: ""
+                        shake.imagePath = downloadUri?.lastPathSegment.toString()
                     } else {
                         Log.w("Shake Image Upload", "Something went wrong... (ShakeProvider.kt)")
                     }
@@ -51,21 +42,15 @@ class ShakeProvider {
 
                 urlTask.await()
             }
-        }
 
-        val bestShake: Shake
-        runBlocking {
-            bestShake = getBestShakeOfUser(shake.parent, shake.type)
-        }
+        val bestShake = getBestShakeOfUser(shake.parent, shake.type)
 
         val shakeUpload = runBlocking {
             shakeCollection.add(shake).continueWith{ ref ->
                 shake.id = ref.result.id
                 Log.d("pengb_sp", shake.id)
-                GlobalScope.launch(Dispatchers.IO) {
                     database.shakeDao().insert(shake)
                 }
-            }
         }
         shakeUpload.await()
 
@@ -102,7 +87,7 @@ class ShakeProvider {
         return def.await()
     }
 
-    suspend fun getBestShakeOfUser(username: String, type: Int): Shake{
+    private suspend fun getBestShakeOfUser(username: String, type: Int): Shake{
         val def = CompletableDeferred<Shake>()
         val scoreType = when(type){
             0 -> "duration"
@@ -129,9 +114,5 @@ class ShakeProvider {
         } catch (e: Exception) {
             throw e
         }
-    }
-
-    fun getShakesFromLocal(database: ShakeItDB): LiveData<List<Shake>> {
-        return database.shakeDao().getAll()
     }
 }
