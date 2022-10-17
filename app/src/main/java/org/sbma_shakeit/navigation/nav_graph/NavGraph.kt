@@ -43,8 +43,8 @@ fun SetupNavGraph(
             database
         )
         historyNavGraph(navController = navController)
-        scoreboardNavGraph(navController = navController)
-        userNavGraph(navController = navController)
+        scoreboardNavGraph()
+        userNavGraph()
         authNavGraph(
             navController = navController,
             authViewModel = authViewModel

@@ -22,7 +22,6 @@ fun NavGraphBuilder.newShakeNavGraph(
         route = NEW_SHAKE_GRAPH_ROUTE
     ){
         createShakeNavGraph(
-            navController,
             application,
             activity,
             database

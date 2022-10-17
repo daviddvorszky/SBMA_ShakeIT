@@ -2,7 +2,6 @@ package org.sbma_shakeit.navigation.nav_graph
 
 import android.app.Activity
 import android.app.Application
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -15,7 +14,6 @@ import org.sbma_shakeit.screens.ViolentShakeScreen
 import org.sbma_shakeit.viewmodels.ViewModelModule
 
 fun NavGraphBuilder.createShakeNavGraph(
-    navController: NavController,
     application: Application,
     activity: Activity,
     database: ShakeItDB
@@ -29,7 +27,6 @@ fun NavGraphBuilder.createShakeNavGraph(
             route = Screen.QuickShake.route
         ){
             QuickShakeScreen(
-                navController = navController,
                 ViewModelModule.provideQuickShakeViewModel(application, activity, database)
             )
         }
@@ -39,7 +36,6 @@ fun NavGraphBuilder.createShakeNavGraph(
             route = Screen.LongShake.route
         ){
             LongShakeScreen(
-                navController = navController,
                 ViewModelModule.provideLongShakeViewModel(application, activity, database)
             )
         }
@@ -49,7 +45,6 @@ fun NavGraphBuilder.createShakeNavGraph(
             route = Screen.ViolentShake.route
         ){
             ViolentShakeScreen(
-                navController = navController,
                 ViewModelModule.provideViolentShakeViewModel(application, activity, database)
             )
         }

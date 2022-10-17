@@ -23,7 +23,7 @@ import org.sbma_shakeit.viewmodels.users.UserViewModel
  * Lists are displayed by shake type.
  * */
 @Composable
-fun GlobalScoreboardScreen() {
+fun ScoreboardScreen() {
     val userViewModel = UserViewModel(LocalContext.current.applicationContext as Application)
     val scoreboardViewModel = ScoreboardViewModel()
 
