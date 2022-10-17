@@ -14,21 +14,11 @@ sealed class Screen(val route: String){
     object LongShake : Screen(route = "long_shake_screen")
     object ViolentShake : Screen(route = "violent_shake_screen")
     object History : Screen(route = "history_screen")
-    object GlobalScoreboard : Screen(route = "global_scoreboard_screen")
-    object FriendsScoreboard : Screen(route = "friends_scoreboard_screen")
+    object Scoreboard : Screen(route = "scoreboard_screen")
     object FriendList : Screen(route = "friend_list_screen")
     object UserProfile : Screen(route = "user_profile_screen")
     object Register : Screen(route = "register_screen")
     object Login : Screen(route = "login_screen")
     object Settings : Screen(route = "settings")
     object Shake : Screen(route = "shake")
-
-    fun withArgs(vararg args: String): String {
-        return buildString {
-            append(route)
-            args.forEach { arg ->
-                append("/$arg")
-            }
-        }
-    }
 }

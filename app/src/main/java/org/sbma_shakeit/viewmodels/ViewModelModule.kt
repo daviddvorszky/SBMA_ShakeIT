@@ -1,10 +1,10 @@
 package org.sbma_shakeit.viewmodels
 
-import android.app.Activity
 import android.app.Application
-import org.sbma_shakeit.data.room.Shake
+import com.google.android.gms.location.FusedLocationProviderClient
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.SensorModule
+import java.io.File
 
 object ViewModelModule {
 
@@ -13,26 +13,26 @@ object ViewModelModule {
     private var violentShakeViewModel: ViolentShakeViewModel? = null
     private var showShakeViewModel: SingleShakeViewModel? = null
 
-    fun provideLongShakeViewModel(app: Application, activity: Activity, database: ShakeItDB): LongShakeViewModel{
+    fun provideLongShakeViewModel(app: Application, database: ShakeItDB, fusedLocationClient: FusedLocationProviderClient, outputDirectory: File): LongShakeViewModel{
         if(longShakeViewModel == null){
             val shakeSensor = SensorModule.provideShakeSensor(app)
-            longShakeViewModel = LongShakeViewModel(activity, database, shakeSensor)
+            longShakeViewModel = LongShakeViewModel(app, database, fusedLocationClient, outputDirectory, shakeSensor)
         }
         return longShakeViewModel!!
     }
 
-    fun provideQuickShakeViewModel(app: Application, activity: Activity, database: ShakeItDB): QuickShakeViewModel{
+    fun provideQuickShakeViewModel(app: Application, database: ShakeItDB, fusedLocationClient: FusedLocationProviderClient, outputDirectory: File): QuickShakeViewModel{
         if(quickShakeViewModel == null){
             val shakeSensor = SensorModule.provideShakeSensor(app)
-            quickShakeViewModel = QuickShakeViewModel(activity, database, shakeSensor)
+            quickShakeViewModel = QuickShakeViewModel(app, database, fusedLocationClient, outputDirectory, shakeSensor)
         }
         return quickShakeViewModel!!
     }
 
-    fun provideViolentShakeViewModel(app: Application, activity: Activity, database: ShakeItDB): ViolentShakeViewModel{
+    fun provideViolentShakeViewModel(app: Application, database: ShakeItDB, fusedLocationClient: FusedLocationProviderClient, outputDirectory: File): ViolentShakeViewModel{
         if(violentShakeViewModel == null){
             val shakeSensor = SensorModule.provideShakeSensor(app)
-            violentShakeViewModel = ViolentShakeViewModel(activity, database, shakeSensor)
+            violentShakeViewModel = ViolentShakeViewModel(app, database, fusedLocationClient, outputDirectory, shakeSensor)
         }
         return violentShakeViewModel!!
     }
