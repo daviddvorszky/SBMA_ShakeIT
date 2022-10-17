@@ -7,8 +7,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -27,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.recyclerview.widget.SortedList
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -36,7 +33,6 @@ import org.sbma_shakeit.MainActivity
 import org.sbma_shakeit.viewmodels.LocationViewModel
 import org.sbma_shakeit.viewmodels.users.UserViewModel
 import org.sbma_shakeit.R
-import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.viewmodels.HistoryViewModel
 
 @Composable
@@ -47,20 +43,20 @@ fun UserProfileScreen(
     val user = vm.getCurrentUser().observeAsState()
     val userData = user.value ?: return
     val locationViewModel = LocationViewModel(application = Application(), Activity(), MainActivity.lm)
-    val vm = HistoryViewModel()
+    val historyViewModel = HistoryViewModel()
     var maxLongShake = 0L
     var maxQuickShake = 0L
     var maxViolentShake = 0L
 
-    vm.longShakes.forEach{
+    historyViewModel.longShakes.forEach{
         if (it.duration > maxLongShake)
             maxLongShake = it.duration
     }
-    vm.quickShakes.forEach{
+    historyViewModel.quickShakes.forEach{
         if (it.duration > maxQuickShake)
             maxQuickShake = it.duration
     }
-    vm.violentShakes.forEach{
+    historyViewModel.violentShakes.forEach{
         if (it.duration > maxQuickShake)
             maxViolentShake = it.duration
     }
@@ -110,7 +106,7 @@ fun UserProfileScreen(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(text = "${stringResource(R.string.username)}", fontWeight = FontWeight.Bold)
+                        Text(text = stringResource(R.string.username), fontWeight = FontWeight.Bold)
                         Text(userData.username)
                     }
                 }

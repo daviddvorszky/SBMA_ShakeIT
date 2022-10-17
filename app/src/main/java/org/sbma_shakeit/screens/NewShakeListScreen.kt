@@ -2,7 +2,6 @@ package org.sbma_shakeit.screens
 
 import android.app.Activity
 import android.app.Application
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -13,23 +12,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.sbma_shakeit.MainActivity
 import org.sbma_shakeit.R
-import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.web.ShakeProvider
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.viewmodels.HistoryViewModel
@@ -67,17 +61,17 @@ fun NewShakeListScreen(
                     Button(modifier = Modifier.padding(5.dp), onClick = {
                         navController.navigate(Screen.QuickShake.route)
                     }) {
-                        Text("${stringResource(R.string.quick)}")
+                        Text(stringResource(R.string.quick))
                     }
                     Button(modifier = Modifier.padding(5.dp), onClick = {
                         navController.navigate(Screen.LongShake.route)
                     }) {
-                        Text("${stringResource(R.string.long_)}")
+                        Text(stringResource(R.string.long_))
                     }
                     Button(modifier = Modifier.padding(5.dp), onClick = {
                         navController.navigate(Screen.ViolentShake.route)
                     }) {
-                        Text("${stringResource(R.string.violent)}")
+                        Text(stringResource(R.string.violent))
                     }
                 }
             }
