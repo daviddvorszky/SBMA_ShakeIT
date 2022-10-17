@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.preference.PreferenceManager
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -40,6 +41,7 @@ import org.sbma_shakeit.ui.theme.Green500
 import org.sbma_shakeit.ui.theme.SBMA_ShakeITTheme
 import org.sbma_shakeit.viewmodels.ViewModelModule
 import org.sbma_shakeit.viewmodels.users.AuthViewModel
+import java.io.File
 
 class MainActivity : ComponentActivity() {
 
@@ -179,8 +181,9 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             authViewModel = authViewModel,
                             application,
-                            context,
                             database,
+                            LocationServices.getFusedLocationProviderClient(applicationContext),
+                            getOutputDirectory(),
                             ViewModelModule.provideShowShakeViewModel()
                         )
                     }
@@ -231,5 +234,12 @@ class MainActivity : ComponentActivity() {
         ActivityCompat.requestPermissions(
             this, arrayOf(Manifest.permission.CAMERA), 124
         )
+    }
+
+    private fun getOutputDirectory(): File {
+        val mediaDir = this.externalMediaDirs.firstOrNull()?.let {
+            File(it, this.resources.getString(R.string.app_name)).apply { mkdirs() }
+        }
+        return if(mediaDir != null && mediaDir.exists()) mediaDir else this.filesDir
     }
 }

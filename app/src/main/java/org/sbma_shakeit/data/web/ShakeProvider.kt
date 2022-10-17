@@ -45,11 +45,11 @@ class ShakeProvider {
 
         val bestShake = getBestShakeOfUser(shake.parent, shake.type)
 
-        val shakeUpload = runBlocking {
+        val shakeUpload = runBlocking(Dispatchers.IO) {
             shakeCollection.add(shake).continueWith{ ref ->
                 shake.id = ref.result.id
                 Log.d("pengb_sp", shake.id)
-                    database.shakeDao().insert(shake)
+                //database.shakeDao().insert(shake)
                 }
         }
         shakeUpload.await()

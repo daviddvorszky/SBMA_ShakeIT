@@ -1,21 +1,24 @@
 package org.sbma_shakeit.viewmodels
 
-import android.app.Activity
+import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.MeasurableSensor
+import java.io.File
 import kotlin.math.sqrt
 
 class ViolentShakeViewModel(
-    activity: Activity,
+    application: Application,
     database: ShakeItDB,
-    val shakeSensor: MeasurableSensor,
-): ShakeViewModel(activity, database) {
+    fusedLocationClient: FusedLocationProviderClient,
+    outputDirectory: File,
+    var shakeSensor: MeasurableSensor,
+): ShakeViewModel(application, database, fusedLocationClient, outputDirectory) {
 
     var maxShakeIntensity by mutableStateOf(0.0f)
 
