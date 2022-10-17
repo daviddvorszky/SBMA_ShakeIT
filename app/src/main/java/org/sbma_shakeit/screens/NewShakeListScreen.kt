@@ -1,6 +1,5 @@
 package org.sbma_shakeit.screens
 
-import android.app.Activity
 import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,8 +8,9 @@ import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -22,7 +22,6 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import org.sbma_shakeit.MainActivity
 import org.sbma_shakeit.R
 import org.sbma_shakeit.navigation.Screen
 import org.sbma_shakeit.viewmodels.LocationViewModel
@@ -35,7 +34,7 @@ fun NewShakeListScreen(
 
     //MAP VARIABLES
     val locationViewModel =
-        LocationViewModel(application = Application(), Activity(), MainActivity.lm)
+        LocationViewModel(application = Application())
     val map = composeMap()
 
     Column(Modifier.fillMaxSize()) {

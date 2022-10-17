@@ -4,15 +4,9 @@ import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.core.os.postDelayed
-import androidx.lifecycle.ViewModel
 import org.sbma_shakeit.data.room.Shake
 import org.sbma_shakeit.data.room.ShakeItDB
 import org.sbma_shakeit.sensors.MeasurableSensor
-import java.util.*
 import kotlin.math.sqrt
 
 class QuickShakeViewModel(

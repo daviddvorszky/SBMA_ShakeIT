@@ -42,9 +42,6 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getAll(): LiveData<List<User>> =
-        roomDb.userDao().getAll()
-
     fun getCurrentUser(): LiveData<User> {
         val userEmail = Firebase.auth.currentUser?.email
         return roomDb.userDao().getUserByEmail(userEmail ?: "")

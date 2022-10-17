@@ -1,6 +1,5 @@
 package org.sbma_shakeit.screens
 
-import android.app.Activity
 import android.app.Application
 import android.graphics.Bitmap
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -11,8 +10,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -28,11 +29,10 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import org.sbma_shakeit.MainActivity
-import org.sbma_shakeit.viewmodels.LocationViewModel
-import org.sbma_shakeit.viewmodels.users.UserViewModel
 import org.sbma_shakeit.R
 import org.sbma_shakeit.viewmodels.HistoryViewModel
+import org.sbma_shakeit.viewmodels.LocationViewModel
+import org.sbma_shakeit.viewmodels.users.UserViewModel
 
 @Composable
 fun UserProfileScreen(
@@ -40,7 +40,7 @@ fun UserProfileScreen(
 ) {
     val user = vm.getCurrentUser().observeAsState()
     val userData = user.value ?: return
-    val locationViewModel = LocationViewModel(application = Application(), Activity(), MainActivity.lm)
+    val locationViewModel = LocationViewModel(application = Application())
     val historyViewModel = HistoryViewModel()
     var maxLongShake = 0L
     var maxQuickShake = 0L

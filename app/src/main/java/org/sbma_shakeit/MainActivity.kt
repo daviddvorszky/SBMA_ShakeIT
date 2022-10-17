@@ -3,9 +3,9 @@ package org.sbma_shakeit
 import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,7 +28,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
-import org.sbma_shakeit.components._title
 import org.sbma_shakeit.components.topMenuBar.AppBar
 import org.sbma_shakeit.components.topMenuBar.DrawerBody
 import org.sbma_shakeit.components.topMenuBar.DrawerHeader
@@ -39,7 +38,6 @@ import org.sbma_shakeit.navigation.nav_graph.SetupNavGraph
 import org.sbma_shakeit.ui.theme.Green200
 import org.sbma_shakeit.ui.theme.Green500
 import org.sbma_shakeit.ui.theme.SBMA_ShakeITTheme
-import org.sbma_shakeit.viewmodels.LocationViewModel
 import org.sbma_shakeit.viewmodels.ViewModelModule
 import org.sbma_shakeit.viewmodels.users.AuthViewModel
 
@@ -57,15 +55,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        var locationViewModel = LocationViewModel(application = application, this, lm)
 
 
-        //PERMISSIONS CHECK
-        if (locationViewModel.hasPermission())
-            Log.d("DBG", "all permissions are granted")
-        else
-            Log.d("DBG", "one of the permissions is not granted")
-        //
+        hasLocationPermission()
 
         //Osmandroid conf
         Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
@@ -159,14 +151,13 @@ class MainActivity : ComponentActivity() {
                                     scaffoldState.drawerState.close()
                                 }
 
-                                _title.value = it.title
                                 navController.popBackStack()
 
                                 var route = ""
                                 when(it.id){
                                     "home_page" -> route = Screen.NewShakeList.route
                                     "history"   -> route = Screen.History.route
-                                    "scoreboard"-> route = Screen.GlobalScoreboard.route
+                                    "scoreboard"-> route = Screen.Scoreboard.route
                                     "friends"   -> route = Screen.FriendList.route
                                     "profile"   -> route = Screen.UserProfile.route
                                     "settings"  -> route = Screen.Settings.route
@@ -209,6 +200,22 @@ class MainActivity : ComponentActivity() {
     private fun getSharedPrefs() {
         sharedPref = getSharedPreferences("pref", MODE_PRIVATE)
         isDarkMode.value = sharedPref.getBoolean("isDarkMode", false)
+    }
+
+    private fun hasLocationPermission(): Boolean{//check permission to scan
+        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),0)
+            return false
+        }
+        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),0)
+            return false
+        }
+        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return false
+        }
+
+        return true
     }
 
     private fun requestLocationPermission(){
