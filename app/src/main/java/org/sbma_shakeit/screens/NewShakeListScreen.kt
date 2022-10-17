@@ -8,9 +8,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -99,6 +98,7 @@ private fun composeMap(): MapView {
 
 @Composable
 private fun ShowMap(locationViewModel: LocationViewModel, map: MapView) {
+    var mapInitialized by remember(map){ mutableStateOf(false) }
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
     val vm: UserViewModel = viewModel()
     val friendList = vm.friends
@@ -110,11 +110,14 @@ private fun ShowMap(locationViewModel: LocationViewModel, map: MapView) {
     geoPoints += GeoPoint(60.0, 25.2)
     geoPoints += GeoPoint(60.0, 25.3)
 
+    if (!mapInitialized) {
+        map.setTileSource(TileSourceFactory.MAPNIK)     //Set the Tiles source
+        map.setMultiTouchControls(true)                 //Ability to zoom with 2 fingers
+        map.controller.setZoom(9.0)                     //Set the default zoom
+        map.controller.setCenter(GeoPoint(60.0, 25.0)) //set the center of the map initialization
 
-    map.setTileSource(TileSourceFactory.MAPNIK)     //Set the Tiles source
-    map.setMultiTouchControls(true)                 //Ability to zoom with 2 fingers
-    map.controller.setZoom(9.0)                     //Set the default zoom
-    map.controller.setCenter(GeoPoint(60.0, 25.0)) //set the center of the map initialization
+        mapInitialized = true
+    }
 
     val shakesFriend = locationViewModel.shakesFriend.observeAsState()
     AndroidView({ map }) {

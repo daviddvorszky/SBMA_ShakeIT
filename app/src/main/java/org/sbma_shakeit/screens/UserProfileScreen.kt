@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -191,17 +189,21 @@ private fun composeMap(): MapView {
 @Composable
 private fun ShowMap(locationViewModel: LocationViewModel){
     val map = composeMap()
+    var mapInitialized by remember(map){ mutableStateOf(false) }
     val vm = HistoryViewModel()
 
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
 
     val context = LocalContext.current
 
-
+    if (!mapInitialized) {
         map.setTileSource(TileSourceFactory.MAPNIK)     //Set the Tiles source
         map.setMultiTouchControls(true)                 //Ability to zoom with 2 fingers
         map.controller.setZoom(9.0)                     //Set the default zoom
         map.controller.setCenter(GeoPoint(60.0, 25.0)) //set the center of the map initialization
+
+        mapInitialized = true
+    }
 
     AndroidView({map}){
         it.controller.setCenter(currentGeoPoint.value)
