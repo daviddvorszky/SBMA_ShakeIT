@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -37,7 +36,6 @@ import org.sbma_shakeit.viewmodels.HistoryViewModel
 
 @Composable
 fun UserProfileScreen(
-    navController: NavController,
     vm: UserViewModel = viewModel()
 ) {
     val user = vm.getCurrentUser().observeAsState()
@@ -172,7 +170,7 @@ fun UserProfileScreen(
                     ) {
                         Text(text = "${stringResource(R.string.my_shakes)}:", fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
                         Spacer(modifier = Modifier.height(3.dp))
-                        ShowMap(locationViewModel = locationViewModel, navController)
+                        ShowMap(locationViewModel = locationViewModel)
                     }
                 }
             }
@@ -191,9 +189,8 @@ private fun composeMap(): MapView {
 }
 
 @Composable
-private fun ShowMap(locationViewModel: LocationViewModel, navController: NavController){
+private fun ShowMap(locationViewModel: LocationViewModel){
     val map = composeMap()
-    var mapInizialized by remember(map){ mutableStateOf(false) }
     val vm = HistoryViewModel()
 
     val currentGeoPoint = locationViewModel.currentGeoPoint.observeAsState()
@@ -201,22 +198,18 @@ private fun ShowMap(locationViewModel: LocationViewModel, navController: NavCont
     val context = LocalContext.current
 
 
-    if (!mapInizialized){
         map.setTileSource(TileSourceFactory.MAPNIK)     //Set the Tiles source
         map.setMultiTouchControls(true)                 //Ability to zoom with 2 fingers
         map.controller.setZoom(9.0)                     //Set the default zoom
         map.controller.setCenter(GeoPoint(60.0, 25.0)) //set the center of the map initialization
 
-        mapInizialized = true
-    }
     AndroidView({map}){
-        currentGeoPoint ?: return@AndroidView
         it.controller.setCenter(currentGeoPoint.value)
 
-        vm.allShakes.forEach{
-            var marker = Marker(map)
-            marker.position = GeoPoint(it.latitude.toDouble(), it.longitude.toDouble())
-            marker.title = "${context.getString(R.string.duration)}: "+it.duration+"${context.getString(R.string.score)}: "+it.score
+        vm.allShakes.forEach{ shake ->
+            val marker = Marker(map)
+            marker.position = GeoPoint(shake.latitude.toDouble(), shake.longitude.toDouble())
+            marker.title = "${context.getString(R.string.duration)}: "+shake.duration+"${context.getString(R.string.score)}: "+shake.score
             map.overlays.add(marker)
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
             marker.closeInfoWindow()
